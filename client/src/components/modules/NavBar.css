@@ -2,7 +2,7 @@
 
 .NavBar-container {
     padding: var(--s) var(--m);
-    background-color:   var(--lighter_blue);
+    background-color:   var(--primary);
   }
   
   .NavBar-title {
