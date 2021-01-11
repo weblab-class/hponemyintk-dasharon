@@ -18,13 +18,22 @@ class NavBar extends Component {
   render() {
     return (
       <nav className="NavBar-container">
-        <div className="NavBar-title u-inlineBlock">Catbook</div>
+        <div className="NavBar-title u-inlineBlock">WeWorld</div>
         <div className="NavBar-linkContainer u-inlineBlock">
           <Link to="/" className="NavBar-link">
             Home
           </Link>
           <Link to="/profile/" className="NavBar-link">
-            Profile
+            Flashcards
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Quizzes
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Friends
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Scavenger Hunts
           </Link>
         </div>
       </nav>
