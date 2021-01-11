@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "../../utilities.css";
 import "./Skeleton.css";
-
+import Ratings from "../modules/Ratings.js"
 
 
 class Skeleton extends Component {
