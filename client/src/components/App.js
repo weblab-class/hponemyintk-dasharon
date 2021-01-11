@@ -3,6 +3,7 @@ import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
+import Test_Upload_Medium_Plus_React from "./modules/Test_Upload_Medium_Plus_React.js";
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
@@ -48,6 +49,7 @@ class App extends Component {
     return (
       <>
         <NavBar />
+        <Test_Upload_Medium_Plus_React />
           <Router>
             <Skeleton
               path="/"
