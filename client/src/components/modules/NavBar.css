@@ -1,8 +1,7 @@
 /* From catbook-react code, many thanks to Web Lab team*/
 
 .NavBar-container {
-    /* padding: var(--s) var(--m); */
-    padding: 10px 30px;
+    padding: var(--s) var(--m);
     background-color:   var(--primary);
     display: flex;
     justify-content: left;
@@ -27,8 +26,7 @@
     color: var(--white);
     opacity: 0.6;
     text-decoration: none;
-    box-sizing: border-box;
-    border: 1px;
+    padding: 0 var(--m);
   }
   
   .NavBar-link:hover {
