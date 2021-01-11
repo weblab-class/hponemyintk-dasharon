@@ -7,26 +7,22 @@ class Test_Input_Tag_or_Caption extends React.Component {
     constructor(props) {
       super(props);
       this.handleSubmit = this.handleSubmit.bind(this);
-      this.input = React.createRef(); /*for 2 inputs*/
-      this.input_2 = React.createRef();
+      this.input = React.createRef();
+      this.input_2 = React.createRef(); /*for 2nd inputs*/
     }
   
     handleSubmit(event) {
-      alert('A tag was submitted: ' + this.input.current.value + "a thought was submitted"  + this.input_2.current.value);
+      alert('A tag was submitted: ' + this.input.current.value + "\nA thought was submitted: "  + this.input_2.current.value);
       event.preventDefault();
     }
   
     render() {
       return (
         <form onSubmit={this.handleSubmit}>
-          <label>
             Tag:
             <input type="text" ref={this.input} />
-          </label>
-          <label>
             Caption:
             <input type="text" ref={this.input_2} />
-          </label>
           <input type="submit" value="Submit" />
         </form>
       );

@@ -39,12 +39,11 @@ class Test_Upload_Medium_Plus_React extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
+        <div className="u-offsetByX">
+          <img className="u-showImg" src={this.state.file} height = "300" width="300"/>
+        </div>
           Upload file:
           <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
-          <img src={this.state.file} width = "200"/>
-        </label>
-        <br />
         <button type="submit">Submit</button>
       </form>
     );

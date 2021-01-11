@@ -37,3 +37,7 @@
   /* .NavBar-link + .NavBar-link {
     margin-left: var(--m);
   } */
+
+  .NavBar-link.NavBar-login {
+    opacity: 1;
+  }

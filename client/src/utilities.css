@@ -91,3 +91,11 @@ form {
 .u-link:hover {
   color: var(--primary--dim);
 }
+
+.u-showImg{
+  object-fit: contain;
+}
+
+.u-offsetByX{
+  margin-left: 45px;
+}
