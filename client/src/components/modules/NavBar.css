@@ -1,31 +1,40 @@
 /* From catbook-react code, many thanks to Web Lab team*/
 
 .NavBar-container {
-    padding: var(--s) var(--m);
+    /* padding: var(--s) var(--m); */
+    padding: 10px 30px;
     background-color:   var(--primary);
+    display: flex;
+    justify-content: left;
   }
   
   .NavBar-title {
     color: var(--white);
-    font-size: 20px;
+    font-size: 21px;
   }
   
   .NavBar-linkContainer {
-    margin-left: var(--l);
+    display: flex;
+    justify-content: space-evenly;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    align-items: center;
   }
   
   .NavBar-link,
+  .NavBar-logout,
   .NavBar-link:visited {
     color: var(--white);
     opacity: 0.6;
     text-decoration: none;
+    box-sizing: border-box;
+    border: 1px;
   }
   
   .NavBar-link:hover {
-    opacity: 0.8;
+    opacity: 1.0;
   }
   
-  .NavBar-link + .NavBar-link {
+  /* .NavBar-link + .NavBar-link {
     margin-left: var(--m);
-  }
-  
+  } */

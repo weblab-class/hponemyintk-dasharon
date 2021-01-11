@@ -35,6 +35,9 @@ class NavBar extends Component {
           <Link to="/profile/" className="NavBar-link">
             Scavenger Hunts
           </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Logout
+          </Link>
         </div>
       </nav>
     );
