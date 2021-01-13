@@ -52,7 +52,9 @@ class App extends Component {
   render() {
     return (
       <>
-        <NavBar />
+        <NavBar handleLogin={this.handleLogin}
+          handleLogout={this.handleLogout}
+          userId={this.state.userId} />
         <br />
         <ImgUpload />
         {/* <Test_Upload_Medium_Plus_React />
