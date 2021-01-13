@@ -23,9 +23,8 @@ import React from 'react';
 
 //
 import Rating from '@material-ui/lab/Rating';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-
+import ReactAnnotate from "./ReactAnnotate.js"
 
 //import post as in catbook
 import { post } from "../../utilities";
@@ -39,13 +38,32 @@ class ImgUpload extends React.Component {
     this.state = {
       file: null,
       difficulty: 0,
+      quality: 0,
+      annotations: [],      // get tags locations and info
     }
+    this.onTagSubmit = this.onTagSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fileInput = React.createRef();
     this.curTag = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
   };
+
+  onTagSubmit = (annotation) => {
+    const { geometry, data } = annotation
+
+    this.setState({
+      annotations: this.state.annotations.concat({
+        geometry,
+        data: {
+          ...data,
+          id: Math.random()
+        }
+      })
+    })
+
+    // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
+  }
 
   /*from Medium website above*/
   handleChange(event) {
@@ -61,6 +79,7 @@ class ImgUpload extends React.Component {
       photo_placeholder: this.fileInput.current.files[0].name,
       difficulty: this.state.difficulty,
       quality: this.state.quality,
+      taglist: this.state.taglist,
     };
     post("/api/photo_simple", test_body);
     alert(
@@ -69,9 +88,11 @@ class ImgUpload extends React.Component {
       + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
       + '\nDifficulty is : "'  + this.state.difficulty +'"'
       + '\nQuality is : "'  + this.state.quality +'"'
+      + '\Taglist is : "'  + this.state.taglist +'"'
     );
 
     event.preventDefault();
+    console.log("Printing annotations here:::", this.state.annotations)
     console.log("reached")
   }
 
@@ -116,7 +137,10 @@ class ImgUpload extends React.Component {
             Caption:
             <input type="text" ref={this.postCaption} />
         
-        {/* <br /> */}
+        <br />
+        <div className="u-img">
+        <ReactAnnotate onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+        </div>
 
         <input type="submit" value="Submit" />        
 

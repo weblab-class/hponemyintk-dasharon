@@ -75,13 +75,14 @@ router.post("/photo_simple", (req, res) => {
   //console.log("req.user.name");
   //**1/12 req body may need to be edited these are placeholders */
   const newPhoto_simple = new PhotoSimple({ 
+    uname: req.user.name,
+    uid: req.user._id,
     caption_text_s : req.body.caption_text,
     tag_text_s : req.body.tag_text,
     photo_placeholder: req.body.photo_placeholder,
     difficulty: req.body.difficulty,
     quality: req.body.quality,
-    uname: req.user.name,
-    uid: req.user._id,
+    taglist: req.body.taglist,
   });
 
   newPhoto_simple.save();
