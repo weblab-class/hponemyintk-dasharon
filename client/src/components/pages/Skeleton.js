@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import "../../utilities.css";
 import "./Skeleton.css";
-import ReactAnnotate from "../modules/ReactAnnotate.js"
 
 
 class Skeleton extends Component {
@@ -19,7 +18,6 @@ class Skeleton extends Component {
   render() {
     return (
       <>
-        <ReactAnnotate />
         <h1>Good luck on your project :)</h1>
         <h2> What we provide in this skeleton</h2>
         <ul>

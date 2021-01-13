@@ -29,7 +29,7 @@ export default class Simple extends Component {
   render () {
     return (
       <Annotation
-        src={"https://upload.wikimedia.org/wikipedia/commons/6/61/F-35A_flight_%28cropped%29.jpg?download"}
+        src={"https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png"}
         alt='Two pebbles anthropomorphized holding hands'
 
         annotations={this.state.annotations}

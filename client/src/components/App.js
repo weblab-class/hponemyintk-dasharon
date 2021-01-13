@@ -3,16 +3,12 @@ import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
-// import Test_Upload_Medium_Plus_React from "./modules/Test_Upload_Medium_Plus_React.js";
-// import Test_Input_Tag_or_Caption from "./modules/Test_Input_Tag_or_Caption.js";
 import ImgUpload from "./modules/ImgUpload.js";
-//import ImgUpload_with_Mongoose from "./modules/ImgUpload_with_Mongoose.js";
+import ReactAnnotate from "./modules/ReactAnnotate.js"
+import { socket } from "../client-socket.js";
+import { get, post } from "../utilities";
 
 import "../utilities.css";
-
-import { socket } from "../client-socket.js";
-
-import { get, post } from "../utilities";
 
 /**
  * Define the "App" component as a class.
@@ -57,8 +53,13 @@ class App extends Component {
           userId={this.state.userId} />
         <br />
         <ImgUpload />
-        {/* <Test_Upload_Medium_Plus_React />
-        <Test_Input_Tag_or_Caption /> */}
+
+        <br />
+        <div className="u-img">
+        <ReactAnnotate />
+        </div>
+
+        <br />
           <Router>
             <Skeleton
               path="/"
