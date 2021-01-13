@@ -5,9 +5,23 @@
 const { MoveToInboxRounded } = require("@material-ui/icons");
 const mongoose = require("mongoose");
 
+//uses subdocuments
+
 const annot_info = new mongoose.Schema(
   {
-    
+  //  data :
+  //   {
+  //     id: Number,
+  //     text: String
+  //   },
+   geometry :
+   {
+    //  height: Number,
+    //  type: String,
+    //  width: Number,
+     x: Number,
+     y: Number,
+   }
   }
 )
 
@@ -20,7 +34,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   quality: Number,
   uname: String,
   uid: String,
-  annotation_info_array: String, //https://mongoosejs.com/docs/schematypes.html mixed is flexible
+  annotation_info_array: [annot_info], //[annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible
 });
 
 // compile model from schema
