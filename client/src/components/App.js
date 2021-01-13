@@ -3,7 +3,7 @@ import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
-import ImgUpload from "./modules/ImgUpload.js";
+import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
@@ -51,7 +51,7 @@ class App extends Component {
           handleLogout={this.handleLogout}
           userId={this.state.userId} />
         <br />
-        <ImgUpload />
+        <ImgUpload_1716_try_no_prototype />
 
         <br />
           <Router>

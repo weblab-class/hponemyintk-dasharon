@@ -9,16 +9,16 @@ const mongoose = require("mongoose");
 
 const annot_info = new mongoose.Schema(
   {
-  //  data :
-  //   {
-  //     id: Number,
-  //     text: String
-  //   },
+   data :
+    {
+      id: Number,
+      text: String
+    },
    geometry :
    {
-    //  height: Number,
-    //  type: String,
-    //  width: Number,
+     height: Number,
+     type: String,
+     width: Number,
      x: Number,
      y: Number,
    }

@@ -13,6 +13,7 @@ const express = require("express");
 const User = require("./models/user");
 const Photo = require("./models/photo"); //add 1/12 to enable photo schema to be used
 const PhotoSimple = require("./models/photo_simple"); //add 1/12 to enable photo schema to be used
+const PhotoSimpleAnnot = require("./models/photo_simple_w_annotate"); //add 1/12 to enable photo schema to be used
 
 // import authentication library
 const auth = require("./auth");
@@ -86,6 +87,26 @@ router.post("/photo_simple", (req, res) => {
   });
 
   newPhoto_simple.save();
+
+  //then((photo_simple) => res.send(photo_simple));
+});
+
+//1/13 annotating
+router.post("/photo_simple_w_annotate", (req, res) => {
+  //console.log(req.user.name);
+  //console.log("req.user.name");
+  //**1/12 req body may need to be edited these are placeholders */
+  const newPhoto_simplea = new PhotoSimpleAnnot({ 
+    caption_text_s : req.body.caption_text,
+    tag_text_s : req.body.tag_text,
+    photo_placeholder: req.body.photo_placeholder,
+    difficulty: req.body.difficulty,
+    quality: req.body.quality,
+    uname: req.user.name,
+    uid: req.user._id,
+    annotation_info_array: req.body.annotate_test,
+  });
+  newPhoto_simplea.save();
 
   //then((photo_simple) => res.send(photo_simple));
 });
