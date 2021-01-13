@@ -12,6 +12,7 @@ const express = require("express");
 // import models so we can interact with the database
 const User = require("./models/user");
 const Photo = require("./models/photo"); //add 1/12 to enable photo schema to be used
+const PhotoSimple = require("./models/photo_simple"); //add 1/12 to enable photo schema to be used
 
 // import authentication library
 const auth = require("./auth");
@@ -43,11 +44,7 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-// anything else falls to this "not found" case
-router.all("*", (req, res) => {
-  console.log(`API route not found: ${req.method} ${req.url}`);
-  res.status(404).send({ msg: "API route not found" });
-});
+
 
 //Get photos from Mongoose and post photos to Mongoose, using web lab catbook api methods for stories as a model copied from api.js
 router.get("/photos", (req, res) => {
@@ -71,6 +68,29 @@ router.post("/photo", (req, res) => {
   });
 
   newPhoto.save().then((photo) => res.send(photo));
+});
+//for debugging
+router.post("/photo_simple", (req, res) => {
+  //console.log(req.user.name);
+  //console.log("req.user.name");
+  //**1/12 req body may need to be edited these are placeholders */
+  const newPhoto_simple = new PhotoSimple({ 
+    caption_text_s : req.body.caption_text,
+    tag_text_s : req.body.tag_text,
+    photo_placeholder: req.body.photo_placeholder,
+    uname: req.user.name,
+    uid: req.user._id,
+  });
+
+  newPhoto_simple.save();
+
+  //then((photo_simple) => res.send(photo_simple));
+});
+
+// anything else falls to this "not found" case
+router.all("*", (req, res) => {
+  console.log(`API route not found: ${req.method} ${req.url}`);
+  res.status(404).send({ msg: "API route not found" });
 });
 
 module.exports = router;

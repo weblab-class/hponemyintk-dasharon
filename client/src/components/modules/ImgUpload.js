@@ -15,10 +15,16 @@ From https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
 /*
 code for rating bar
 https://material-ui.com/components/rating/
+//https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-material-ui-f6e18652f602
 */
 
-import React, { Component } from "react";
-import Ratings from "./Ratings.js"
+import React from 'react';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
+
+//import post as in catbook
+import { post } from "../../utilities";
+
 
 class ImgUpload extends React.Component {
 /*from React and Medium websites above*/
@@ -31,6 +37,7 @@ class ImgUpload extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fileInput = React.createRef();
     this.curTag = React.createRef();
+    // [this.state.value, this.state.setValue] = React.useState(0);
     this.postCaption = React.createRef(); /*for 2nd inputs*/
   }
   /*from Medium website above*/
@@ -41,20 +48,30 @@ class ImgUpload extends React.Component {
   }
   /*from React website above*/
   handleSubmit(event) {
-    //Upload caption test
-    post("/api/photo", {photo_placeholder: "Test photo",
-    tag_location_list : [1],
-    tag_text_list : "Test tag",
-    caption: "check_caption 1/12/21",
-    difficulty_rating: [1],
-    quality_rating: [2]});
-    event.preventDefault();
+    const test_body = {caption_text : this.postCaption.current.value, 
+      tag_text: this.curTag.current.value,
+      photo_placeholder: this.fileInput.current.files[0].name,};
+    post("/api/photo_simple", test_body);
     alert(
       "Selected file: " + this.fileInput.current.files[0].name 
       + '\nA tag was submitted: "' + this.curTag.current.value +'"'
       + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
     );
+
+    event.preventDefault();
+    //Upload caption test
+    // post("/api/photo_simple", {photo_info: "Test photo",
+    // tag_location_list : [1],
+    // tag_text_list : "Test tag",
+    // caption_text: "check_caption 1/12/21",
+    // difficulty_list: [1],
+    // quality_rating_list: [2]});
+    // console.log("will this print?")
+    //console.log(this.props.uid)
+    console.log("reached")
   }
+
+
   /*from React and Medium websites combined*/
   render() {
     return (
@@ -62,9 +79,21 @@ class ImgUpload extends React.Component {
         {/* Give a handle for uploading and previewing images */}
         <div className="u-offsetByX">
           <img className="u-showImg" src={this.state.file} height = "300" width="300"/>
-          <Ratings />
         </div>
-
+        <div>
+        <div>
+        <Box align="left"  component="fieldset" mb={3} borderColor="transparent">
+          <Rating
+            value={value}
+            name="rating"
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            onClick={props.handleInputChange}
+          />
+        </Box>
+      </div>
+        </div>
           Upload file:
           <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
 
