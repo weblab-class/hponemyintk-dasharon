@@ -60,7 +60,7 @@ router.get("/photos", (req, res) => {
 //Posting one photo at a time, so there is a name difference with the get request
 router.post("/photo", (req, res) => {
   const newPhoto = new Photo({ //**1/12 req body may need to be edited these are placeholders */
-    creator_name: req.user.name, //believe comes from Google authentication
+    creator_name: req.user.name, //believe comes from Google authentication from catbook api.js
     creator_id: req.user._id,
     photo_placeholder: req.body.photo_info, //This will be replaced with Google cloud linl
     tag_location_list: req.body.tag_location_list, //unsure why showing up in different color in VSCode
