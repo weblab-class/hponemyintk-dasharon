@@ -78,6 +78,8 @@ router.post("/photo_simple", (req, res) => {
     caption_text_s : req.body.caption_text,
     tag_text_s : req.body.tag_text,
     photo_placeholder: req.body.photo_placeholder,
+    difficulty: req.body.difficulty,
+    quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
   });

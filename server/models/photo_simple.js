@@ -9,6 +9,8 @@ const PhotoSimpleSchema = new mongoose.Schema({
   caption_text_s: String, //This holds the thoughts on the photo that are not tags
   tag_text_s: String,
   photo_placeholder: String,
+  difficulty: Number,
+  quality: Number,
   uname: String,
   uid: String,
 });
