@@ -5,7 +5,7 @@
 const { MoveToInboxRounded } = require("@material-ui/icons");
 const mongoose = require("mongoose");
 
-//uses subdocuments
+//uses subdocuments https://mongoosejs.com/docs/subdocs.html
 
 const annot_info = new mongoose.Schema(
   {
