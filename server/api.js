@@ -60,8 +60,8 @@ router.get("/photos", (req, res) => {
 //Posting one photo at a time, so there is a name difference with the get request
 router.post("/photo", (req, res) => {
   const newPhoto = new Photo({ //**1/12 req body may need to be edited these are placeholders */
-    creator_name: req.body.creator_name,
-    creator_id: req.body.creator_id,
+    creator_name: req.user.name, //believe comes from Google authentication
+    creator_id: req.user._id,
     photo_placeholder: req.body.photo_info, //This will be replaced with Google cloud linl
     tag_location_list: req.body.tag_location_list, //unsure why showing up in different color in VSCode
     tag_text_list: req.body.tag_text_list, //Also considered generic array w/o types in https://stackoverflow.com/questions/19695058/how-to-define-object-in-array-in-mongoose-schema-correctly-with-2d-geo-index

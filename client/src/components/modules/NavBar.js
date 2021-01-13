@@ -10,7 +10,8 @@ import "./NavBar.css";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 //abcdef123 what is this? How do we get our own GOOGLE_CLIENT_ID? *** sdlf asdlf asldf test to check
-const GOOGLE_CLIENT_ID = "121479668229-t5j82jrbi9oejh7c8avada226s75bopn.apps.googleusercontent.com";
+//1/12/21 update from id generated
+const GOOGLE_CLIENT_ID = "698664222392-6aqs0djjv4hrv2thb2kmjrqfmkavlqak.apps.googleusercontent.com";
 
 /**
  * The navigation bar at the top of all pages. Takes no props.

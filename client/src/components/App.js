@@ -5,7 +5,9 @@ import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 // import Test_Upload_Medium_Plus_React from "./modules/Test_Upload_Medium_Plus_React.js";
 // import Test_Input_Tag_or_Caption from "./modules/Test_Input_Tag_or_Caption.js";
-import ImgUpload_with_Mongoose from "./modules/ImgUpload_with_Mongoose.js";
+import ImgUpload from "./modules/ImgUpload.js";
+//import ImgUpload_with_Mongoose from "./modules/ImgUpload_with_Mongoose.js";
+
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
@@ -52,7 +54,7 @@ class App extends Component {
       <>
         <NavBar />
         <br />
-        <ImgUpload_with_Mongoose />
+        <ImgUpload />
         {/* <Test_Upload_Medium_Plus_React />
         <Test_Input_Tag_or_Caption /> */}
           <Router>

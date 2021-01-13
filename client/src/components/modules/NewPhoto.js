@@ -50,7 +50,7 @@ class NewPhotoInput extends Component {
             value="Submit"
             onClick={this.handleSubmit}
           >
-            Submit
+            TEST TEST Submit
           </button>
         </div>
       );
@@ -64,7 +64,14 @@ class NewPhotoInput extends Component {
  */
 class NewPhoto extends Component {
     addPhoto = (value) => {
-      const body = { content: value };
+      const body = { 
+        //   photo_placeholder = "will be photo",
+        //   tag_location_list = 
+        //   tag_text_list: req.body.tag_text_list, //Also considered generic array w/o types in https://stackoverflow.com/questions/19695058/how-to-define-object-in-array-in-mongoose-schema-correctly-with-2d-geo-index
+        caption: value, //This holds the thoughts on the photo that are not tags
+        //   difficulty_rating: req.body.difficulty_list,
+        //   quality_rating: req.body.quality_rating_list
+       };
       post("/api/photo", body).then((photo) => {
         // 1/12 this is for later, when may want to show photo after submittting
         this.props.addNewPhoto(); //1/12 now placeholder may need feed later

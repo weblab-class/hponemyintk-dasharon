@@ -41,6 +41,8 @@ class ImgUpload extends React.Component {
   }
   /*from React website above*/
   handleSubmit(event) {
+    //Upload caption test
+    // post("/api/photo", {caption: "check_caption 1/12/21"});
     event.preventDefault();
     alert(
       "Selected file: " + this.fileInput.current.files[0].name 
