@@ -4,7 +4,6 @@ import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 import ImgUpload from "./modules/ImgUpload.js";
-import ReactAnnotate from "./modules/ReactAnnotate.js"
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
@@ -53,11 +52,6 @@ class App extends Component {
           userId={this.state.userId} />
         <br />
         <ImgUpload />
-
-        <br />
-        <div className="u-img">
-        <ReactAnnotate />
-        </div>
 
         <br />
           <Router>
