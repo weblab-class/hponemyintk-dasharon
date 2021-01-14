@@ -25,7 +25,7 @@ class App extends Component {
     get("/api/whoami").then((user) => {
       if (user._id) {
         // they are registed in the database, and currently logged in.
-        this.setState({ userId: user._id });
+        this.setState({ userId: user._id, username: user.name });
       }
     });
   }
@@ -53,7 +53,11 @@ class App extends Component {
         <br />
 
         {/* Only show image upload if logged in */}
-        {this.state.userId ? (<ImgUpload_1716_try_no_prototype/>) : 
+        {this.state.userId ? (
+        <>
+        <p>Welcome {this.state.username}!</p>
+        <ImgUpload_1716_try_no_prototype/>
+        </>) : 
           (<p>Welcome to Weworld! You will learn and have fun!</p>)}
 
         <br />
