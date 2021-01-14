@@ -139,7 +139,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       <form onSubmit={this.handleSubmit}>
         {/* Give a handle for uploading and previewing images */}
         <div className="u-offsetByX">
-          <img className="u-showImg" src={this.state.file} height = "300" width="300"/>
+          <img className="u-showImg" src={this.state.file}/> 
+          {/* //height = "300" width="300"/> */}
         </div>
         <div>
 
@@ -164,7 +165,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
         </div>
           Upload file:
-          <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
+          <input type="file" ref={this.fileInput} />
+          {/* // onChange={this.handleChange}/> */}
 
         <br />
         {/* Get tag and post info*/}
@@ -174,8 +176,15 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             <input type="text" ref={this.postCaption} />
         
         <br />
-        <div className="u-img">
-        <ReactAnnotate onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+        <div className="u-img"> 
+
+        {/* Meant to only have annotating when you uploaded an image */}
+        { this.state.file ? 
+          (
+            <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+          )
+          : (<></>)
+        }
         </div>
 
         <input type="submit" value="Submit" />        

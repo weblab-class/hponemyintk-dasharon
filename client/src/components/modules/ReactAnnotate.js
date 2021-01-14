@@ -4,7 +4,7 @@ import Annotation from 'react-image-annotation'
 export default class Simple extends Component {
   state = {
     // annotations: [],
-    annotation: {}
+    annotation: {},
   }
 
   onChange = (annotation) => {
@@ -36,7 +36,7 @@ export default class Simple extends Component {
   render () {
     return (
       <Annotation
-        src={"https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png"}
+        src={this.props.image_using} //use the input image 1/13/21 edit
         alt='Two pebbles anthropomorphized holding hands'
 
         annotations={this.props.annotationslst}
