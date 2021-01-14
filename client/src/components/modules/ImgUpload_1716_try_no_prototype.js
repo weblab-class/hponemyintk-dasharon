@@ -128,8 +128,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
     //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations)
-    console.log("reached")
-    console.log(annotations_cleaned_up)
+    console.log("reached");
+    console.log(annotations_cleaned_up);
+    this.setState({file: null});  //try a refresh
   }
 
 
@@ -138,9 +139,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {/* Give a handle for uploading and previewing images */}
-        <div className="u-offsetByX">
+        {/* <div className="u-offsetByX">
           <img className="u-showImg" src={this.state.file}/> 
-          {/* //height = "300" width="300"/> */}
+          height = "300" width="300"/> 
+        </div> */}
+        {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
+        <div className="u-img">
+        <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
         </div>
         <div>
 
@@ -165,8 +170,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
         </div>
           Upload file:
-          <input type="file" ref={this.fileInput} />
-          {/* // onChange={this.handleChange}/> */}
+          <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
 
         <br />
         {/* Get tag and post info*/}
@@ -177,14 +181,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         
         <br />
         <div className="u-img"> 
-
+        
         {/* Meant to only have annotating when you uploaded an image */}
-        { this.state.file ? 
+        {/* { this.state.file ? 
           (
             <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
           )
           : (<></>)
-        }
+        } */}
         </div>
 
         <input type="submit" value="Submit" />        

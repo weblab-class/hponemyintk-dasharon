@@ -36,9 +36,9 @@ export default class Simple extends Component {
   render () {
     return (
       <Annotation
-        src={this.props.image_using} //use the input image 1/13/21 edit
-        alt='Two pebbles anthropomorphized holding hands'
-
+        src={this.props.img_using} //use the input image 1/13/21 edit
+        // alt='Two pebbles anthropomorphized holding hands'
+        //removed alt 1/13 so it gets replaced by image
         annotations={this.props.annotationslst}
 
         type={this.state.type}
