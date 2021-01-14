@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import  { Redirect } from 'react-router-dom' //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
+import Home_Page from "./pages/Home_Page.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
@@ -51,12 +53,11 @@ class App extends Component {
           handleLogout={this.handleLogout}
           userId={this.state.userId} />
         <br />
-
+         
         {/* Only show image upload if logged in */}
         {this.state.userId ? (
         <>
-        <p>Welcome {this.state.username}!</p>
-        <ImgUpload_1716_try_no_prototype/>
+        
         </>) : 
           (<p>Welcome to Weworld! You will learn and have fun!</p>)}
 
@@ -64,10 +65,11 @@ class App extends Component {
           <Router>
             <Skeleton
               path="/"
-              handleLogin={this.handleLogin}
-              handleLogout={this.handleLogout}
-              userId={this.state.userId}
             />
+            <Home_Page
+              path="/Home_Page" username = {this.state.username}
+            />
+            <ImgUpload_1716_try_no_prototype path = "/Upload" />
             <NotFound default />
           </Router>
       </>
