@@ -13,7 +13,7 @@ const express = require("express");
 const User = require("./models/user");
 const Photo = require("./models/photo"); //add 1/12 to enable photo schema to be used
 const PhotoSimple = require("./models/photo_simple"); //add 1/12 to enable photo schema to be used
-const PhotoSimpleAnnot = require("./models/photo_simple_w_annotate"); //add 1/12 to enable photo schema to be used
+const PhotoSimpleAnnotModels = require("./models/photo_simple_w_annotate"); //add 1/12 to enable photo schema to be used
 
 // import authentication library
 const auth = require("./auth");
@@ -96,7 +96,24 @@ router.post("/photo_simple_w_annotate", (req, res) => {
   //console.log(req.user.name);
   //console.log("req.user.name");
   //**1/12 req body may need to be edited these are placeholders */
-  const newPhoto_simplea = new PhotoSimpleAnnot({ 
+  const annot_test_1958 = new PhotoSimpleAnnotModels.annot_info_mongoose(
+    {
+      data:
+        {
+          id: 1, //this.state.annotations[annot_to_add].data.id,
+          text: "abc", //this.state.annotations[annot_to_add].data.text,
+        },
+      geometry:
+        {
+          height: 22, //this.state.annotations[annot_to_add].geometry.height,
+          shape_kind: "abc", //this.state.annotations[annot_to_add].geometry.type,
+          width: 33, //this.state.annotations[annot_to_add].geometry.width,
+          x: 2, //this.state.annotations[annot_to_add].geometry.x,
+          y: 5, //this.state.annotations[annot_to_add].geometry.y,
+        }
+    }
+    );
+  const newPhoto_simplea = new PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose({ 
     caption_text_s : req.body.caption_text,
     tag_text_s : req.body.tag_text,
     photo_placeholder: req.body.photo_placeholder,
@@ -104,8 +121,19 @@ router.post("/photo_simple_w_annotate", (req, res) => {
     quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
-    annotation_info_array: req.body.annotate_test,
+    annotation_info_array: [annot_test_1958] //req.body.annotate_test, OH Johan 20:08
   });
+  const body_check = {
+    caption_text_s : req.body.caption_text,
+    tag_text_s : req.body.tag_text,
+    photo_placeholder: req.body.photo_placeholder,
+    difficulty: req.body.difficulty,
+    quality: req.body.quality,
+    uname: req.user.name,
+    uid: req.user._id,
+    annotation_info_array: [annot_test_1958] //req.body.annotate_test,
+  };
+  console.log(body_check);
   newPhoto_simplea.save();
 
   //then((photo_simple) => res.send(photo_simple));

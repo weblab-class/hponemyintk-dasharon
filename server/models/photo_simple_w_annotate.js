@@ -7,23 +7,23 @@ const mongoose = require("mongoose");
 
 //uses subdocuments https://mongoosejs.com/docs/subdocs.html
 
-const annot_info = new mongoose.Schema(
+const AnnotInfoSchema = new mongoose.Schema(
   {
-   data :
+   data:
+      {
+        id: Number,
+        text: String
+      },
+    geometry:
     {
-      id: Number,
-      text: String
-    },
-   geometry :
-   {
-     height: Number,
-     type: String,
-     width: Number,
-     x: Number,
-     y: Number,
-   }
+      height: Number,
+      shape_kind: String,
+      width: Number,
+      x: Number,
+      y: Number,
+    }
   }
-)
+);
 
 //define a comment schema for the database
 const PhotoSimpleAnnotSchema = new mongoose.Schema({
@@ -34,8 +34,11 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   quality: Number,
   uname: String,
   uid: String,
-  annotation_info_array: [annot_info], //[annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible
+  annotation_info_array: [AnnotInfoSchema], //[annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible
 });
 
 // compile model from schema
-module.exports = mongoose.model("photo_simple_w_annotate", PhotoSimpleAnnotSchema);
+module.exports = {
+  photo_simple_w_annotate_mongoose : mongoose.model("photo_simple_w_annotate", PhotoSimpleAnnotSchema),
+  annot_info_mongoose : mongoose.model("annot_info", AnnotInfoSchema),
+};
