@@ -74,34 +74,34 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React website above*/
   handleSubmit(event) {
 
-    //17:39 this is a messy way to remove prototype from annotations
-    //for loop from lecture 1 code
+    //17:39 this is a messy way to change type to shape_kind
+    //for loop from lecture on javascript code
     let annotations_cleaned_up = [] //empty array to populate
     console.log("INIT");
     console.log(annotations_cleaned_up);
+    let annot_to_clean = [...this.state.annotations]; //this makes a copy can edit from lecture on Javascript
+    
+    //change type field to shape_kind field
+    //run renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key
     for (let annot_to_add = 0; annot_to_add < this.state.annotations.length; annot_to_add++)
       {
-        let new_annot = {data:
-          {
-            id: 1, //this.state.annotations[annot_to_add].data.id,
-            text: "abc", //this.state.annotations[annot_to_add].data.text,
-          },
-        geometry:
-          {
-            height: 22, //this.state.annotations[annot_to_add].geometry.height,
-            type: "abc", //this.state.annotations[annot_to_add].geometry.type,
-            width: 33, //this.state.annotations[annot_to_add].geometry.width,
-            x: 2, //this.state.annotations[annot_to_add].geometry.x,
-            y: 5, //this.state.annotations[annot_to_add].geometry.y,
-          }
-        };
-        annotations_cleaned_up.push(new_annot);
+        let new_annot_init = annot_to_clean[annot_to_add];
+
+        //make type shape kind and delete type
+        new_annot_init.geometry.shape_kind = new_annot_init.geometry.type;
+        delete new_annot_init.geometry.type;
+
+        //add in new annotation
+        annotations_cleaned_up.push(new_annot_init);
+
+        //tracer print statements
+        //Why is so much being printed out on first run?
         console.log("which iteration?")
         console.log(annot_to_add);
         console.log(annotations_cleaned_up);
       };
       
-
+    //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
     //now set up info for push
     const test_body = {
       caption_text : this.postCaption.current.value, 
@@ -110,7 +110,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       difficulty: this.state.difficulty,
       quality: this.state.quality,
       //taglist: this.state.taglist,
-      annotate_test : this.state.annotations, //add annotations w/o prototype
+      annotate_test : annotations_cleaned_up //this.state.annotations, //add annotations w/o prototype
       //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text, 
     };
     post("/api/photo_simple_w_annotate", test_body);
@@ -125,6 +125,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
     event.preventDefault();
     console.log(this.state.annotations[0].data.text)
+
+    //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations)
     console.log("reached")
     console.log(annotations_cleaned_up)

@@ -121,8 +121,10 @@ router.post("/photo_simple_w_annotate", (req, res) => {
     quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
-    annotation_info_array: [annot_test_1958] //req.body.annotate_test, OH Johan 20:08
+    annotation_info_array: req.body.annotate_test //req.body.annotate_test, OH Johan 20:08
   });
+
+  //from OH 1/13/21 many thanks to Johan for debugging help!
   const body_check = {
     caption_text_s : req.body.caption_text,
     tag_text_s : req.body.tag_text,
@@ -131,7 +133,7 @@ router.post("/photo_simple_w_annotate", (req, res) => {
     quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
-    annotation_info_array: [annot_test_1958] //req.body.annotate_test,
+    annotation_info_array: req.body.annotate_test //req.body.annotate_test,
   };
   console.log(body_check);
   newPhoto_simplea.save();
