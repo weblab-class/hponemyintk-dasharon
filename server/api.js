@@ -121,6 +121,7 @@ router.post("/photo_simple_w_annotate", (req, res) => {
     quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
+    submit_stamp: req.body.timestamp,
     annotation_info_array: req.body.annotate_test //req.body.annotate_test, OH Johan 20:08
   });
 
@@ -133,6 +134,7 @@ router.post("/photo_simple_w_annotate", (req, res) => {
     quality: req.body.quality,
     uname: req.user.name,
     uid: req.user._id,
+    submit_stamp: req.body.timestamp,
     annotation_info_array: req.body.annotate_test //req.body.annotate_test,
   };
   console.log(body_check);

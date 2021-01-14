@@ -34,6 +34,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   quality: Number,
   uname: String,
   uid: String,
+  submit_stamp: String,
   annotation_info_array: [AnnotInfoSchema], //[annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible
 });
 

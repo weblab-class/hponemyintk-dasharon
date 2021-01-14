@@ -109,6 +109,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       photo_placeholder: this.fileInput.current.files[0].name,
       difficulty: this.state.difficulty,
       quality: this.state.quality,
+      timestamp : new Date(Date.now()).toLocaleString(), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i
       //taglist: this.state.taglist,
       annotate_test : annotations_cleaned_up //this.state.annotations, //add annotations w/o prototype
       //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text, 
