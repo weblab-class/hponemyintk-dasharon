@@ -26,7 +26,7 @@ class NavBar extends Component {
       <nav className="NavBar-container">
         <div className="NavBar-title u-inlineBlock">WeWorld</div>
         <div className="NavBar-linkContainer u-inlineBlock">
-          <Link to="/" className="NavBar-link">
+          {/* <Link to="/" className="NavBar-link">
             Home
           </Link>
           <Link to="/profile/" className="NavBar-link">
@@ -40,9 +40,24 @@ class NavBar extends Component {
           </Link>
           <Link to="/profile/" className="NavBar-link">
             Scavenger Hunts
-          </Link>
+          </Link> */}
 
-          {this.props.userId ? (
+          {this.props.userId ? (<>
+          <Link to="/" className="NavBar-link">
+          Home
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Flashcards
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Quizzes
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Friends
+          </Link>
+          <Link to="/profile/" className="NavBar-link">
+            Scavenger Hunts
+          </Link>
           <GoogleLogout
             clientId={GOOGLE_CLIENT_ID}
             buttonText="Logout"
@@ -50,6 +65,7 @@ class NavBar extends Component {
             onFailure={(err) => console.log(err)}
             className="NavBar-link NavBar-login"
           />
+          </>
         ) : (
           <GoogleLogin
             clientId={GOOGLE_CLIENT_ID}

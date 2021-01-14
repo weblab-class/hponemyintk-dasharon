@@ -51,7 +51,10 @@ class App extends Component {
           handleLogout={this.handleLogout}
           userId={this.state.userId} />
         <br />
-        <ImgUpload_1716_try_no_prototype />
+
+        {/* Only show image upload if logged in */}
+        {this.state.userId ? (<ImgUpload_1716_try_no_prototype/>) : 
+          (<p>Welcome to Weworld! You will learn and have fun!</p>)}
 
         <br />
           <Router>
