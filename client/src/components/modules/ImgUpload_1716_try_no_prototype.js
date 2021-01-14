@@ -137,6 +137,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
   /*from React and Medium websites combined*/
   render() {
+    //Chatbook login protection
+    if (!this.props.uid) return <div>Goodbye! Thank you for using Weworld.</div>;
+
     return (
       <form onSubmit={this.handleSubmit}>
         {/* Give a handle for uploading and previewing images */}

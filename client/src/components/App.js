@@ -69,7 +69,7 @@ class App extends Component {
             <Home_Page
               path="/Home_Page" username = {this.state.username}
             />
-            <ImgUpload_1716_try_no_prototype path = "/Upload" />
+            <ImgUpload_1716_try_no_prototype path = "/Upload" uid =  {this.state.userId}/>
             <NotFound default />
           </Router>
       </>
