@@ -144,9 +144,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           height = "300" width="300"/> 
         </div> */}
         {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
-        <div className="u-img">
+        {/* <div className="u-img">
         <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
-        </div>
+        </div> */}
         <div>
 
         <div>
@@ -183,12 +183,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         <div className="u-img"> 
         
         {/* Meant to only have annotating when you uploaded an image */}
-        {/* { this.state.file ? 
+        {this.state.file ? 
           (
             <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
           )
-          : (<></>)
-        } */}
+          : (<img className="u-showImg" src={this.state.file} height = "300" width="300"/>)
+        }
         </div>
 
         <input type="submit" value="Submit" />        
