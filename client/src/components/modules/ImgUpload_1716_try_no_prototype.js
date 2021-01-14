@@ -83,16 +83,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       {
         let new_annot = {data:
           {
-            id: this.state.annotations[annot_to_add].data.id,
-            text: this.state.annotations[annot_to_add].data.text,
+            id: 1, //this.state.annotations[annot_to_add].data.id,
+            text: "abc", //this.state.annotations[annot_to_add].data.text,
           },
         geometry:
           {
-            height: this.state.annotations[annot_to_add].geometry.height,
-            type: this.state.annotations[annot_to_add].geometry.type,
-            width: this.state.annotations[annot_to_add].geometry.width,
-            x: this.state.annotations[annot_to_add].geometry.x,
-            y: this.state.annotations[annot_to_add].geometry.y,
+            height: 22, //this.state.annotations[annot_to_add].geometry.height,
+            type: "abc", //this.state.annotations[annot_to_add].geometry.type,
+            width: 33, //this.state.annotations[annot_to_add].geometry.width,
+            x: 2, //this.state.annotations[annot_to_add].geometry.x,
+            y: 5, //this.state.annotations[annot_to_add].geometry.y,
           }
         };
         annotations_cleaned_up.push(new_annot);
