@@ -6,4 +6,3 @@ Test_Upload_Medium_Plus_React.js
 Test_Upload.js
 .env
 google_cloud_credentials.json
-package-lock.json
