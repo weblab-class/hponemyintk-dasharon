@@ -19,7 +19,7 @@ class View_Flashcards extends Component {
       super(props);
       // Initialize Default State
       this.state = {
-          photo_info_array: [], //this is a photo info array
+          photo_info_array: "", //this is a photo info array
       };
     }
   
@@ -69,7 +69,9 @@ class View_Flashcards extends Component {
         )
     }
 
-    render () {return (
+    render () {
+        console.log(this.props.userName);
+        return (
         <>
         <p>Flashcards!</p>
         <p>{this.props.userName}</p>
@@ -80,10 +82,10 @@ class View_Flashcards extends Component {
         nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
         {(this.state.photo_info_array.length > 0) ?
         <>
-        <p>{this.state.photo_info_array.length}</p>
-        <p>{this.state.photo_info_array[0].caption_text_s}</p>
+        <p>{this.state.photo_info_array}</p>
+        {/* <p>{this.state.photo_info_array[0].caption_text_s}</p>
         <p>{this.state.photo_info_array[0].photo_placeholder}</p>
-        <>{this.photo_info(this.state.photo_info_array[0])}</>
+        <>{this.photo_info(this.state.photo_info_array[0])}</> */}
         </>
          :  <p>Nothing to return. Please upload!</p>}
         </>

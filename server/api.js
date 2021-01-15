@@ -95,7 +95,7 @@ router.post("/photo_simple", (req, res) => {
 });
 
 //1/13 annotating
-router.post("/photo_simple_w_annotate", (req, res) => {
+router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
   //console.log(req.user.name);
   //console.log("req.user.name");
   //**1/12 req body may need to be edited these are placeholders */
@@ -168,9 +168,35 @@ router.post("/photo_simple_w_annotate", (req, res) => {
 
 //Get all photos of a user
 //Following W6 slide 74
-router.get("/photo_simple_w_annotate", (req, res) => {
-  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({uname: req.query.userName}).then((photo_output) => {res.send(photo_output);});
+router.get("/photo_simple_w_annotate", async (req, res) => {
+  console.log(req.query.userName);
+  try{
+    //1 get one photo array from mongoose
+    const downloadedSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uname: req.query.userName});
+  
+    //2 convert to google cloud object
+    const imagePromise = await downloadImagePromise(downloadedSchema.photo_placeholder);
+
+    console.log(imagePromise);
+    //console.log(JSON.parse(imagePromise));
+  //   /, then convert from Google Cloud object, and then return resulting schema and photo info
+  // .then(photo_output =>
+    //{
+    // console.log("here", {photo_output}); //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/ 2 deep copy so this can go in next method hopefully
+    
+    ; //2 go from photo placeholder as stored in Mongoose to photo data in Google Cloud
+    // console.log(photo_output.photo_placeholder);
+    //}
+  // ).then((image_promise_output) => {
+    //photo_output.photo_placeholder = image_promise_output; //3 replace the placeholder with the actual output
+    // console.log(photo_output.photo_placeholder);
+  res.send("TEST TEXT") //send back https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+  } catch(e) {
+  console.log("ERR getImages this shouldn't happen");
+  res.status(400).json({message: e.message});
+  }
 });
+
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
