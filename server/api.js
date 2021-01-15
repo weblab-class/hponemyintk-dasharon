@@ -175,7 +175,7 @@ router.get("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) => 
     const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder);                                          //2 convert to google cloud object
     UserSchema.photo_placeholder = imagePromise                                                                             //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);
-  res.send({UserSchema})                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
+  res.send(UserSchema)                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch(e) {
   console.log("ERR getImages this shouldn't happen");
   res.status(400).json({message: e.message});
