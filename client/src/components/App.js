@@ -6,6 +6,7 @@ import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
 import Home_Page from "./pages/Home_Page.js";
+import View_Flashcards from "./pages/View_Flashcards.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
@@ -70,6 +71,7 @@ class App extends Component {
               path="/Home_Page" username = {this.state.username}
             />
             <ImgUpload_1716_try_no_prototype path = "/Upload" uid =  {this.state.userId}/>
+            <View_Flashcards path = "/Flashcards" uid =  {this.state.userId} userName = {this.state.username}/>
             <NotFound default />
           </Router>
       </>

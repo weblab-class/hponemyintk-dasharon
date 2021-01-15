@@ -49,7 +49,7 @@ class NavBar extends Component {
           <Link to="/Upload" className="NavBar-link">
             Upload
           </Link>
-          <Link to="/profile/" className="NavBar-link">
+          <Link to="/Flashcards" className="NavBar-link">
             Review
           </Link>
           <Link to="/profile/" className="NavBar-link">

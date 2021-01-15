@@ -166,6 +166,12 @@ router.post("/photo_simple_w_annotate", (req, res) => {
   //then((photo_simple) => res.send(photo_simple));
 );
 
+//Get all photos of a user
+//Following W6 slide 74
+router.get("/photo_simple_w_annotate", (req, res) => {
+  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({uname: req.query.userName}).then((photo_output) => {res.send(photo_output);});
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
