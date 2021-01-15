@@ -168,29 +168,14 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
 
 //Get all photos of a user
 //Following W6 slide 74
-router.get("/photo_simple_w_annotate", async (req, res) => {
-  console.log(req.query.userName);
+router.get("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) => {
+  console.log("api.js:::",req.query.userName);
   try{
-    //1 get one photo array from mongoose
-    const downloadedSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uname: req.query.userName});
-  
-    //2 convert to google cloud object
-    const imagePromise = await downloadImagePromise(downloadedSchema.photo_placeholder);
-
-    console.log(imagePromise);
-    //console.log(JSON.parse(imagePromise));
-  //   /, then convert from Google Cloud object, and then return resulting schema and photo info
-  // .then(photo_output =>
-    //{
-    // console.log("here", {photo_output}); //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/ 2 deep copy so this can go in next method hopefully
-    
-    ; //2 go from photo placeholder as stored in Mongoose to photo data in Google Cloud
-    // console.log(photo_output.photo_placeholder);
-    //}
-  // ).then((image_promise_output) => {
-    //photo_output.photo_placeholder = image_promise_output; //3 replace the placeholder with the actual output
-    // console.log(photo_output.photo_placeholder);
-  res.send("TEST TEXT") //send back https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uname: req.query.userName});  //1 get one photo array from mongoose
+    const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder);                                          //2 convert to google cloud object
+    UserSchema.photo_placeholder = imagePromise                                                                             //3 replace photo placeholder with the base64 DataURL from GCP
+    // console.log("api.js:::","Here printing google image",imagePromise);
+  res.send({UserSchema})                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch(e) {
   console.log("ERR getImages this shouldn't happen");
   res.status(400).json({message: e.message});
@@ -205,3 +190,34 @@ router.all("*", (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***************************** *******************************************/
+/*** Old comments from Dian for router.get("/photo_simple_w_annotate" ***/
+/***************************** *******************************************/
+    // console.log(imagePromise);
+  //   /, then convert from Google Cloud object, and then return resulting schema and photo info
+  // .then(photo_output =>
+    //{
+    // console.log("here", {photo_output}); //https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/ 2 deep copy so this can go in next method hopefully
+    
+    ; //2 go from photo placeholder as stored in Mongoose to photo data in Google Cloud
+    // console.log(photo_output.photo_placeholder);
+    //}
+  // ).then((image_promise_output) => {
+    //photo_output.photo_placeholder = image_promise_output; //3 replace the placeholder with the actual output
+    // console.log(photo_output.photo_placeholder);
+  // res.send({message: "Successfully updated user."}) //send back https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
