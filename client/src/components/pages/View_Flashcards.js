@@ -35,7 +35,7 @@ class View_Flashcards extends Component {
   }
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
-  photo_info(PhotoInfo) {
+  GetPhotoInfo(PhotoInfo) {
     console.log(PhotoInfo.annotation_info_array);
     return(
       <>
@@ -43,6 +43,7 @@ class View_Flashcards extends Component {
       <p>Submitted by: {PhotoInfo.uname}</p>
       <p>Submitted on: {PhotoInfo.submit_stamp}</p>
       <p>Caption: {PhotoInfo.caption_text_s}</p>
+      <p>{PhotoInfo.photo_placeholder}</p>
 
       <div>
       <Typography component="legend">Difficulty ({PhotoInfo.difficulty})</Typography>
@@ -79,11 +80,11 @@ class View_Flashcards extends Component {
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
       {(this.state.photo_info_array) ?
       (<> 
-      {console.log("ViewFlashCards:::Printing photo_placeholder", this.state.photo_info_array.UserSchema.caption_text_s)}
+      {console.log("ViewFlashCards:::Printing photo_placeholder", this.state.photo_info_array.caption_text_s)}
       <p>{this.props.userName}</p>
-      <p>{this.state.photo_info_array.caption_text_s}</p>
-      <p>{this.state.photo_info_array.photo_placeholder}</p>
-      <>{this.photo_info(this.state.photo_info_array.UserSchema)}</> 
+      {/* <p>{this.state.photo_info_array.caption_text_s}</p>
+      <p>{this.state.photo_info_array.photo_placeholder}</p> */}
+      <>{this.GetPhotoInfo(this.state.photo_info_array)}</> 
       </>)
       :  (<p>Nothing to return. Please upload!</p>)}
       </>
