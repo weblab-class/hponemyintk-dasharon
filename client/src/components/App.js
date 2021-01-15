@@ -7,6 +7,7 @@ import NavBar from "./modules/NavBar.js";
 import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
 import Home_Page from "./pages/Home_Page.js";
 import View_Flashcards from "./pages/View_Flashcards.js";
+import Friends_1251 from "./pages/Friends_1251.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
@@ -72,6 +73,7 @@ class App extends Component {
             />
             <ImgUpload_1716_try_no_prototype path = "/Upload" uid =  {this.state.userId}/>
             <View_Flashcards path = "/Flashcards" uid =  {this.state.userId} userName = {this.state.username}/>
+            <Friends_1251 path = "/Friends" uid =  {this.state.userId}/>
             <NotFound default />
           </Router>
       </>

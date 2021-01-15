@@ -55,7 +55,7 @@ class NavBar extends Component {
           <Link to="/profile/" className="NavBar-link">
             Quizzes
           </Link>
-          <Link to="/profile/" className="NavBar-link">
+          <Link to="/Friends" className="NavBar-link">
             Friends
           </Link>
           <Link to="/profile/" className="NavBar-link">
