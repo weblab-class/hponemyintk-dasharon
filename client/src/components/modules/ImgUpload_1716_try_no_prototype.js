@@ -68,9 +68,36 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from Medium website above*/
   handleChange(event) {
     this.setState({
-      file: URL.createObjectURL(event.target.files[0])
+      file: URL.createObjectURL(event.target.files[0]),
+      raw_file: event.target.files[0] //raw file for the readImage function to get a data URL
+      //file_as_data_url: readImage(event.target.files[0]).then((data_rep) => {return data_rep;}) //clumsy 1st attempt to handle how readImage gives back a promise
     })
   }
+
+  //From Nikhil GCP tutorial, to get to image that can be saved, with many thanks!
+  //(https://github.com/weblab-workshops/gcp-example/tree/main/server)
+  readImage = (blob) => {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onloadend = () => {
+        if (r.error) {
+          reject(r.error.message);
+          return;
+        } else if (r.result.length < 50) {
+          // too short. probably just failed to read, or ridiculously small image
+          reject("small image? or truncated response");
+          return;
+        } else if (!r.result.startsWith("data:image/")) {
+          reject("not an image!");
+          return;
+        } else {
+          resolve(r.result);
+        }
+      };
+      r.readAsDataURL(blob);
+    });
+  };
+
   /*from React website above*/
   handleSubmit(event) {
 
@@ -100,13 +127,17 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         console.log(annot_to_add);
         console.log(annotations_cleaned_up);
       };
-      
+
+    //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
+    this.readImage(this.state.raw_file).then(image_as_url => {
+
+    //prep post request
     //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
-    //now set up info for push
+    //now set up info for post with the image as data url
     const test_body = {
       caption_text : this.postCaption.current.value, 
       tag_text: this.curTag.current.value,
-      photo_placeholder: this.fileInput.current.files[0].name,
+      photo_placeholder: image_as_url,
       difficulty: this.state.difficulty,
       quality: this.state.quality,
       timestamp : new Date(Date.now()).toLocaleString(), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i
@@ -114,7 +145,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       annotate_test : annotations_cleaned_up //this.state.annotations, //add annotations w/o prototype
       //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text, 
     };
+
+    //run post request
     post("/api/photo_simple_w_annotate", test_body);
+  })
     alert(
       "Selected file: " + this.fileInput.current.files[0].name 
       + '\nA tag was submitted: "' + this.curTag.current.value +'"'
