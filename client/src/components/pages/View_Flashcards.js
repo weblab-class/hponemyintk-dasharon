@@ -12,7 +12,7 @@ https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-materia
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
-//import ReactAnnotate from "./ReactAnnotate.js"
+import ReactAnnotate from "../modules/ReactAnnotate.js"
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -51,12 +51,52 @@ imageLoad = () => {
   });
 }
 
+//cleans up annotations
+cleanAnnotInput = (initAnnotInput) => {
+
+  let annotations_cleaned_up = [] //empty array to populate
+  let annot_to_clean = JSON.parse(JSON.stringify(initAnnotInput));; //this makes a copy can edit from lecture  onJavascript perhaps, ref is https://www.samanthaming.com/tidbits/50-how-to-deep-clone-an-array/
+    
+    //reverse change type field to shape_kind field
+    //run renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key
+    for (let annot_to_add = 0; annot_to_add < initAnnotInput.length; annot_to_add++)
+      {
+        let new_annot_init = annot_to_clean[annot_to_add];
+
+        //make type shape kind and delete type
+        new_annot_init.geometry.type = new_annot_init.geometry.shape_kind;
+        delete new_annot_init.geometry.shape_kind;
+
+        //add in new annotation
+        annotations_cleaned_up.push(new_annot_init);
+
+        //tracer print statements
+        //Why is so much being printed out on first run?
+        console.log("which iteration?")
+        console.log(annot_to_add);
+        console.log(annotations_cleaned_up);
+      };
+      return(annotations_cleaned_up);
+}
+
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   GetPhotoInfo(PhotoInfo) {
+
+    //debugging code
+    console.log("Initial annotation array")
     console.log(PhotoInfo.annotation_info_array);
+
+    //change annotation field so it is type which react-image-annotate needs
+    let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
+
+    //debugging code
+    console.log("Revised annotation array")
+    console.log(annotPhotoInfo)
     return(
       <>
-      <p>Placeholder: <img className="u-showImg" src={PhotoInfo.photo_placeholder} height = "300" width="300"/> </p>
+      <div className="u-img" >
+      <ReactAnnotate allowEdits = {false} img_using= {PhotoInfo.photo_placeholder} annotationslst = {annotPhotoInfo} height = "300" width="300"/>
+      </div>
       <p>Submitted by: {PhotoInfo.uname}</p>
       <p>Submitted on: {PhotoInfo.submit_stamp}</p>
       <p>Caption: {PhotoInfo.caption_text_s}</p>

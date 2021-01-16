@@ -223,7 +223,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         {/* Meant to only have annotating when you uploaded an image */}
         {this.state.file ? 
           (
-            <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+            <ReactAnnotate allowEdits = {true} img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
           )
           : (<img className="u-showImg" src={this.state.file} height = "300" width="300"/>)
         }
