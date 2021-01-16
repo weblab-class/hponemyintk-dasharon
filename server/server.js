@@ -59,7 +59,7 @@ app.use(express.json({limit: '30mb'}));         // arbitrarily choosed 30mb here
 // set up a session, which will persist login data across requests
 app.use(
   session({
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
