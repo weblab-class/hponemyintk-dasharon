@@ -44,7 +44,9 @@ class View_Flashcards extends Component {
 
 //split into a new function as in Nikhil's gcp code
 imageLoad = () => {
-  get("/api/photo_simple_w_annotate", { userName: this.props.userName }).then((ImageInfo) => {
+  console.log("calling image load*****")
+  get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
+    console.log(ImageInfo);
     this.setState({
         photo_info_array: ImageInfo,
     });
@@ -124,7 +126,7 @@ cleanAnnotInput = (initAnnotInput) => {
   }
 
   render () {
-    console.log("ViewFlashCards:::",this.props.userName);
+    console.log("ViewFlashCards:::",this.props.userId);
     return (
       <>
       <p>Flashcards!</p>
