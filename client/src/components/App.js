@@ -72,8 +72,8 @@ class App extends Component {
               path="/Home_Page" username = {this.state.username}
             />
             <ImgUpload_1716_try_no_prototype path = "/Upload" uid =  {this.state.userId}/>
-            <View_Flashcards path = "/Flashcards" uid =  {this.state.userId} userName = {this.state.username}/>
-            <Friends_1251 path = "/Friends" uid =  {this.state.userId}/>
+            <View_Flashcards path = "/Flashcards" userId =  {this.state.userId} userName = {this.state.username}/>
+            <Friends_1251 path = "/Friends" userId =  {this.state.userId}/>
             <NotFound default />
           </Router>
       </>

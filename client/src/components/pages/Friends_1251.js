@@ -37,7 +37,7 @@ class Friends_1251 extends Component {
   render() {
 
     //Chatbook login protection
-    if (!this.props.uid) return <div>Goodbye! Thank you for using Weworld.</div>;
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>;
     console.log(this.state.allUserList);
     return (
       <>
@@ -46,7 +46,7 @@ class Friends_1251 extends Component {
           console.log(u),
           <>
          <userInfo userNameInfo = {u.name} />
-         <button>Add friend</button>
+         <button>Add friend {u.name} </button>
          {/* ref: https://www.teachucomp.com/add-a-line-break-in-html-tutorial/ */}
          <br/>
          </>

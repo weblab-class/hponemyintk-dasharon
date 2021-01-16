@@ -27,12 +27,29 @@ class View_Flashcards extends Component {
     // remember -- api calls go here!, get call adapted from catbook
       //run get request to get first image of the user, will build up to getting images one by
       //one or all on one page
-    get("/api/photo_simple_w_annotate", { userName: this.props.userName }).then((ImageInfo) => {
-      this.setState({
-          photo_info_array: ImageInfo,
-      });
-    });
+    //onyl make req if logged in
+    if (this.props.userId)
+    {
+      this.imageLoad();
+    };
   }
+
+  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
+  componentDidUpdate(prevProps) {
+    if (this.props.userId && prevProps.userId !== this.props.userId)
+    {
+      this.imageLoad();
+    }
+  }
+
+//split into a new function as in Nikhil's gcp code
+imageLoad = () => {
+  get("/api/photo_simple_w_annotate", { userName: this.props.userName }).then((ImageInfo) => {
+    this.setState({
+        photo_info_array: ImageInfo,
+    });
+  });
+}
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   GetPhotoInfo(PhotoInfo) {
@@ -43,7 +60,6 @@ class View_Flashcards extends Component {
       <p>Submitted by: {PhotoInfo.uname}</p>
       <p>Submitted on: {PhotoInfo.submit_stamp}</p>
       <p>Caption: {PhotoInfo.caption_text_s}</p>
-      <p>{PhotoInfo.photo_placeholder}</p>
 
       <div>
       <Typography component="legend">Difficulty ({PhotoInfo.difficulty})</Typography>

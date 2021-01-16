@@ -17,6 +17,7 @@ class userInfo extends Component {
     render() {
         return (
             <>
+            <p>TEST ME</p>
             <p>{this.props.userNameInfo}</p>
             </>
         );
