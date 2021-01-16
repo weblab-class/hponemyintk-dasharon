@@ -59,8 +59,17 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         }
       })
     })
-
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
+  }
+
+    
+  //cleans up annotations
+  cleanAnnotInput = (initAnnotInput) => {
+    initAnnotInput.map((obj) => {
+      obj.geometry.type = obj.geometry.shape_kind     //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
+      delete obj.geometry.shape_kind
+    })
+    return(initAnnotInput);
   }
 
   /*from Medium website above*/
@@ -99,33 +108,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React website above*/
   handleSubmit = (event) => {
 
-    //17:39 this is a messy way to change type to shape_kind
-    //for loop from lecture on javascript code
-    let annotations_cleaned_up = [] //empty array to populate
-    console.log("INIT");
-    console.log(annotations_cleaned_up);
-    let annot_to_clean = [...this.state.annotations]; //this makes a copy can edit from lecture on Javascript
-    
-    //change type field to shape_kind field
-    //run renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key
-    for (let annot_to_add = 0; annot_to_add < this.state.annotations.length; annot_to_add++)
-      {
-        let new_annot_init = annot_to_clean[annot_to_add];
-
-        //make type shape kind and delete type
-        new_annot_init.geometry.shape_kind = new_annot_init.geometry.type;
-        delete new_annot_init.geometry.type;
-
-        //add in new annotation
-        annotations_cleaned_up.push(new_annot_init);
-
-        //tracer print statements
-        //Why is so much being printed out on first run?
-        console.log("which iteration?")
-        console.log(annot_to_add);
-        console.log(annotations_cleaned_up);
-      };
-
     //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
     this.readImage(this.state.raw_file).then(image_as_url => {
 
@@ -140,7 +122,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       quality: this.state.quality,
       timestamp : new Date(Date.now()).toLocaleString(), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i
       //taglist: this.state.taglist,
-      annotate_test : annotations_cleaned_up //this.state.annotations, //add annotations w/o prototype
+      annotate_test : cleanAnnotInput(this.state.annotations) //this.state.annotations, //add annotations w/o prototype
       //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text, 
     };
 
