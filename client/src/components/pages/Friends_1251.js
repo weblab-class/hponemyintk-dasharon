@@ -59,8 +59,8 @@ getUsers = () => {
         <p>All users are</p>
         {this.state.allUserList.map((u, i) => (
           console.log(u),
-          <>
-         <UserInfo userNameInfo = {u.name} key = {i}/>
+        <>
+         <UserInfo userNameInfo = {u.name} userId =  {this.props.userId} key = {i}/>
          <button>Add friend </button>
          {/* ref: https://www.teachucomp.com/add-a-line-break-in-html-tutorial/ */}
          <br/>

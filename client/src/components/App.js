@@ -61,7 +61,7 @@ class App extends Component {
         <>
         
         </>) : 
-          (<p>Welcome to Weworld! You will learn and have fun!</p>)}
+          (<p>Welcome to Weworld! You will learn and have fun!. *Please note currently all users can see everyone's content given this is an early testing version of the website. So please do not share any image or text you do not want shared publicly. Also your timestamp of use and name are recorded and associated with your image.*</p>)}
 
         <br />
           <Router>
