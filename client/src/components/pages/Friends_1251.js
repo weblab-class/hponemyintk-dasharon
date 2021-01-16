@@ -13,10 +13,7 @@ class Friends_1251 extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-        allUserList: [
-          {name : "Try1"},
-          {name : "Try2"}
-        ],
+        allUserList: [], //set initial user list to be empty
     };
   }
 
