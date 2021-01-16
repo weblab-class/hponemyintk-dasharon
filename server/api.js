@@ -107,6 +107,12 @@ router.get("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) => 
   }
 });
 
+//find all of the users
+router.get("/all_user_find", auth.ensureLoggedIn, (req, res) => {
+  //Run a Mongoose query to get all users, and then send it back in the response 
+  //Learned from catbook {} means find everyone
+  User.find({}).then((infoOnUsers) => res.send(infoOnUsers));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

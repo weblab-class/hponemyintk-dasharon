@@ -32,7 +32,7 @@ import { post } from "../../utilities";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
 class ImgUpload_1716_try_no_prototype extends React.Component {
-/*from React and Medium websites above*/
+/*from React and Medium websites above many thanks to Toommy in OH explained removing bind*/
   constructor(props){
     super(props);
     this.state = {
@@ -41,9 +41,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       quality: 0,
       annotations: [],      // get tags locations and info
     }
-    this.onTagSubmit = this.onTagSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+ 
     this.fileInput = React.createRef();
     this.curTag = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -66,7 +64,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   }
 
   /*from Medium website above*/
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       file: URL.createObjectURL(event.target.files[0]),
       raw_file: event.target.files[0] //raw file for the readImage function to get a data URL
@@ -99,7 +97,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   };
 
   /*from React website above*/
-  handleSubmit(event) {
+  handleSubmit = (event) => {
 
     //17:39 this is a messy way to change type to shape_kind
     //for loop from lecture on javascript code

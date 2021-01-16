@@ -5,7 +5,7 @@ import "../pages/Skeleton.css";
 
 //Gives info on a user
 
-class userInfo extends Component {
+class UserInfo extends Component {
     constructor(props) {
       super(props);
       // Initialize Default State
@@ -17,11 +17,10 @@ class userInfo extends Component {
     render() {
         return (
             <>
-            <p>TEST ME</p>
             <p>{this.props.userNameInfo}</p>
             </>
         );
     }
 }
 
-export default userInfo;
+export default UserInfo;
