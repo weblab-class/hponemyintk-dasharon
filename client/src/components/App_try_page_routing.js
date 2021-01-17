@@ -94,8 +94,8 @@ getUsers = () => {
             <ImgUpload_1716_try_no_prototype path = "/Upload" userId =  {this.state.userId}/>
             {/*from catbook to link to different user pages*/}
 
-            
-            <View_Flashcards path = "/Flashcards/:userId" userId =  {this.state.userId} userName = {this.state.username}/>
+            {this.state.allUserList.map((u,i) => 
+            <View_Flashcards path = {"/Flashcards/" + u._id} userId =  {u._id} userName = {u.name}/>)}
             <Friends_1251 path = "/Friends" userId =  {this.state.userId}/>
             <NotFound default />
           </Router>
