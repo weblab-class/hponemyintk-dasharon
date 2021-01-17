@@ -48,7 +48,7 @@ getUsers = () => {
   render() {
 
     //Chatbook login protection
-    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>;
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     console.log(this.state.allUserList);
     return (
       <>

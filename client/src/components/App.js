@@ -69,9 +69,9 @@ class App extends Component {
               path="/"
             />
             <Home_Page
-              path="/Home_Page" username = {this.state.username}
+              path="/Home_Page" username = {this.state.username} userId =  {this.state.userId}
             />
-            <ImgUpload_1716_try_no_prototype path = "/Upload" uid =  {this.state.userId}/>
+            <ImgUpload_1716_try_no_prototype path = "/Upload" userId =  {this.state.userId}/>
             {/*from catbook to link to different user pages*/}
             <View_Flashcards path = "/Flashcards/:userId" userId =  {this.state.userId} userName = {this.state.username}/>
             <Friends_1251 path = "/Friends" userId =  {this.state.userId}/>

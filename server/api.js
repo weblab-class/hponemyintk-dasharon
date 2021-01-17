@@ -96,11 +96,16 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
 router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   console.log("api.js:::",req.query.userId);
   try{
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uid: req.query.userId});  //1 get one photo array from mongoose
-    const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder);                                          //2 convert to google cloud object
-    UserSchema.photo_placeholder = imagePromise                                                                             //3 replace photo placeholder with the base64 DataURL from GCP
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({uid: req.query.userId});  //1 get one photo array from mongoose
+    //iterate through all user's photos, note this could incorporate a map/promise all
+    for (let u_info = 0; u_info < UserSchema.length; u_info ++)
+    {
+    const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder);                                          //2 convert to google cloud object
+    UserSchema[u_info].photo_placeholder = imagePromise;
+    };  //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);
-  res.send(UserSchema)                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
+    res.send(UserSchema) 
+                                                                                                  //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch(e) {
   console.log("ERR getImages this shouldn't happen");
   res.status(400).json({message: e.message});

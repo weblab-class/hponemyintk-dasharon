@@ -16,6 +16,7 @@ class Home_Page extends Component {
   }
 
   render() {
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
       <>
         {/* Use username prop */}

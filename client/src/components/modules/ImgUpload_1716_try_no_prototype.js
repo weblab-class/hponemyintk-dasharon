@@ -63,11 +63,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   }
 
     
-  //cleans up annotations
+  //cleans up annotations- DS edit 1/17 since want to save as shape_kind not type, reverse of View_Flashcards
   cleanAnnotInput = (initAnnotInput) => {
     initAnnotInput.map((obj) => {
-      obj.geometry.type = obj.geometry.shape_kind     //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
-      delete obj.geometry.shape_kind
+      obj.geometry.shape_kind = obj.geometry.type;     //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
+      delete obj.geometry.type;
     })
     return(initAnnotInput);
   }
@@ -122,7 +122,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       quality: this.state.quality,
       timestamp : new Date(Date.now()).toLocaleString(), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i
       //taglist: this.state.taglist,
-      annotate_test : cleanAnnotInput(this.state.annotations) //this.state.annotations, //add annotations w/o prototype
+      //DS edit 1/17 to add this
+      annotate_test : this.cleanAnnotInput(this.state.annotations) //this.state.annotations, //add annotations w/o prototype
       //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text, 
     };
 
@@ -144,7 +145,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations)
     console.log("reached");
-    console.log(annotations_cleaned_up);
+    //console.log(annotations_cleaned_up);
     this.setState({file: null});  //try a refresh
   }
 
@@ -152,7 +153,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React and Medium websites combined*/
   render() {
     //Chatbook login protection
-    if (!this.props.uid) return <div>Goodbye! Thank you for using Weworld.</div>;
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
 
     return (
       <form onSubmit={this.handleSubmit}>

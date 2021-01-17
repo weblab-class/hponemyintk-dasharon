@@ -107,6 +107,7 @@ imageLoad = () => {
   }
 
   render () {
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     console.log("ViewFlashCards:::",this.props.userId);
     return (
       <>
@@ -119,11 +120,17 @@ imageLoad = () => {
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
       {(this.state.photo_info_array) ?
       (<> 
-      {console.log("ViewFlashCards:::Printing photo_placeholder", this.state.photo_info_array.caption_text_s)}
+      {console.log("ViewFlashCards:::Printing photo_placeholder", this.state.photo_info_array)}
       <p>{this.props.userName}</p>
       {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
-      <>{this.GetPhotoInfo(this.state.photo_info_array)}</> 
+      {/*below uses syntax from Nikhil's GCP example */}
+      <div>
+      {this.state.photo_info_array.map((p) => (
+        this.GetPhotoInfo(p)
+      ))
+      }
+      </div>
       </>)
       :  (<p>Nothing to return. Please upload!</p>)}
       </>
