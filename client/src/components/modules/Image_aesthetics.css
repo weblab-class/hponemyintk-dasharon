@@ -7,15 +7,12 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 .center_image {
   display: flex;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 10%;
   padding: 30px;
   width: 50%;
 }
 
 .responsive {
-  width: 100%;
+  width: 50%;
   height: auto;
 }
 
@@ -25,10 +22,11 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 90%;
+  width: 100%;
+  justify-content: center;
 }
 
-.column_img {
+/* .column_img {
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
@@ -41,7 +39,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   flex-basis: 100%;
   flex-grow: 1;
   padding: 30px;
-}
+} */
 
 /*ref https://www.sketchingwithcss.com/samplechapter/cheatsheet.html*/
 
@@ -66,13 +64,17 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   justify-content: center;
 }
 
-/*ref https://codepen.io/MustafaEmad/pen/NArYZL*/
+/* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
+/* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
 .post {
+  /* display: flex; */
   background-color: #fff;
-  width: 500px;
-  margin: 10pxs;
-  padding: 10px;
+  width: 60%;
+  margin: 10px;
   color: #333;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
   border-radius: 3px;
+  /* align-items: center;
+  justify-content: center; */
 }
