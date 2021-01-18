@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import  { Redirect } from 'react-router-dom' //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
+import  { Redirect, Switch, Route } from 'react-router-dom' //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
 import { Router } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
@@ -85,6 +85,7 @@ getUsers = () => {
 
         <br />
           <Router>
+          {/* don't see 2 pages at once https://stackoverflow.com/questions/45122800/react-router-switch-behavior */}
             <Skeleton
               path="/"
             />
@@ -93,9 +94,21 @@ getUsers = () => {
             />
             <ImgUpload_1716_try_no_prototype path = "/Upload" userId =  {this.state.userId}/>
             {/*from catbook to link to different user pages*/}
+            {/*from catbook to link to different user pages, also used https://stackoverflow.com/questions/57058879/how-to-create-dynamic-routes-with-react-router-dom*/}
+            {/* {this.state.allUserList.map((u,i) => 
+            <Link to={"/Flashcards/" + u._id}/>)}
+            <Route path="Flashcards/:id" component = {View_Flashcards}/> */}
+
+            {/* {this.state.allUserList.map((u,i) => 
+            <Link to={"/Flashcards/" + u._id} key = {i}/>)}
+            {this.state.allUserList.map((u,i) => 
+            <View_Flashcards path={"/Flashcards/" + u._id} username = {u.name} key = {i}/>)} */}
+            {/*Thanks to Justin for Piazza post on this! */}
 
             
-            <View_Flashcards path = "/Flashcards/:userId" userId =  {this.state.userId} userName = {this.state.username}/>
+            <View_Flashcards path = "/Flashcards/:userId" userName = {this.state.username}/>
+            
+            
             <Friends_1251 path = "/Friends" userId =  {this.state.userId}/>
             <NotFound default />
           </Router>

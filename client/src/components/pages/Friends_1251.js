@@ -4,6 +4,7 @@ import "../../utilities.css";
 import "./Skeleton.css";
 import { get } from "../../utilities";
 import UserInfo from "../modules/UserInfo.js";
+import { Link } from "@reach/router";
 
 //This is an initial attempt at the friend page, to print users, hopefully leading to
 //Being able to add friends and see profiles
@@ -52,16 +53,17 @@ getUsers = () => {
     console.log(this.state.allUserList);
     return (
       <>
-        {/* map syntax from chatbook */}
+        {/*Many thanks to Justin for Piazza link advice*/}
+        {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
+        {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
         <p>All users are</p>
         {this.state.allUserList.map((u, i) => (
-          console.log(u),
-        <>
+          <>
+          {console.log(u)},
          <UserInfo userNameInfo = {u.name} userId =  {u._id} key = {i}/>
-         <button>Add friend </button>
-         {/* ref: https://www.teachucomp.com/add-a-line-break-in-html-tutorial/ */}
-         <br/>
-         </>
+         <Link to={"/Flashcards/" + u._id} >I want to see all of {u.name}'s flashcards!</Link>
+            <br/>
+            </>
         ))
         }
       </>
