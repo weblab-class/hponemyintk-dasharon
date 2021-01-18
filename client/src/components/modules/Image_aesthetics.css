@@ -78,3 +78,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   /* align-items: center;
   justify-content: center; */
 }
+
+.paddedText {
+  padding: var(--m);
+}
