@@ -1,6 +1,8 @@
+@import "../../utilities.css";
+
 /*Image aesthetics refs https://www.w3schools.com/howto/howto_css_image_center.asp 
 https://www.w3schools.com/howto/howto_css_image_responsive.asp https://www.w3schools.com/howto/howto_css_rounded_images.asp
-https://www.freecodecamp.org/news/how-to-center-an-image-in-css/*/
+https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
 .center_image {
   display: flex;
@@ -8,10 +10,57 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/*/
   margin-left: auto;
   margin-right: auto;
   border-radius: 10%;
-  width: 70%;
+  padding: 30px;
+  width: 50%;
 }
 
 .responsive {
   width: 100%;
   height: auto;
+}
+
+/*ref https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01*/
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+}
+
+.column_img {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1.5;
+}
+
+.column_text {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1;
+  padding: 30px;
+}
+
+/*ref https://www.sketchingwithcss.com/samplechapter/cheatsheet.html*/
+
+.flexcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.nametext {
+  text-align: center;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: var(--headingSize); /*ref https://www.w3schools.com/css/css_font_size.asp*/
+}
+
+/*ref https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element*/
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

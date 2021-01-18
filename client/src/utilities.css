@@ -21,7 +21,7 @@
   --darker_blue: #0099ff;
   --lighter_blue: #69bdf5;
   --light_green: #67dcb8;
-  --primary:  #0099ff;
+  --primary: #0099ff;
   --primary--dim: #6987db;
   --darkgrey: #d4d4d4;
   --medgrey: #e0e0e0;
@@ -32,6 +32,7 @@
   --s: 8px;
   --m: 16px;
   --l: 24px;
+  --headingSize: 40px;
 }
 
 body {
@@ -92,16 +93,16 @@ form {
   color: var(--primary--dim);
 }
 
-.u-showImg{
+.u-showImg {
   object-fit: contain;
 }
 
-.u-offsetByX{
+.u-offsetByX {
   margin-left: 30px;
 }
 
-.u-img{
-    width: 30%;
-    height: auto;
-    margin-left: 5%;
+.u-img {
+  width: 30%;
+  height: auto;
+  margin-left: 5%;
 }

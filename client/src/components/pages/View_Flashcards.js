@@ -98,18 +98,18 @@ imageLoad = () => {
     console.log("Revised annotation array")
     console.log(annotPhotoInfo)
 
-    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element
+    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return(
-      <>
-      <div>
-      <ReactAnnotate allowEdits = {false} img_using= {PhotoInfo.photo_placeholder} annotationslst = {annotPhotoInfo} height = "300" width="300"/>
+      <div className = "row">
+      <div className= "center_image column">
+      <ReactAnnotate allowEdits = {false} border-radius = "10%" img_using= {PhotoInfo.photo_placeholder} annotationslst = {annotPhotoInfo} height = "300" width="300"/>
       </div>
+      <div className= "image_text column">
       <p>Submitted by: {PhotoInfo.uname}</p>
       <p>Submitted on: {PhotoInfo.submit_stamp}</p>
       <p>Caption: {PhotoInfo.caption_text_s}</p>
 
-      <div>
-      <Typography component="legend">Difficulty ({PhotoInfo.difficulty})</Typography>
+      <Typography component="legend">Difficulty</Typography> {/*{PhotoInfo.difficulty} */}
       <Rating
       precision={0.5}
       name="difficultyRating"
@@ -117,7 +117,7 @@ imageLoad = () => {
       disabled
       />
 
-    <Typography component="legend">Quality ({PhotoInfo.quality})</Typography>
+    <Typography component="legend">Quality</Typography> {/**{PhotoInfo.quality}*/}
       <Rating
         precision={0.5}
         name="qualityRating"
@@ -126,7 +126,7 @@ imageLoad = () => {
         disabled
       />
   </div>
-        </>
+        </div>
     )
   }
 
@@ -134,10 +134,11 @@ imageLoad = () => {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
     console.log("ViewFlashCards:::",this.props.userId);
-    return (
-      <div className="center_image">
-      <p>Flashcards!</p>
-      <p>{this.state.photo_info_array.length}</p>
+    return ( //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
+      <div className="u-textCenter">
+      <p className = "u-bold">Flashcards!</p> 
+      <br/>
+      
       {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
       
 
@@ -146,7 +147,8 @@ imageLoad = () => {
       {(this.state.photo_info_array) ?
       (<> 
       {console.log("ViewFlashCards:::Printing photo_placeholder", this.state.photo_info_array)}
-      <p>{this.props.userName}</p>
+      <p className = "nametext">{this.props.userName}</p>
+      <p className="u-textCenter">There are {this.state.photo_info_array.length} flashcards for {this.props.userName}</p>
       {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
       {/*below uses syntax from Nikhil's GCP example */}

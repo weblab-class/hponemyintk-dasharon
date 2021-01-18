@@ -29,7 +29,7 @@ import Typography from '@material-ui/core/Typography';
 import ReactAnnotate from "./ReactAnnotate.js"
 
 //import post as in catbook
-import { post } from "../../utilities";
+import { post } from "../../utilities.js";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 // import translate from 'translate';    //ref translation tlibrary
