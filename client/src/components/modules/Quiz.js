@@ -7,6 +7,8 @@ import "survey-react/modern.css";
 
 Survey.StylesManager.applyTheme("modern");
 
+// ref: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern
+
 class Quiz extends Component {
   constructor() {
     super();
