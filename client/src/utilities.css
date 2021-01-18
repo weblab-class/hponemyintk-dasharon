@@ -108,6 +108,6 @@ form {
 }
 
 /*https://www.w3schools.com/css/css_background.asp*/
-.pageBodyColor {
-  background-color: lightblue;
+body {
+  background-color: rgb(255, 255, 255);
 }

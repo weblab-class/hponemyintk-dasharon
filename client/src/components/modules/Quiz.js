@@ -16,10 +16,12 @@ class Quiz extends Component {
   render() {
     const json = {
       title: "American History",
+      showPrevButton: true,
       showProgressBar: "bottom",
-      showTimerPanel: "top",
+      // showTimerPanel: "top",
       // maxTimeToFinishPage: 10,
       // maxTimeToFinish: 25,
+      // maxTimeToFinish: 200,
       firstPageIsStarted: true,
       startSurveyText: "Start Quiz",
       pages: [
@@ -81,6 +83,17 @@ class Quiz extends Component {
 
     return (
       <>
+        {/* <Annotation
+          src={"https://upload.wikimedia.org/wikipedia/en/d/d4/Mickey_Mouse.png"}
+          alt="Two pebbles anthropomorphized holding hands"
+          // annotations={this.state.annotations}
+          type={this.state.type}
+          // value={this.state.annotation}
+          // onChange={this.onChange_annotations}
+          // onSubmit={this.onSubmit_annotations}
+          allowTouch
+        /> */}
+
         <Survey.Survey model={survey} />
       </>
     );

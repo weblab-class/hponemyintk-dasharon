@@ -32,7 +32,6 @@ import ReactAnnotate from "./ReactAnnotate.js"
 import { post } from "../../utilities.js";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import "./Image_aesthetics.css";
 // import translate from 'translate';    //ref translation tlibrary
 // require('dotenv').config();
 
@@ -71,6 +70,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     }
  
     this.fileInput = React.createRef();
+    this.curTag = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
   };
 
@@ -145,7 +145,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     //now set up info for post with the image as data url
     const test_body = {
       caption_text : this.postCaption.current.value, 
-      //tag_text: this.curTag.current.value,
+      tag_text: this.curTag.current.value,
       photo_placeholder: image_as_url,
       difficulty: this.state.difficulty,
       quality: this.state.quality,
@@ -160,10 +160,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     post("/api/photo_simple_w_annotate", test_body);
   })
     alert(
-      "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
-      // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
-      // + '\nDifficulty is : "'  + this.state.difficulty +'"'
-      // + '\nQuality is : "'  + this.state.quality +'"'
+      "Selected file: " + this.fileInput.current.files[0].name 
+      + '\nA tag was submitted: "' + this.curTag.current.value +'"'
+      + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
+      + '\nDifficulty is : "'  + this.state.difficulty +'"'
+      + '\nQuality is : "'  + this.state.quality +'"'
+      + '\Taglist is : "'  + this.state.taglist +'"'
     );
 
     event.preventDefault();
@@ -194,30 +196,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         {/* <div className="u-img">
         <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
         </div> */}
-        <div className = "paddedText">
-                Let's get the learning fun started! Please upload an image and tag it with the word(s) you would like to learn. You can tag by clicking and dragging on the image. You will need to submit the tag(s) before submitting the image for them to be recorded. You can add a caption to share your thoughts on the image, and you should rate the difficulty (how hard the tags are) and quality (how helpful the tags are to other learners). <br/><br/>*Please note currently all users can see everyone's content given this is an early testing version of the website. So please do not share any image or text you do not want shared publicly. Also your timestamp of use and name are recorded and associated with your image.*<br/> <br/> Upload file:
-                
-          <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
-          </div>
-        <div className = "row">
-        <div className="u-img center_image" >
-        {/* Meant to only have annotating when you uploaded an image */}
-        {this.state.file ? 
-          (
-            <ReactAnnotate allowEdits = {true} img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
-          )
-          : (<img className="u-showImg" src={this.state.file} height = "300" width="300"/>)
-        }
-        </div>
+        <div>
 
-        
-        <div >
-        <br />
-        {/* Get tag and post info*/}
-            Caption:
-            <input type="text" ref={this.postCaption} />
-        
-        <br />
+        <div>
         <Typography component="legend">Difficulty</Typography>
           <Rating
             precision={0.5}
@@ -234,17 +215,32 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             onChange={(event,newvalue) => {this.setState({ quality: newvalue })}}
             icon={<FavoriteIcon fontSize="inherit" />}
           />
-        <br />
-        <input type="submit" value="Submit flashcard!" />   
       </div>
 
         </div>
+        *Please note currently all users can see everyone's content given this is an early testing version of the website. So please do not share any image or text you do not want shared publicly. Also your timestamp of use and name are recorded and associated with your image.* Upload file:
+          <input type="file" ref={this.fileInput} onChange={this.handleChange}/>
 
+        <br />
+        {/* Get tag and post info*/}
+        Tag:
+            <input type="text" ref={this.curTag} />
+            Caption:
+            <input type="text" ref={this.postCaption} />
+        
+        <br />
+        <div className="u-img"> 
+        
+        {/* Meant to only have annotating when you uploaded an image */}
+        {this.state.file ? 
+          (
+            <ReactAnnotate allowEdits = {true} img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+          )
+          : (<img className="u-showImg" src={this.state.file} height = "300" width="300"/>)
+        }
+        </div>
 
-
-
-
-             
+        <input type="submit" value="Submit" />        
 
       </form>
     );
