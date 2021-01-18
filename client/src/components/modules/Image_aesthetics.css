@@ -76,3 +76,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
 }
+
+.paddedText {
+  padding: var(--m);
+}

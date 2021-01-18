@@ -100,11 +100,11 @@ imageLoad = () => {
 
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return(
-      <div className = "row post">
-      <div className= "center_image column">
+      <div className = "row">
+      <div className= "center_image">
       <ReactAnnotate allowEdits = {false} border-radius = "10%" img_using= {PhotoInfo.photo_placeholder} annotationslst = {annotPhotoInfo} height = "300" width="300"/>
       </div>
-      <div className= "image_text column">
+      <div className= ""> {/*image_text column*/}
       <p>Submitted by: {PhotoInfo.uname}</p>
       <p>Submitted on: {PhotoInfo.submit_stamp}</p>
       <p>Caption: {PhotoInfo.caption_text_s}</p>
