@@ -106,3 +106,8 @@ form {
   height: auto;
   margin-left: 5%;
 }
+
+/*https://www.w3schools.com/css/css_background.asp*/
+.pageBodyColor {
+  background-color: lightblue;
+}

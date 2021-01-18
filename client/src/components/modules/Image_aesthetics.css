@@ -20,6 +20,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 }
 
 /*ref https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01*/
+/*https://stackoverflow.com/questions/2020496/how-to-set-a-border-for-an-html-div-tag*/
 .row {
   display: flex;
   flex-direction: row;
@@ -63,4 +64,15 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/*ref https://codepen.io/MustafaEmad/pen/NArYZL*/
+.post {
+  background-color: #fff;
+  width: 500px;
+  margin: 10pxs;
+  padding: 10px;
+  color: #333;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
 }
