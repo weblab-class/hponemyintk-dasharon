@@ -19,6 +19,8 @@ https://material-ui.com/api/rating/
 https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-material-ui-f6e18652f602
 */
 
+
+
 import React from 'react';
 
 //
@@ -30,6 +32,31 @@ import ReactAnnotate from "./ReactAnnotate.js"
 import { post } from "../../utilities";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
+// import translate from 'translate';    //ref translation tlibrary
+// require('dotenv').config();
+
+// // Code from Nikhil's https://github.com/weblab-workshops/gcp-example - comments below from Nikhil
+// // NOTE: this file is incomplete. Eventually I'll add a function to modify an existing
+// // file, but this is a pretty uncommon application in my experience, so I'll do it later.
+
+// //Use Nikhil's storageTalk.js code to get the Google credentials
+// const { Storage } = require('@google-cloud/storage');
+
+// // TODO: replace this projectId with your own GCP project id!
+//  const storageInfo = { projectId: "angelic-cat-301602" };
+//  if (process.env.GCP_PRIVATE_KEY && process.env.GCP_CLIENT_EMAIL) {
+//      storageInfo.credentials = { private_key: process.env.GCP_PRIVATE_KEY, client_email: process.env.GCP_CLIENT_EMAIL };
+//  }
+// const storage = new Storage(storageInfo);
+
+// // TODO: replace this bucket name with your own bucket inside your project
+// const bucket = storage.bucket('weworld2021');
+
+
+// //translation imports https://cloud.google.com/translate/docs/basic/quickstart
+// const {Translate} = require('@google-cloud/translate').v2;
+// // Creates a client
+// const translate = new Translate();
 
 class ImgUpload_1716_try_no_prototype extends React.Component {
 /*from React and Medium websites above many thanks to Toommy in OH explained removing bind*/
@@ -107,10 +134,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
   /*from React website above*/
   handleSubmit = (event) => {
+    // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate 
 
+    // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
     //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
     this.readImage(this.state.raw_file).then(image_as_url => {
-
+    
     //prep post request
     //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
     //now set up info for post with the image as data url
@@ -143,8 +172,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     console.log(this.state.annotations[0].data.text)
 
     //why is there type and not shape_kind?
-    console.log("Printing annotations here:::", this.state.annotations)
+    console.log("Printing annotations here:::", this.state.annotations);
     console.log("reached");
+    // console.log(translated_text);
     //console.log(annotations_cleaned_up);
     this.setState({file: null});  //try a refresh
   }

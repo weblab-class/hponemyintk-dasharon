@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import  { Redirect, Switch, Route } from 'react-router-dom' //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
-import { Router } from "@reach/router";
+import { Router, navigate } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
@@ -54,18 +54,20 @@ getUsers = () => {
   });
 }
 
+  //Many thanks to Kye for help with navigate
   handleLogin = (res) => {
     console.log(`Logged in as ${res.profileObj.name}`);
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken }).then((user) => {
       this.setState({ userId: user._id });
       post("/api/initsocket", { socketid: socket.id });
-    });
+    }).then(() => navigate("/Home_Page"));
+    
   };
 
   handleLogout = () => {
     this.setState({ userId: undefined });
-    post("/api/logout");
+    post("/api/logout").then(() => navigate("/Home_Page"));
   };
 
   render() {
@@ -106,8 +108,8 @@ getUsers = () => {
             {/*Thanks to Justin for Piazza post on this! */}
 
             
-            <View_Flashcards path = "/Flashcards/:userId" userName = {this.state.username}/>
-            
+            <View_Flashcards path = "/Flashcards/:userId" userName =  {this.state.username}/>
+
             
             <Friends_1251 path = "/Friends" userId =  {this.state.userId}/>
             <NotFound default />

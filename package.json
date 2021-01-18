@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.7.2",
+    "@google-cloud/translate": "^6.1.0",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
@@ -42,6 +43,7 @@
     "react-router-dom": "^5.2.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
+    "translate": "^1.1.2",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {

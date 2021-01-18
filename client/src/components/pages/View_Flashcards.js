@@ -1,7 +1,10 @@
 import { render } from "react-dom";
 import React, { Component } from "react";
 import { get } from "../../utilities";
-
+// import authentication library
+// const auth = require("../../../../server/auth");
+import "../../utilities.css";
+import "../modules/Image_aesthetics.css";
 
 /*
 code for rating bar
@@ -12,7 +15,7 @@ https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-materia
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
-import ReactAnnotate from "../modules/ReactAnnotate.js"
+import ReactAnnotate from "../modules/ReactAnnotate.js";
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -21,6 +24,7 @@ class View_Flashcards extends Component {
     this.state = {
         photo_info_array: [], //this is a photo info array
         onlyOne: false,
+        stillLoggedIn: true,
     };
   }
 
@@ -32,7 +36,7 @@ class View_Flashcards extends Component {
     if (this.props.userId)
     {
       this.imageLoad();
-    };
+    } else {console.log("SHOULD LOG OUT")};
   }
 
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
@@ -40,12 +44,18 @@ class View_Flashcards extends Component {
     if (this.props.userId && prevProps.userId !== this.props.userId)
     {
       this.imageLoad();
-    }
+    } else {console.log("SHOULD LOG OUT")};
   }
 
 //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
 imageLoad = () => {
-  console.log("calling image load*****")
+  console.log("calling image load*****");
+  //see if logged in
+  get("/api/whoami").then((user) => {
+    if (user._id) {
+      // they are registed in the database, and currently logged in.
+      this.setState({ stillLoggedIn : true })
+    } else {this.setState({stillLoggedIn : false})}});
   if (this.props.onlyOne)
   {
     get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
@@ -84,12 +94,14 @@ imageLoad = () => {
     //change annotation field so it is type which react-image-annotate needs
     let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
 
-    //debugging code
+    //debugging code 
     console.log("Revised annotation array")
     console.log(annotPhotoInfo)
+
+    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element
     return(
       <>
-      <div className="u-img" >
+      <div>
       <ReactAnnotate allowEdits = {false} img_using= {PhotoInfo.photo_placeholder} annotationslst = {annotPhotoInfo} height = "300" width="300"/>
       </div>
       <p>Submitted by: {PhotoInfo.uname}</p>
@@ -120,9 +132,10 @@ imageLoad = () => {
 
   render () {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
+    //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
     console.log("ViewFlashCards:::",this.props.userId);
     return (
-      <>
+      <div className="center_image">
       <p>Flashcards!</p>
       <p>{this.state.photo_info_array.length}</p>
       {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
@@ -145,7 +158,7 @@ imageLoad = () => {
       </div>
       </>)
       :  (<p>Nothing to return. Please upload!</p>)}
-      </>
+      </div>
     )
   };
 }
