@@ -4,18 +4,51 @@
 https://www.w3schools.com/howto/howto_css_image_responsive.asp https://www.w3schools.com/howto/howto_css_rounded_images.asp
 https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
+.postLeft {
+  display: flex;
+  width: 50%;
+  height: auto;
+  align-items: center;
+}
+
+.postRight {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-size: 2.5vmin;
+}
+
+/* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
+/* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
+.post {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  width: 70%;
+  color: #333;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.paddedText {
+  padding: var(--m);
+}
+
+/* ***************************************************************************** */
+/* I don't think we are using these any more. Might want to clean these up later */
+/* ***************************************************************************** */
 .center_image {
   display: flex;
   justify-content: center;
   padding: 30px;
-  width: 50%;
+  width: 10%;
 }
-
-.responsive {
-  width: 50%;
-  height: auto;
-}
-
 /*ref https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01*/
 /*https://stackoverflow.com/questions/2020496/how-to-set-a-border-for-an-html-div-tag*/
 .row {
@@ -23,30 +56,6 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: center;
-}
-
-/* .column_img {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex-grow: 1.5;
-}
-
-.column_text {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex-grow: 1;
-  padding: 30px;
-} */
-
-/*ref https://www.sketchingwithcss.com/samplechapter/cheatsheet.html*/
-
-.flexcontainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
 }
 
@@ -64,21 +73,32 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   justify-content: center;
 }
 
-/* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
-/* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
-.post {
-  /* display: flex; */
-  background-color: #fff;
-  width: 60%;
-  margin: 10px;
-  color: #333;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  padding: 10px;
-  border-radius: 3px;
-  /* align-items: center;
-  justify-content: center; */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/* .column_img {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1.5;
 }
 
-.paddedText {
-  padding: var(--m);
-}
+.column_text {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1;
+  padding: 30px;
+} */
+
+/*ref https://www.sketchingwithcss.com/samplechapter/cheatsheet.html*/
+
+/* .flexcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+} */

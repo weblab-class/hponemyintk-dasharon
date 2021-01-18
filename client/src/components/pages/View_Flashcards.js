@@ -102,9 +102,11 @@ class View_Flashcards extends Component {
 
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
-      <>
-        <div className="row post">
-          <div className="center_image responsive">
+      <div className="u-flex u-flex-justifyCenter">
+        {/* <div className="row post">
+          <div className="center_image responsive"> */}
+        <div className="post">
+          <div className="postLeft">
             {/* <div> */}
             <ReactAnnotate
               allowEdits={false}
@@ -115,14 +117,16 @@ class View_Flashcards extends Component {
               width="300"
             />
           </div>
-          <div className="image_text">
+          <div className="postRight">
             {/* <div> */}
             <p>Submitted by: {PhotoInfo.uname}</p>
             <p>Submitted on: {PhotoInfo.submit_stamp}</p>
             <p>Caption: {PhotoInfo.caption_text_s}</p>
-            <Typography component="legend">Difficulty</Typography> {/*{PhotoInfo.difficulty} */}
+            {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
+            <p>Difficulty</p>
             <Rating precision={0.5} name="difficultyRating" value={PhotoInfo.difficulty} disabled />
-            <Typography component="legend">Quality</Typography> {/**{PhotoInfo.quality}*/}
+            <p>Quality</p>
+            {/* <Typography component="legend">Quality</Typography> *{PhotoInfo.quality} */}
             <Rating
               precision={0.5}
               name="qualityRating"
@@ -133,7 +137,7 @@ class View_Flashcards extends Component {
           </div>
         </div>
         <br />
-      </>
+      </div>
     );
   }
 
