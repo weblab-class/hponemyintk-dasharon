@@ -7,6 +7,7 @@ import NavBar from "./modules/NavBar.js";
 import Quiz from "./modules/Quiz.js";
 import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
 import Home_Page from "./pages/Home_Page.js";
+import Scavenger_Hunts from "./pages/Scavenger_Hunts.js";
 import View_Flashcards from "./pages/View_Flashcards.js";
 import Friends_1251 from "./pages/Friends_1251.js";
 import { socket } from "../client-socket.js";
@@ -114,6 +115,7 @@ class App extends Component {
           <View_Flashcards path="/Flashcards/:userId" userName={this.state.username} />
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
+          <Scavenger_Hunts path = "/Scavenger_Hunts" userId={this.state.userId}/>
           <Quiz path="/Quiz" />
           <NotFound default />
         </Router>

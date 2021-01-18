@@ -46,7 +46,7 @@ class NavBar extends Component {
               <Link to="/Friends" className="NavBar-link">
                 Friends
               </Link>
-              <Link to="/profile/" className="NavBar-link">
+              <Link to="/Scavenger_Hunts" className="NavBar-link">
                 Scavenger Hunts
               </Link>
               <GoogleLogout

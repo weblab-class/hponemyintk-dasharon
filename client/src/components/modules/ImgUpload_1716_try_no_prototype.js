@@ -1,4 +1,4 @@
-/*Should double check what is from where, but combines two sources*/
+/*Small edit to commit. Should double check what is from where, but combines two sources*/
 
 /*Medium code for a preview: WORKING*/
 /*From https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/
