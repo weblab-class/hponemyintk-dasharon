@@ -19,7 +19,7 @@ class UserInfo extends Component {
         return (
             <>
             <p>{this.props.userNameInfo}</p>
-            <View_Flashcards userId =  {this.props.userId} userName = {this.props.userNameInfo}/>
+            <View_Flashcards userId =  {this.props.userId} userName = {this.props.userNameInfo} onlyOne = {true} />
             </>
         );
     }

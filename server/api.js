@@ -113,10 +113,11 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 });
 
 // Was working, to Get the first photo of a user [ref: Following W6 slide 74], 1/16 00:28 edit to get multiple images
-router.get("/photo_simple_w_annotate_old", auth.ensureLoggedIn, async (req, res) => {
+// Dina added back 1/17 to get working when only 1 image is wanted
+router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   console.log("api.js:::",req.query.userName);
   try{
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uname: req.query.userName});  //1 get one photo array from mongoose
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uid: req.query.userId});  //1 get one photo array from mongoose
     const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder);                                          //2 convert to google cloud object
     UserSchema.photo_placeholder = imagePromise                                                                             //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);

@@ -19,7 +19,8 @@ class View_Flashcards extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-        photo_info_array: "", //this is a photo info array
+        photo_info_array: [], //this is a photo info array
+        onlyOne: false,
     };
   }
 
@@ -42,16 +43,27 @@ class View_Flashcards extends Component {
     }
   }
 
-//split into a new function as in Nikhil's gcp code
+//split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
 imageLoad = () => {
   console.log("calling image load*****")
-  get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
-    console.log(ImageInfo);
-    this.setState({
-        photo_info_array: ImageInfo,
+  if (this.props.onlyOne)
+  {
+    get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
+      console.log(ImageInfo_one);
+      this.setState({
+          photo_info_array: [ImageInfo_one],
+      });
     });
-  });
-}
+  }
+  else   {
+    get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
+      console.log(ImageInfo);
+      this.setState({
+          photo_info_array: ImageInfo,
+      });
+    });
+    }
+};
 
   //cleans up annotations
   cleanAnnotInput = (initAnnotInput) => {
