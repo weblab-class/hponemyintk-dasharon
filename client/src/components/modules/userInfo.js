@@ -4,7 +4,7 @@ import "../../utilities.css";
 import "../pages/Skeleton.css";
 import View_Flashcards from "../pages/View_Flashcards.js";
 
-//Gives info on a user
+//Gives information on a user on a user for flashcards this will give information
 
 class UserInfo extends Component {
   constructor(props) {
