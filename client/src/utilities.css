@@ -23,6 +23,7 @@
   --light_green: #67dcb8;
   --primary: #0099ff;
   --primary--dim: #6987db;
+  --secondary: #67dcb8;
   --darkgrey: #d4d4d4;
   --medgrey: #e0e0e0;
   --grey: #f7f7f7;
@@ -33,6 +34,8 @@
   --m: 16px;
   --l: 24px;
   --headingSize: 40px;
+  --titleSize: 70px;
+  --introSize: 28px;
 }
 
 body {

@@ -93,10 +93,7 @@ class App extends Component {
           <></>
         ) : (
           <p>
-            Welcome to Weworld! You will learn and have fun!. *Please note currently all users can
-            see everyone's content given this is an early testing version of the website. So please
-            do not share any image or text you do not want shared publicly. Also your timestamp of
-            use and name are recorded and associated with your image.*
+
           </p>
         )}
 
@@ -123,6 +120,7 @@ class App extends Component {
           <Friends_1251 path="/Friends" userId={this.state.userId} />
           <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
           <Quiz path="/Quiz" />
+          <Skeleton path="/"/>
           <NotFound default />
         </Router>
       </>
