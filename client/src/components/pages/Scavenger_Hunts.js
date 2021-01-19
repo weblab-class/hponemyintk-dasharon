@@ -27,8 +27,12 @@ class Scavenger_Hunts extends Component {
           For instance, one question could be: "What is a plant you like?" In response to the question, Kyaw could upload</p> <br/>
           {/* image from css from catbook, if we can add make this a react annotate */}
           <div className="kyawSample"/> 
+          <img src = "../../public/images/Trees.png" />
+          <img src = "/images/Trees.png" />
           <p>And Dina could upload</p><br/>
           <div className="dinaSample" /> 
+          <img src = "../../public/images/Flowers.jpg" />
+          <img src = "/images/Flowers.jpg" /> 
           <p>
           What would you upload? If we decide to go ahead and implement this, we will be excited to hear your answer!
         </p>
