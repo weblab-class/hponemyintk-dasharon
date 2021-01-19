@@ -25,6 +25,9 @@ class View_Flashcards extends Component {
       photo_info_array: [], //this is a photo info array
       onlyOne: false,
       userName: "Someone",
+      requestingUserId: "User_Requesting",
+      requestingUserName: "UserName_Requesting",
+      //nameForPrint: "SomeoneName",
     };
   }
 
@@ -61,6 +64,7 @@ class View_Flashcards extends Component {
     //     this.setState({ stillLoggedIn: false });
     //   }
     // });
+    //Find user whose photos we are seeing
     get("/api/singleUserFind", {checkUserId : this.props.userId}).then((userInfo) => { //get info on one user
     console.log(userInfo);
       this.setState({
@@ -69,6 +73,16 @@ class View_Flashcards extends Component {
       console.log("USER INFO IS", userInfo);
       //console.log("USER INFO IS", userInfo[0]);
     });
+
+    //Find requesting user
+    get("/api/whoami").then((user) => {
+      if (user._id) {
+        // if they are registed in the database then set
+        this.setState({ requestingUserId : user._id , requestingUserName : user.name});
+      }
+    }); 
+
+    //Find photos
     if (this.props.onlyOne) {
       get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
         console.log(ImageInfo_one);
@@ -153,14 +167,18 @@ class View_Flashcards extends Component {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
     console.log("ViewFlashCards:::", this.props.userId);
+
+    //If you are the requesting user, show "Me" instead of your name
+    //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
     return (
+      
+    
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter">
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
-
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
-
+ 
         {/* If there is a photo then give info on it. Otherwise have a message saying there is 
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
         {this.state.photo_info_array ? (
@@ -169,9 +187,11 @@ class View_Flashcards extends Component {
               "ViewFlashCards:::Printing photo_placeholder",
               this.state.photo_info_array
             )}
-            <p className="nametext">{this.state.userName} Flashcards!</p>
+            <p className="nametext">{this.state.userName}</p>
+
             <p className="u-textCenter">
-              There are {this.state.photo_info_array.length} flashcards for {this.state.userName}
+              There are {this.state.photo_info_array.length} flashcards for {this.state.userName} 
+              {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
             </p>
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}

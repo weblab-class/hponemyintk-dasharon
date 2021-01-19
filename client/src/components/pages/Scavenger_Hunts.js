@@ -23,9 +23,10 @@ class Scavenger_Hunts extends Component {
         <p>
           A preview of a possible coming attraction we are considering implementing...<br/><br/>
           We are thinking of implementing photo prompts with questions, where you can take a photo containing your answer. <br/><br/>
-          For instance, on question could be: "What is a plant you like?" in response to the question:  Kyaw could upload</p> <br/>
-
+          For instance, one question could be: "What is a plant you like?" In response to the question, Kyaw could upload</p> <br/>
+          <img src = "../../public/images/Trees.png"/> 
           <p>And Dina could upload</p><br/>
+          <img src = "../../public/images/Flowers.jpg"/>
           <p>
           What would you upload? If we decide to go ahead and implement this, we will be excited to hear your answer!
         </p>
