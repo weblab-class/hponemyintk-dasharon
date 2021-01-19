@@ -13,7 +13,7 @@
 | - Actually starts the webserver
 */
 
-require('dotenv').config();
+require("dotenv").config();
 
 // validator runs some basic checks to make sure you've set everything up correctly
 // this is a tool provided by staff, so you don't need to worry about it
@@ -37,7 +37,7 @@ const socketManager = require("./server-socket");
 // TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGOOSE_URL;
 // TODO change database name to the name you chose
-const databaseName = "Test_2021_01_12_2212";
+const databaseName = "DemoDataBase";
 
 // connect to mongodb
 mongoose
@@ -54,7 +54,7 @@ const app = express();
 app.use(validator.checkRoutes);
 
 // allow us to process POST requests
-app.use(express.json({limit: '30mb'}));         // arbitrarily choosed 30mb here. NOTE*** Might need to change later for performace optimization
+app.use(express.json({ limit: "30mb" })); // arbitrarily choosed 30mb here. NOTE*** Might need to change later for performace optimization
 
 // set up a session, which will persist login data across requests
 app.use(
