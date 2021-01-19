@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "./Skeleton.css";
 import { get } from "../../utilities";
-import UserInfo from "../modules/UserInfo.js";
+// import UserInfo from "../modules/UserInfo.js";
 import { Link } from "@reach/router";
+import View_Flashcards from "../pages/View_Flashcards.js";
 
 //This is an initial attempt at the friend page, to print users, hopefully leading to
 //Being able to add friends and see profiles
@@ -56,7 +57,8 @@ class Friends_1251 extends Component {
         {this.state.allUserList.map((u, i) => (
           <>
             {console.log(u)}
-            <UserInfo userNameInfo={u.name} userId={u._id} key={i} />
+            <View_Flashcards onlyOne={true} userId={u._id} key={i} />
+            {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
             <Link to={"/Flashcards/" + u._id}>I want to see all of {u.name}'s flashcards!</Link>
             <br />
           </>
