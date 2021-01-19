@@ -15,7 +15,7 @@ class Quiz extends Component {
   }
   render() {
     const json = {
-      title: "This is the current demo of our work in progress quiz module.",
+      title: 'This is the current demo of our "work in progress" quiz module.',
       showPrevButton: true,
       showProgressBar: "bottom",
       // showTimerPanel: "top",
