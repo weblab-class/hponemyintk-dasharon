@@ -4,6 +4,26 @@
 https://www.w3schools.com/howto/howto_css_image_responsive.asp https://www.w3schools.com/howto/howto_css_rounded_images.asp
 https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
+.imgUpLeft {
+  display: flex;
+  width: 65%;
+  height: auto;
+  align-items: center;
+  margin-left: 5%;
+  justify-content: center;
+}
+
+.imgUpRight {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-size: 2.5vmin;
+}
+
 .postLeft {
   display: flex;
   width: 50%;

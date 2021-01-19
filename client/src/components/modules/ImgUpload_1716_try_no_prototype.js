@@ -181,22 +181,20 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             Upload file:
             <input type="file" ref={this.fileInput} onChange={this.handleChange} />
             <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
-              <div className="postLeft">
-                <div className="u-img">
-                  {/* Meant to only have annotating when you uploaded an image */}
-                  {this.state.file ? (
-                    <ReactAnnotate
-                      allowEdits={true}
-                      img_using={this.state.file}
-                      onTagSubmit={this.onTagSubmit}
-                      annotationslst={this.state.annotations}
-                    />
-                  ) : (
-                    <img className="u-showImg" src={this.state.file} height="300" width="300" />
-                  )}
-                </div>
+              <div className="imgUpLeft">
+                {/* Meant to only have annotating when you uploaded an image */}
+                {this.state.file ? (
+                  <ReactAnnotate
+                    allowEdits={true}
+                    img_using={this.state.file}
+                    onTagSubmit={this.onTagSubmit}
+                    annotationslst={this.state.annotations}
+                  />
+                ) : (
+                  <img className="u-showImg" src={this.state.file} height="300" width="300" />
+                )}
               </div>
-              <div className="postRight">
+              <div className="imgUpRight">
                 <br />
                 {/* Get tag and post info*/}
                 Caption:

@@ -112,10 +112,10 @@ class App extends Component {
             <View_Flashcards path={"/Flashcards/" + u._id} username = {u.name} key = {i}/>)} */}
           {/*Thanks to Justin for Piazza post on this! */}
 
-          <View_Flashcards path="/Flashcards/:userId"  />
+          <View_Flashcards path="/Flashcards/:userId" />
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
-          <Scavenger_Hunts path = "/Scavenger_Hunts" userId={this.state.userId}/>
+          <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
           <Quiz path="/Quiz" />
           <NotFound default />
         </Router>
