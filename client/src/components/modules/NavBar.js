@@ -44,7 +44,7 @@ class NavBar extends Component {
                 Quizzes
               </Link>
               <Link to="/Friends" className="NavBar-link">
-                Friends
+                Social
               </Link>
               <Link to="/Scavenger_Hunts" className="NavBar-link">
                 Scavenger Hunts
