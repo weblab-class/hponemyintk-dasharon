@@ -35,12 +35,19 @@ class Scavenger_Hunts extends Component {
             {/* image from css from catbook, if we can add make this a react annotate */}
             {/* <div className="kyawSample" /> */}
             {/* <img src="../../public/images/Trees.png" /> */}
-            <img src="/public/images/Trees.png" />
+            {/* <img src="/public/images/Trees.png" /> */}
+            <img className="u-img" src="/public/images/Trees.png" /> {/* For deploying on heroku*/}
+            {/* <img className="u-img" src="http://localhost:3000/public/images/Trees.png" /> */}
+            {/* Just for local testing */}
             <p>And Dina could upload</p>
             <br />
             {/* <div className="dinaSample" /> */}
             {/* <img src="../../public/images/Flowers.jpg" /> */}
-            <img src="/public/images/Flowers.jpg" />
+            {/* <img src="/public/images/Flowers.jpg" /> */}
+            <img className="u-img" src="/public/images/Flowers.jpg" />{" "}
+            {/* For deploying on heroku*/}
+            {/* <img className="u-img" src="http://localhost:3000/public/images/Flowers.jpg" /> */}
+            {/* Just for local testing */}
             <p>
               What would you upload? If we decide to go ahead and implement this, we will be excited
               to hear your answer!
