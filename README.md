@@ -1,4 +1,4 @@
-We thank the web.lab instructors and Dr. Anindya Roy<br/>
+This document has the questions and answers on our home page and also has citations for key code/package sources, as well as the initial text from the web.lab README file. We thank the web.lab instructors and Dr. Anindya Roy for all of their help and advice!<br/>
 
 What is WeWorld?<br/>
 WeWorld enables you to learn a language through your and others' photos. As you relate the language to your life through photo tags, you will learn and have fun!<br/>
