@@ -148,7 +148,7 @@ class View_Flashcards extends Component {
     return (
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter">
-        <p className="u-bold">Flashcards!</p>
+        {/* <p className="u-bold">Flashcards!</p> */}
         <br />
 
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
@@ -161,7 +161,7 @@ class View_Flashcards extends Component {
               "ViewFlashCards:::Printing photo_placeholder",
               this.state.photo_info_array
             )}
-            <p className="nametext">{this.props.userName}</p>
+            <p className="nametext">{this.props.userName}'s Flashcards!</p>
             <p className="u-textCenter">
               There are {this.state.photo_info_array.length} flashcards for {this.props.userName}
             </p>
