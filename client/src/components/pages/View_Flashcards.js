@@ -70,7 +70,7 @@ class View_Flashcards extends Component {
       this.setState({
         userName: userInfo.name, //assume 1 name
       });
-      console.log("USER INFO IS", userInfo);
+      //console.log("USER INFO IS", userInfo);
       //console.log("USER INFO IS", userInfo[0]);
     });
 

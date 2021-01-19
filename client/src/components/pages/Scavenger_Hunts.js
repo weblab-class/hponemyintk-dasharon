@@ -20,16 +20,23 @@ class Scavenger_Hunts extends Component {
     return (
       <>
         {/* Use username prop */}
+        <div className = "paddedText">
         <p>
           A preview of a possible coming attraction we are considering implementing...<br/><br/>
           We are thinking of implementing photo prompts with questions, where you can take a photo containing your answer. <br/><br/>
           For instance, one question could be: "What is a plant you like?" In response to the question, Kyaw could upload</p> <br/>
-          <img src = "../../public/images/Trees.png"/> 
+          {/* image from css from catbook, if we can add make this a react annotate */}
+          <div className="kyawSample"/> 
+          <img src = "../../public/images/Trees.png" />
+          <img src = "/images/Trees.png" />
           <p>And Dina could upload</p><br/>
-          <img src = "../../public/images/Flowers.jpg"/>
+          <div className="dinaSample" /> 
+          <img src = "../../public/images/Flowers.jpg" />
+          <img src = "/images/Flowers.jpg" /> 
           <p>
           What would you upload? If we decide to go ahead and implement this, we will be excited to hear your answer!
         </p>
+      </div>
       </>
     );
   }

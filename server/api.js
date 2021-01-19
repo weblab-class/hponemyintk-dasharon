@@ -95,7 +95,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
 
 // Get the first photo of a user [ref: Following W6 slide 74]
 router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
-  console.log("api.js:::", req.query.userId);
+  console.log("api.js photosimpletest req is:::", req.query);
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
       uid: req.query.userId,
@@ -117,7 +117,7 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 // Was working, to Get the first photo of a user [ref: Following W6 slide 74], 1/16 00:28 edit to get multiple images
 // Dina added back 1/17 to get working when only 1 image is wanted
 router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
-  console.log("api.js:::", req.query.userName);
+  console.log("api.js photosimpletestOne req query:::", req.query);
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({
       uid: req.query.userId,
@@ -139,12 +139,12 @@ router.get("/all_user_find", auth.ensureLoggedIn, (req, res) => {
 });
 
 router.get("/singleUserFind", (req, res) => {
-  console.log("REQ", req);
+  // console.log("REQ", req);
   //Run a Mongoose query to get all users, and then send it back in the response
   //https://mongoosejs.com/docs/api.html#model_Model.findById
   //Learned from catbook {} means find everyone
   User.findById(req.query.checkUserId).then((infoOnUser) => {
-    console.log("USER INFO", infoOnUser);
+    // console.log("USER INFO", infoOnUser);
     res.send(infoOnUser);
   });
   // User.findOne({_id : req.query.checkUserId}).then((infoOnUser) =>
