@@ -1,0 +1,80 @@
+@import "../../utilities.css";
+
+/*Image aesthetics refs https://www.w3schools.com/howto/howto_css_image_center.asp 
+https://www.w3schools.com/howto/howto_css_image_responsive.asp https://www.w3schools.com/howto/howto_css_rounded_images.asp
+https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
+
+.center_image {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  width: 50%;
+}
+
+.responsive {
+  width: 50%;
+  height: auto;
+}
+
+/*ref https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01*/
+/*https://stackoverflow.com/questions/2020496/how-to-set-a-border-for-an-html-div-tag*/
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+/* .column_img {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1.5;
+}
+
+.column_text {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex-grow: 1;
+  padding: 30px;
+} */
+
+/*ref https://www.sketchingwithcss.com/samplechapter/cheatsheet.html*/
+
+.flexcontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.nametext {
+  text-align: center;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: var(--headingSize); /*ref https://www.w3schools.com/css/css_font_size.asp*/
+}
+
+/*ref https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element*/
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
+/* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
+.post {
+  /* display: flex; */
+  background-color: #fff;
+  width: 60%;
+  margin: 10px;
+  color: #333;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+  border-radius: 3px;
+  /* align-items: center;
+  justify-content: center; */
+}

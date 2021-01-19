@@ -48,9 +48,9 @@ class App extends Component {
   //       this.setState({ userId: user._id, username: user.name });
   //     }
   //   });
-    // if (this.props.userId && prevProps.userId !== this.props.userId) {
-    //   this.getUsers();
-    // }
+  // if (this.props.userId && prevProps.userId !== this.props.userId) {
+  //   this.getUsers();
+  // }
   //}
 
   // getUsers = () => {
@@ -119,8 +119,8 @@ class App extends Component {
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
           <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
-          <Quiz path="/Quiz" />
           <Skeleton path="/"/>
+          <Quiz path="/Quiz" userId={this.state.userId} />
           <NotFound default />
         </Router>
       </>

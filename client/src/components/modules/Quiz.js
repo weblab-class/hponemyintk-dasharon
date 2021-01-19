@@ -15,7 +15,7 @@ class Quiz extends Component {
   }
   render() {
     const json = {
-      title: "American History",
+      title: "This is the current demo of our work in progress quiz module.",
       showPrevButton: true,
       showProgressBar: "bottom",
       // showTimerPanel: "top",
@@ -30,7 +30,7 @@ class Quiz extends Component {
             {
               type: "html",
               html:
-                "You are about to start quiz by history. <br/>You have 10 seconds for every page and 25 seconds for the whole survey of 3 questions.<br/>Please click on <b>'Start Quiz'</b> button when you are ready.",
+                "Currently, only the text based quizes are available. <br /> We plan to implement photo prompts in the future version, in addition to adding google translate api to facilitate learning languages easier.",
             },
           ],
         },
@@ -81,6 +81,7 @@ class Quiz extends Component {
     };
     const survey = new Survey.Model(json);
 
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
       <>
         {/* <Annotation
