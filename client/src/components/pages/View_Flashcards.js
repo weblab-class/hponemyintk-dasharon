@@ -65,8 +65,9 @@ class View_Flashcards extends Component {
     //   }
     // });
     //Find user whose photos we are seeing
-    get("/api/singleUserFind", {checkUserId : this.props.userId}).then((userInfo) => { //get info on one user
-    console.log(userInfo);
+    get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userInfo) => {
+      //get info on one user
+      console.log(userInfo);
       this.setState({
         userName: userInfo.name, //assume 1 name
       });
@@ -78,9 +79,9 @@ class View_Flashcards extends Component {
     get("/api/whoami").then((user) => {
       if (user._id) {
         // if they are registed in the database then set
-        this.setState({ requestingUserId : user._id , requestingUserName : user.name});
+        this.setState({ requestingUserId: user._id, requestingUserName: user.name });
       }
-    }); 
+    });
 
     //Find photos
     if (this.props.onlyOne) {
@@ -171,14 +172,12 @@ class View_Flashcards extends Component {
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
     return (
-      
-    
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter">
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
- 
+
         {/* If there is a photo then give info on it. Otherwise have a message saying there is 
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
         {this.state.photo_info_array ? (
@@ -188,11 +187,14 @@ class View_Flashcards extends Component {
               this.state.photo_info_array
             )}
             <p className="nametext">{this.state.userName}</p>
-
-            <p className="u-textCenter">
-              There are {this.state.photo_info_array.length} flashcards for {this.state.userName} 
-              {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
-            </p>
+            {this.state.onlyOne ? (
+              <p className="u-textCenter">
+                There are {this.state.photo_info_array.length} flashcards for {this.state.userName}
+                {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
+              </p>
+            ) : (
+              <></>
+            )}
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
             {/*below uses syntax from Nikhil's GCP example */}
