@@ -187,13 +187,13 @@ class View_Flashcards extends Component {
               this.state.photo_info_array
             )}
             <p className="nametext">{this.state.userName}</p>
-            {this.state.onlyOne ? (
+            {this.props.onlyOne ? (
+              <></>
+            ) : (
               <p className="u-textCenter">
                 There are {this.state.photo_info_array.length} flashcards for {this.state.userName}
                 {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
               </p>
-            ) : (
-              <></>
             )}
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
