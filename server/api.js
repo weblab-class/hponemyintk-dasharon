@@ -94,7 +94,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
 
 // Get the first photo of a user [ref: Following W6 slide 74]
 router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
-  console.log("api.js:::",req.query.userId);
+  console.log("api.js photosimpletest req is:::",req.query);
   try{
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({uid: req.query.userId});  //1 get one photo array from mongoose
     //iterate through all user's photos, note this could incorporate a map/promise all
@@ -115,7 +115,7 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 // Was working, to Get the first photo of a user [ref: Following W6 slide 74], 1/16 00:28 edit to get multiple images
 // Dina added back 1/17 to get working when only 1 image is wanted
 router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
-  console.log("api.js:::",req.query.userName);
+  console.log("api.js photosimpletestOne req is:::",req.query);
   try{
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({uid: req.query.userId});  //1 get one photo array from mongoose
     const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder);                                          //2 convert to google cloud object
@@ -124,7 +124,7 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   res.send(UserSchema)                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch(e) {
   console.log("ERR getImages this shouldn't happen");
-s  }
+  }
 });
 
 //find all of the users
