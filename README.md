@@ -25,14 +25,15 @@ I want inspiration, though! The idea of using my photos as a tool to help teach 
 We are thinking of adding a Scavenger Hunts page, which would provide photo prompts to get the learning and fun started!
 \*WeWorld likes animals of all kinds, including both cats and dogs!
 
-Keys modules/code sources which we used from other sources are:
--web.lab catbook code: https://github.com/weblab-workshops/catbook-react
--Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
--react-image-annotation: https://www.npmjs.com/package/react-image-annotation
--SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern
--Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
--References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
--Also hoping to use translation module such as https://cloud.google.com/translate/docs/basic/quickstart
+### Keys modules/code sources which we used from other sources are:
+- web.lab catbook code: https://github.com/weblab-workshops/catbook-react
+- Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
+- react-image-annotation: https://www.npmjs.com/package/react-image-annotation
+- SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern
+- Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
+- References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
+- Also hoping to use translation module such as https://cloud.google.com/translate/docs/basic/quickstart
+
 
 #Below information is from the course team and was in the initial README.md:
 
