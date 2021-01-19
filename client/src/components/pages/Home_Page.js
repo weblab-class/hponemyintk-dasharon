@@ -18,7 +18,7 @@ class Home_Page extends Component {
     if (!this.props.userId) return <div>Goodbye! Thank you so much for using Weworld.</div>; //login protect
     return (
       <div className="u-flex u-flex-justifyCenter">
-        <div className="postColumn">
+        <div className="postColumn paddedText">
           {/* Use username prop */}
           <p>Welcome {this.props.username}!</p>
           <p>You have logged in! Hooray! Welcome!</p>

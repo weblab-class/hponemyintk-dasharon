@@ -170,11 +170,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               (how hard the tags are) and quality (how helpful the tags are to other learners).{" "}
               <br />
             </p>
-            <p className="fontRed">
-              Please note currently all users can see everyone's content given this is an early
-              testing version of the website. So please do not share any image or text you do not
-              want shared publicly. Also your timestamp of use and name are recorded and associated
-              with your image.
+            <p className="u-bold">
+              Discliamer: Please note currently all users can see everyone's content given this is
+              an early testing version of the website. So please do not share any image or text you
+              do not want shared publicly. Also your timestamp of use and name are recorded and
+              associated with your image.
               <br />
               <br />
             </p>
