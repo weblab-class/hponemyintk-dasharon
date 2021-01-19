@@ -77,7 +77,8 @@ app.use(express.static(reactPath));
 
 // To make public folder statics so we can link our test images from that folder into scavenger hunts
 // ref: https://stackoverflow.com/questions/21235696/display-images-in-html-nodejs
-app.use("/public", express.static(__dirname + "/public"));
+app.use("/public", express.static(path.join(__dirname, "public")));
+// console.log("printing static public address in:::", path.join(__dirname, "public"));
 
 // for all other routes, render index.html and let react router handle it
 app.get("*", (req, res) => {
