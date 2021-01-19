@@ -75,6 +75,10 @@ app.use("/api", api);
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
 app.use(express.static(reactPath));
 
+// To make public folder statics so we can link our test images from that folder into scavenger hunts
+// ref: https://stackoverflow.com/questions/21235696/display-images-in-html-nodejs
+app.use("/public", express.static(__dirname + "/public"));
+
 // for all other routes, render index.html and let react router handle it
 app.get("*", (req, res) => {
   res.sendFile(path.join(reactPath, "index.html"));
