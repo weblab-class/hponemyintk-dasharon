@@ -35,25 +35,31 @@ class App extends Component {
         this.setState({ userId: user._id, username: user.name });
       }
     });
-    if (this.props.userId && prevProps.userId !== this.props.userId) {
-      this.getUsers();
-    }
+    // if (this.props.userId && prevProps.userId !== this.props.userId) {
+    //   this.getUsers();
+    // }
   }
 
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
-  componentDidUpdate(prevProps) {
-    if (this.props.userId && prevProps.userId !== this.props.userId) {
-      this.getUsers();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   get("/api/whoami").then((user) => {
+  //     if (user._id) {
+  //       // they are registed in the database, and currently logged in.
+  //       this.setState({ userId: user._id, username: user.name });
+  //     }
+  //   });
+    // if (this.props.userId && prevProps.userId !== this.props.userId) {
+    //   this.getUsers();
+    // }
+  //}
 
-  getUsers = () => {
-    get("/api/all_user_find").then((allUserInfo) => {
-      this.setState({
-        allUserList: allUserInfo,
-      });
-    });
-  };
+  // getUsers = () => {
+  //   get("/api/all_user_find").then((allUserInfo) => {
+  //     this.setState({
+  //       allUserList: allUserInfo,
+  //     });
+  //   });
+  // };
 
   //Many thanks to Kye for help with navigate
   handleLogin = (res) => {
