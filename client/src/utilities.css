@@ -105,9 +105,11 @@ form {
 }
 
 .u-img {
-  width: 30%;
+  width: 50%;
   height: auto;
-  margin-left: 5%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*https://www.w3schools.com/css/css_background.asp*/
