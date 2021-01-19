@@ -17,7 +17,7 @@ class Home_Page extends Component {
 
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you so much for using Weworld.</div>; //login protect
-    //https://www.w3schools.com/html/html_lists.asp for list
+    //tried https://www.w3schools.com/html/html_lists.asp for list but then decided not
     return (
       <div className="u-flex u-flex-justifyCenter">
         <div className="postColumn paddedText">
