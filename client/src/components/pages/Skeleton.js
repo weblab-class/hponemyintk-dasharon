@@ -26,7 +26,7 @@ class Skeleton extends Component {
       */}
       <div className = "circlebigger">
       <div className = "circle"> <p className = "titletext">WeWorld </p> </div> </div>
-      <p className = "introtext">Expand your world through languages<br/>Have fun as you learn and learn as you have fun</p>
+      <p className = "introtext">Expand your world through languages<br/>Have fun as you learn and learn as you have fun!</p>
       <p className = "paddedText">
             WeWorld is a social language learning website. Users upload their photos and tag them in a foreign language they are trying to learn (currently Spanish is being used for the demo). Users can also see other users' photos to learn from their lives!
             <br/><br/>

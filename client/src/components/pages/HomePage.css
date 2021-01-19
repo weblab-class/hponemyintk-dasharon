@@ -1,0 +1,13 @@
+@import "../../utilities.css";
+
+.questiontext {
+  font-weight: 600;
+}
+
+.answertext {
+  color: var(--primary);
+}
+
+.linktext {
+  color: var(--secondary);
+}
