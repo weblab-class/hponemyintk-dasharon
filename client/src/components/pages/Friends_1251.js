@@ -52,7 +52,7 @@ class Friends_1251 extends Component {
         {/*Many thanks to Justin for Piazza link advice*/}
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
-        <p>All users are</p>
+        <h1>Showing one photo from each user in the database!</h1>
         {this.state.allUserList.map((u, i) => (
           <>
             {console.log(u)}
