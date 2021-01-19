@@ -9,6 +9,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   width: 50%;
   height: auto;
   align-items: center;
+  justify-content: center;
 }
 
 .postRight {
@@ -28,6 +29,18 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   display: flex;
   flex-direction: row;
   background-color: #fff;
+  width: 60%;
+  color: #333;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.postColumn {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
   width: 70%;
   color: #333;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -37,7 +50,11 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 }
 
 .paddedText {
-  padding: var(--m);
+  padding: var(--l);
+}
+
+.fontRed {
+  color: red;
 }
 
 /* ***************************************************************************** */
