@@ -124,8 +124,7 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   res.send(UserSchema)                                                                                                    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch(e) {
   console.log("ERR getImages this shouldn't happen");
-  res.status(400).json({message: e.message});
-  }
+s  }
 });
 
 //find all of the users
@@ -133,6 +132,20 @@ router.get("/all_user_find", auth.ensureLoggedIn, (req, res) => {
   //Run a Mongoose query to get all users, and then send it back in the response 
   //Learned from catbook {} means find everyone
   User.find({}).then((infoOnUsers) => res.send(infoOnUsers));
+});
+
+router.get("/singleUserFind", (req, res) => {
+  console.log("REQ", req);
+  //Run a Mongoose query to get all users, and then send it back in the response
+  //https://mongoosejs.com/docs/api.html#model_Model.findById 
+  //Learned from catbook {} means find everyone
+  User.findById(req.query.checkUserId).then((infoOnUser) => {
+  console.log("USER INFO", infoOnUser);
+  res.send(infoOnUser);
+  });
+  // User.findOne({_id : req.query.checkUserId}).then((infoOnUser) => 
+  // console.log("USER INFO", infoOnUser),
+  // res.send(infoOnUser))
 });
 
 // anything else falls to this "not found" case

@@ -24,7 +24,7 @@ class View_Flashcards extends Component {
     this.state = {
       photo_info_array: [], //this is a photo info array
       onlyOne: false,
-      stillLoggedIn: true,
+      userName: "Someone",
     };
   }
 
@@ -53,13 +53,21 @@ class View_Flashcards extends Component {
   imageLoad = () => {
     console.log("calling image load*****");
     //see if logged in
-    get("/api/whoami").then((user) => {
-      if (user._id) {
-        // they are registed in the database, and currently logged in.
-        this.setState({ stillLoggedIn: true });
-      } else {
-        this.setState({ stillLoggedIn: false });
-      }
+    // get("/api/whoami").then((user) => {
+    //   if (user._id) {
+    //     // they are registed in the database, and currently logged in.
+    //     this.setState({ stillLoggedIn: true });
+    //   } else {
+    //     this.setState({ stillLoggedIn: false });
+    //   }
+    // });
+    get("/api/singleUserFind", {checkUserId : this.props.userId}).then((userInfo) => { //get info on one user
+    console.log(userInfo);
+      this.setState({
+        userName: userInfo.name, //assume 1 name
+      });
+      console.log("USER INFO IS", userInfo);
+      //console.log("USER INFO IS", userInfo[0]);
     });
     if (this.props.onlyOne) {
       get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
@@ -90,15 +98,15 @@ class View_Flashcards extends Component {
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   GetPhotoInfo(PhotoInfo) {
     //debugging code
-    console.log("Initial annotation array");
-    console.log(PhotoInfo.annotation_info_array);
+    // console.log("Initial annotation array");
+    // console.log(PhotoInfo.annotation_info_array);
 
     //change annotation field so it is type which react-image-annotate needs
     let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
 
     //debugging code
-    console.log("Revised annotation array");
-    console.log(annotPhotoInfo);
+    // console.log("Revised annotation array");
+    // console.log(annotPhotoInfo);
 
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
@@ -161,9 +169,9 @@ class View_Flashcards extends Component {
               "ViewFlashCards:::Printing photo_placeholder",
               this.state.photo_info_array
             )}
-            <p className="nametext">{this.props.userName}'s Flashcards!</p>
+            <p className="nametext">{this.state.userName} Flashcards!</p>
             <p className="u-textCenter">
-              There are {this.state.photo_info_array.length} flashcards for {this.props.userName}
+              There are {this.state.photo_info_array.length} flashcards for {this.state.userName}
             </p>
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
