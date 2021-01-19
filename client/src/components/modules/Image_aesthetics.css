@@ -8,6 +8,16 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   --imgSize: 50%%;
 }
 
+.homeImg {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+}
+
 .imgUpLeft {
   display: flex;
   width: 65%;
