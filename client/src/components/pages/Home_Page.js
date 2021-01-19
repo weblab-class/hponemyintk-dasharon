@@ -3,24 +3,101 @@ import { Link } from "@reach/router";
 import "../../utilities.css";
 import "./Skeleton.css";
 import "./HomePage.css";
+import { get } from "../../utilities";
+import ReactAnnotate from "../modules/ReactAnnotate.js";
 
 class Home_Page extends Component {
   constructor(props) {
     super(props);
     // Initialize Default State
-    this.state = {};
+    this.state = {photo_info_array: [], //this is a photo info array};
   }
+}
 
   componentDidMount() {
-    // remember -- api calls go here!
+    // remember -- api calls go here!, get call adapted from catbook
+    //run get request to get first image of the user, will build up to getting images one by
+    //one or all on one page
+    //onyl make req if logged in
+    if (this.props.userId) {
+      this.imageLoad();
+    } else {
+      console.log("SHOULD LOG OUT");
+    }
   }
+
+  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
+  componentDidUpdate(prevProps) {
+    if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.imageLoad();
+    } else {
+      console.log("SHOULD LOG OUT");
+    }
+  }
+
+  //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
+  imageLoad = () => {
+    console.log("calling image load*****");
+    //see if logged in
+    // get("/api/whoami").then((user) => {
+    //   if (user._id) {
+    //     // they are registed in the database, and currently logged in.
+    //     this.setState({ stillLoggedIn: true });
+    //   } else {
+    //     this.setState({ stillLoggedIn: false });
+    //   }
+    // });
+    //Find user whose photos we are seeing
+
+      get("/api/photosimpletestOnebyid", { photoId: "60075dbc90f80b3495af511d" }).then((ImageInfo_one) => {
+        console.log(ImageInfo_one);
+        this.setState({
+          photo_info_array: [ImageInfo_one],
+        });
+      });
+    }
+
+    //cleans up annotations
+    cleanAnnotInput = (initAnnotInput) => {
+      initAnnotInput.map((obj) => {
+        obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
+        delete obj.geometry.shape_kind;
+      });
+      return initAnnotInput;
+    };
+
+  //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
+  GetPhotoInfo(PhotoInfo) {
+    //debugging code
+    // console.log("Initial annotation array");
+    // console.log(PhotoInfo.annotation_info_array);
+
+    //change annotation field so it is type which react-image-annotate needs
+    let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
+
+    //debugging code
+    // console.log("Revised annotation array");
+    // console.log(annotPhotoInfo);
+
+    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
+    return (            <ReactAnnotate
+      allowEdits={false}
+      border-radius="10%"
+      img_using={PhotoInfo.photo_placeholder}
+      annotationslst={annotPhotoInfo}
+      height="100"
+      width="100"
+    />)}
 
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you so much for using Weworld.</div>; //login protect
     //tried https://www.w3schools.com/html/html_lists.asp for list but then decided not
     return (
       <div className="u-flex u-flex-justifyCenter">
+
         <div className="postColumn paddedText">
+        {this.state.photo_info_array ? (
+              <div>{this.state.photo_info_array.map((p) => this.GetPhotoInfo(p))}</div>) : (<p></p>)}
           {/* Use username prop */}
           <p>Welcome {this.props.username}!</p>
           <p className="questiontext">What is WeWorld?</p>
@@ -47,7 +124,6 @@ class Home_Page extends Component {
           <p className="answertext">We are thinking of adding a <Link to="/Scavenger_Hunts" className = "linktext"> Scavenger Hunts page</Link>, which would provide photo prompts to get the learning and fun started!</p>
           <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>
-          <img src="https://powerlanguage.net/wp-content/uploads/2019/09/welcome.jpg" />
         </div>
       </div>
     );
