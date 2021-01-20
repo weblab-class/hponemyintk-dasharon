@@ -121,7 +121,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
         quality: this.state.quality,
-        timestamp: new Date(Date.now()).toLocaleString(), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i
+        timestamp: new Date(Date.now()).toLocaleString([], {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'}), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
         //taglist: this.state.taglist,
         //DS edit 1/17 to add this
         annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
@@ -171,7 +171,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               <br />
             </p>
             <p className="u-bold">
-              Discliamer: Please note currently all users can see everyone's content given this is
+              Disclaimer: Please note currently all users can see everyone's content given this is
               an early testing version of the website. So please do not share any image or text you
               do not want shared publicly. Also your timestamp of use and name are recorded and
               associated with your image.
