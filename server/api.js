@@ -70,7 +70,6 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
   uploadImagePromise(req.body.photo_placeholder)
     .then((image_upload_info) => {
       //if success then set up schema //If not error continue [ref: https://stackoverflow.com/questions/30469261/checking-for-typeof-error-in-js]
-
       // [credit: from OH 1/13/21 many thanks to Johan for debugging help!]
       const newPhoto_simplea = new PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose({
         caption_text_s: req.body.caption_text,
@@ -82,15 +81,19 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         uid: req.user._id,
         submit_stamp: req.body.timestamp,
         annotation_info_array: req.body.annotate_test, //req.body.annotate_test, OH Johan 20:08
-      });
+      }); //save the photo and then set the everUpdated field for the user to be true
+      //https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
+      //update the user schema to reflect that this user uploaded a photo- only do this after uploading the photo and finding userId
       newPhoto_simplea.save();
+      //User.findById(req.user._id).then(userUpdating => console.log("UPDATING", userUpdating), userUpdating.everUploaded = true, userUpdating.save()); //User.findById(req.user._id)).then(userUpdating => {console.log("UPDATING", userUpdating)})
     })
     .catch((err) => {
       console.log("ERR: upload image: " + err);
       res.status(500).send({
         message: "error uploading",
       });
-    });
+    })
+    //User.findById(req.user._id).then(userUpdating => console.log("UPDATING AFTER 2", userUpdating), userUpdating.everUploaded = true, userUpdating.save());
 });
 
 // Get the first photo of a user [ref: Following W6 slide 74]

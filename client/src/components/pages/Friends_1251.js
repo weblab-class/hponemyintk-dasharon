@@ -44,6 +44,13 @@ class Friends_1251 extends Component {
     });
   };
 
+  //if requesting user's cards are being visualized, return my, otherwise return possessive of name
+  getPossessive = (reqUser, visUser, visUserName) => {
+    if (reqUser === visUser)
+    {return "my" } else
+    {return visUserName + "'s"};
+  }
+
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
@@ -62,7 +69,8 @@ class Friends_1251 extends Component {
             {console.log(u)}
             <View_Flashcards onlyOne={true} userId={u._id} key={i} />
             {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
-            <Link to={"/Flashcards/" + u._id}>I want to see all of {u.name}'s flashcards!</Link>
+            {/* either print my or the user with a possessive */}
+            <Link to={"/Flashcards/" + u._id}>I want to see all of {this.getPossessive(u._id, this.props.userId, u.name)} flashcards!</Link>
             <br />
           </>
         ))}
