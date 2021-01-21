@@ -151,12 +151,11 @@ class Home_Page extends Component {
             I'm excited to review, but I want a challenge and to really learn. Can I test myself?
           </p>
           <p className="answertext">
-            You will soon be able to! Our{" "}
+            We are considering adding this! Our{" "}
             <Link to="/Quiz" className="linktext">
               Quizzes page{" "}
             </Link>
-            shows the quiz module (right now with a sample history lesson) which we hope to
-            implement, where you will have to pick the word corresponding to a tag in a photo.
+            shows a quiz module (right now with a sample history lesson) which are thinking of maybe implementing, where you will have to pick the word corresponding to a tag in a photo.
           </p>
           <p className="questiontext">
             Now, you also said this is social? Can I see my friends' adorable pet* pictures and

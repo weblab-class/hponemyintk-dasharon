@@ -22,10 +22,10 @@ class Scavenger_Hunts extends Component {
         <div className="u-flex u-flex-justifyCenter">
           <div className="postColumn paddedText">
             <p>
-              A preview of a possible coming attraction we are considering implementing...
+              A preview of a possible coming attraction we are considering perhaps implementing...
               <br />
               <br />
-              We are thinking of implementing photo prompts with questions, where you can take a
+              We are thinking of perhaps implementing photo prompts with questions, where you can take a
               photo containing your answer. <br />
               <br />
               For instance, one question could be: "What is a plant you like?" In response to the
