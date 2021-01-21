@@ -236,6 +236,26 @@ console.log(`Translation: ${translation}`);
 res.send({output : translation});
 });
 
+//Chhanges language a user wants to learn
+router.post("/changeLanguage", (req, res) => {
+  // console.log("REQ", req);
+  //Run a Mongoose query to get the right user and update the language learning for the user
+  //https://mongoosejs.com/docs/api.html#model_Model.findById
+  //Learned from catbook {} means find everyone
+  User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), 
+  //run updates
+  userUpdating.learningLanguage = req.body.newLanguage,
+  userUpdating.learningLanguageLong = req.body.newLanguageLong,
+
+  //save
+  userUpdating.save()
+  console.log("USER UPDATED AFTER 2", userUpdating)});
+
+  // User.findOne({_id : req.query.checkUserId}).then((infoOnUser) =>
+  // console.log("USER INFO", infoOnUser),
+  // res.send(infoOnUser))
+});
+
 //1/21/21 This was working, going to edit to make for other languages though
 //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/

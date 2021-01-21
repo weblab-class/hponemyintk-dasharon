@@ -29,7 +29,9 @@ function getOrCreateUser(user) {
       googleid: user.sub,
       photoCount: 0, //ever uploaded a photo?
       nativeLanguage: "en",
-      learningLanguage: "es"
+      nativeLanguageLong: "English",
+      learningLanguage: "es",
+      learningLanguageLong: "Spanish"
     });
 
     return newUser.save();

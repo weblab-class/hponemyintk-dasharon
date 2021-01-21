@@ -44,6 +44,7 @@
     "react-image-annotate": "^1.7.11",
     "react-image-annotation": "^0.9.10",
     "react-router-dom": "^5.2.0",
+    "reactstrap": "^8.9.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.1",
     "stream-http": "^3.1.1",

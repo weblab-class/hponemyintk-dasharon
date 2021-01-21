@@ -5,7 +5,9 @@ const UserSchema = new mongoose.Schema({
   googleid: String,
   photoCount: Number,
   nativeLanguage: String,
-  learningLanguage: String
+  nativeLanguageLong: String,
+  learningLanguage: String,
+  learningLanguageLong: String
 });
 
 // compile model from schema
