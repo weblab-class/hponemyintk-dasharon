@@ -125,14 +125,14 @@ class View_Flashcards extends Component {
   };
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
-  GetPhotoInfo(PhotoInfo, ownCards) {
+  GetPhotoInfo = (PhotoInfo, ownCards) => {
     //debugging code
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
 
     //change annotation field so it is type which react-image-annotate needs
     let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
-
+    if (!annotPhotoInfo) {return null;}
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);

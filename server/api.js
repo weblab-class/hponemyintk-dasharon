@@ -93,7 +93,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         message: "error uploading",
       });
     })
-    //User.findById(req.user._id).then(userUpdating => console.log("UPDATING AFTER 2", userUpdating), userUpdating.everUploaded = true, userUpdating.save());
+    User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.everUploaded = true, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
 });
 
 //Deletes a photo from the database

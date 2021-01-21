@@ -55,6 +55,9 @@ class Friends_1251 extends Component {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     console.log(this.state.allUserList);
+
+    //get all users who uploaded, JavaScript lecture slide 32
+    let allUploadedUserList = this.state.allUserList.filter(userCheck => userCheck.everUploaded == true);
     return (
       <div className="u-flexColumn u-flex-alignCenter">
         {/*Many thanks to Justin for Piazza link advice*/}
@@ -64,7 +67,7 @@ class Friends_1251 extends Component {
           Showing one photo from each user in the database! <br />
           (There are also links for showing all the photo from the users.)
         </h1>
-        {this.state.allUserList.map((u, i) => (
+        {allUploadedUserList.map((u, i) => (
           <>
             {console.log(u)}
             <View_Flashcards onlyOne={true} userId={u._id} key={i} />
