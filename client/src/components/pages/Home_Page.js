@@ -155,7 +155,7 @@ class Home_Page extends Component {
             <Link to="/Quiz" className="linktext">
               Quizzes page{" "}
             </Link>
-            shows a quiz module (right now with a sample history lesson) which are thinking of maybe implementing, where you will have to pick the word corresponding to a tag in a photo.
+            shows a quiz module (right now with a sample history lesson) which we are thinking of maybe implementing, where you will have to pick the word corresponding to a tag in a photo.
           </p>
           <p className="questiontext">
             Now, you also said this is social? Can I see my friends' adorable pet* pictures and
