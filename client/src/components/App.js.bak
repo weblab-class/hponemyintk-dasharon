@@ -1,0 +1,125 @@
+import React, { Component } from "react";
+import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom"; //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
+// import { Router } from "@reach/router";
+import NotFound from "./pages/NotFound.js";
+import Skeleton from "./pages/Skeleton.js";
+import NavBar from "./modules/NavBar.js";
+import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
+import Home_Page from "./pages/Home_Page.js";
+import View_Flashcards from "./pages/View_Flashcards.js";
+import Friends_1251 from "./pages/Friends_1251.js";
+import { socket } from "../client-socket.js";
+import { get, post } from "../utilities";
+
+import "../utilities.css";
+
+/**
+ * Define the "App" component as a class.
+ */
+class App extends Component {
+  // makes props available in this component
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: undefined,
+      allUserList: [],
+    };
+  }
+
+  componentDidMount() {
+    get("/api/whoami").then((user) => {
+      if (user._id) {
+        // they are registed in the database, and currently logged in.
+        this.setState({ userId: user._id, username: user.name });
+      }
+    });
+    if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.getUsers();
+    }
+  }
+
+  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
+  componentDidUpdate(prevProps) {
+    if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.getUsers();
+    }
+  }
+
+  getUsers = () => {
+    get("/api/all_user_find").then((allUserInfo) => {
+      this.setState({
+        allUserList: allUserInfo,
+      });
+    });
+  };
+
+  handleLogin = (res) => {
+    console.log(`Logged in as ${res.profileObj.name}`);
+    const userToken = res.tokenObj.id_token;
+    post("/api/login", { token: userToken }).then((user) => {
+      this.setState({ userId: user._id });
+      post("/api/initsocket", { socketid: socket.id });
+    });
+  };
+
+  handleLogout = () => {
+    this.setState({ userId: undefined });
+    post("/api/logout");
+  };
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/Home_Page">Home_Page</Link>
+              </li>
+              <li>
+                <Link to="/Upload">Upload</Link>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route
+              path="/Home_Page"
+              render={(props) => (
+                <Home_Page {...props} username={this.state.username} userId={this.state.userId} />
+              )}
+            />
+
+            <Route
+              path="/Upload"
+              render={(props) => (
+                <ImgUpload_1716_try_no_prototype {...props} userId={this.state.userId} />
+              )}
+            />
+
+            <Route
+              path="/Friends"
+              render={(props) => <Friends_1251 {...props} userId={this.state.userId} />}
+            />
+
+            {this.state.allUserList.map((u, i) => (
+              <Route
+                exact
+                path="/Flashcards/:u._id"
+                render={(props) => <View_Flashcards {...props} userId={u._id} userName={u.name} />}
+              />
+            ))}
+
+            <Route path="/Skeleton">
+              {" "}
+              <Skeleton />{" "}
+            </Route>
+
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
+
+export default App;
