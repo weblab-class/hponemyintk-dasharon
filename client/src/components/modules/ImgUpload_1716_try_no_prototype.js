@@ -54,9 +54,21 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
   }
+
+  //when a tag is submitted translate the input string
   onTagSubmit = (annotation) => {
-    const { geometry, data } = annotation;
-    this.setState({
+    
+    let { geometry, data } = annotation; //1 get initial annotation and the text of it
+    console.log("TRANSLATION STRING", data.text);
+    const initString = data.text;
+    //2 translate the input string, have as a promise- many thanks Nikhil for help! {translationString : data.text, translationLanguage : "es"}
+    post("/api/translation", {translationInput : data.text}).then((translatedString) =>
+    //3 get the translated string back from the API and update the data text field so the translation is stored
+    {console.log("OUTPUT", translatedString.output),
+      data.text = data.text + "////" + translatedString.output,
+      console.log("TRANSLATED", data.text)
+      //4 set state of annotations
+      this.setState({
       annotations: this.state.annotations.concat({
         geometry,
         data: {
@@ -64,7 +76,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           id: Math.random(),
         },
       }),
-    });
+    }),
+    //5 alert that translation worked why can this not accept objects???????
+    alert("Translated" + {initString} + " to "+ {translatedString})});
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
   };
   //cleans up annotations- DS edit 1/17 since want to save as shape_kind not type, reverse of View_Flashcards
