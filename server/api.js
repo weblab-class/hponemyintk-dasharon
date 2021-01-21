@@ -104,6 +104,8 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         uname: req.user.name,
         uid: req.user._id,
         submit_stamp: req.body.timestamp,
+        inputLanguages: req.body.inputLanguageInfo,
+        translatedLanguage: req.body.translatedLanguage,
         annotation_info_array: req.body.annotate_test, //req.body.annotate_test, OH Johan 20:08
       }); //save the photo and then set the everUpdated field for the user to be true
       //https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836

@@ -52,6 +52,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       annotations: [], // get tags locations and info
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
+      nativeLanguagesDetected: [],
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -104,6 +105,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     {console.log("OUTPUT", translatedString.output),
     //consulted https://cloud.google.com/translate/docs/basic/quickstart
     console.log("OUTPUT", translatedString.output[0]),
+    console.log("OUTPUT WAS IN", translatedString.output[1].data.translations[0].detectedSourceLanguage),
     // console.log("OUTPUT", translatedString.output[1].data),
     // console.log("OUTPUT", translatedString.output[1].translations),
     // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
@@ -121,7 +123,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           id: Math.random(),
         },
       }),
-    })
+
+      //add language of input tag to list of native languages detected
+      //push thod https://www.w3schools.com/jsref/jsref_push.asp
+      nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(translatedString.output[1].data.translations[0].detectedSourceLanguage),
+      })
     //5 alert that translation worked why can this not accept objects???????
     // alert("Translated" + {} + " to "+ {translatedString})
   });
@@ -175,7 +181,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //prep post request
       //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
       //now set up info for post with the image as data url
-      const test_body = {
+      let test_body = {
         caption_text: this.postCaption.current.value,
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
@@ -193,6 +199,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
         //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
       };
+
+      //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
+      //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
+      //Otherwise set these to be strings saying there are no tags
+      if (this.state.annotations.length > 0) {test_body.inputLanguageInfo = this.state.nativeLanguagesDetected; test_body.translatedLanguage = this.state.learningLanguage} else {test_body.inputLanguageInfo = "No_Language_Used", test_body.translatedLanguage = "No_Language_Used"};
+      console.log("INPUT TO POST", test_body)
       //run post request
       post("/api/photo_simple_w_annotate", test_body);
     });
