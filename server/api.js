@@ -221,6 +221,23 @@ router.get("/singleUserFind", (req, res) => {
 //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
 router.post("/translation", async (req, res) => {
+  // The text to translate
+const text = req.body.translationInput;
+
+// // The target language
+const target = req.body.userTranslationLanguage;
+
+// // Translates some text into Russian
+const translation = await translate.translate(text, target);
+console.log(`Text: ${text}`);
+console.log(`Translation: ${translation}`);
+res.send({output : translation});
+});
+
+//1/21/21 This was working, going to edit to make for other languages though
+//run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
+//ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
+router.post("/translationOld", async (req, res) => {
       // The text to translate
     const text = req.body.translationInput;
   

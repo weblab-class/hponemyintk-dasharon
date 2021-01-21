@@ -19,7 +19,7 @@ import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
 //import post as in catbook
-import { post } from "../../utilities.js";
+import { post,get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import "./Image_aesthetics.css";
 // import translate from 'translate';    //ref translation tlibrary
@@ -50,9 +50,46 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       difficulty: 0,
       quality: 0,
       annotations: [], // get tags locations and info
+      nativeLanguage: "", //what is the user's native language/language in which they want to learn?
+      learningLanguage: "", //what language is the user learning?
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
+  }
+
+  //get language preference user has currently set
+  componentDidMount() {
+    // remember -- api calls go here!, get call adapted from catbook
+    //run get request to get first image of the user, will build up to getting images one by
+    //one or all on one page
+    //onyl make req if logged in
+    if (this.props.userId) {
+      this.languageInfoLoad();
+    } else {
+      console.log("SHOULD LOG OUT");
+    }
+  }
+
+  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
+  componentDidUpdate(prevProps) {
+    if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.languageInfoLoad();
+    } else {
+      console.log("SHOULD LOG OUT");
+    }
+  }
+
+  languageInfoLoad = () => {
+    get("/api/singleUserFind", {checkUserId : this.props.userId}).then((userLanguageInfo) => {
+      this.setState({
+        nativeLanguage : userLanguageInfo.nativeLanguage,
+        learningLanguage : userLanguageInfo.learningLanguage,
+      });
+    console.log("Loading language info");
+    console.log("User native language", this.state.nativeLanguage);
+    console.log("User learns", this.state.learningLanguage);
+    }
+    );
   }
 
   //when a tag is submitted translate the input string
@@ -62,7 +99,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     console.log("TRANSLATION STRING", data.text);
     const initString = data.text;
     //2 translate the input string, have as a promise- many thanks Nikhil for help! {translationString : data.text, translationLanguage : "es"}
-    post("/api/translation", {translationInput : data.text}).then((translatedString) =>
+    post("/api/translation", {translationInput : data.text, userNativeLanguage: this.state.nativeLanguage, userTranslationLanguage: this.state.learningLanguage}).then((translatedString) =>
     //3 get the translated string back from the API and update the data text field so the translation is stored
     {console.log("OUTPUT", translatedString.output),
     //consulted https://cloud.google.com/translate/docs/basic/quickstart
@@ -70,7 +107,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     // console.log("OUTPUT", translatedString.output[1].data),
     // console.log("OUTPUT", translatedString.output[1].translations),
     // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
-      data.text = data.text + "////" + translatedString.output[0],
+      data.text = data.text + " ⟹ " + translatedString.output[0],
 
       //3.5 print out the translation for the user
       alert("translated " + initString + " to " + translatedString.output[0]),

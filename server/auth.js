@@ -28,6 +28,8 @@ function getOrCreateUser(user) {
       name: user.name,
       googleid: user.sub,
       photoCount: 0, //ever uploaded a photo?
+      nativeLanguage: "en",
+      learningLanguage: "es"
     });
 
     return newUser.save();
