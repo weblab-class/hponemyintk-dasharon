@@ -65,8 +65,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     post("/api/translation", {translationInput : data.text}).then((translatedString) =>
     //3 get the translated string back from the API and update the data text field so the translation is stored
     {console.log("OUTPUT", translatedString.output),
-      data.text = data.text + "////" + translatedString.output,
-      console.log("TRANSLATED", data.text)
+    //consulted https://cloud.google.com/translate/docs/basic/quickstart
+    console.log("OUTPUT", translatedString.output[0]),
+    // console.log("OUTPUT", translatedString.output[1].data),
+    // console.log("OUTPUT", translatedString.output[1].translations),
+    // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
+      data.text = data.text + "////" + translatedString.output[0],
+
+      //3.5 print out the translation for the user
+      alert("translated " + initString + " to " + translatedString.output[0]),
+      console.log("TRANSLATED", data.text),
       //4 set state of annotations
       this.setState({
       annotations: this.state.annotations.concat({
@@ -76,9 +84,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           id: Math.random(),
         },
       }),
-    }),
+    })
     //5 alert that translation worked why can this not accept objects???????
-    alert("Translated" + {initString} + " to "+ {translatedString})});
+    // alert("Translated" + {} + " to "+ {translatedString})
+  });
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
   };
   //cleans up annotations- DS edit 1/17 since want to save as shape_kind not type, reverse of View_Flashcards
