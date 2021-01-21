@@ -84,7 +84,9 @@ class View_Flashcards extends Component {
     });
 
     //Find photos
+    console.log("Here in View_Flashcards.js before get request!!!", this.props.onlyOne);
     if (this.props.onlyOne) {
+      console.log("Here in View_Flashcards.js before get request!!!1111");
       get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
         console.log(ImageInfo_one);
         this.setState({
@@ -92,6 +94,7 @@ class View_Flashcards extends Component {
         });
       });
     } else {
+      console.log("Here in View_Flashcards.js before get request!!!2222");
       get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
         console.log(ImageInfo);
         this.setState({
@@ -108,7 +111,7 @@ class View_Flashcards extends Component {
     console.log("DELETE CLICKED");
     console.log(event.target);
     console.log(event.target.value);
-    let photoDeleteBody = {deletionId : event.target.value}; //set the request to be for this photo ID
+    let photoDeleteBody = { deletionId: event.target.value }; //set the request to be for this photo ID
     post("/api/deletePhoto", photoDeleteBody); //run the delete request
     alert("Adios photo! Au revoir! Your photo has been deleted");
     //alert("Delete" + photoToDelete.caption_text_s);
@@ -132,14 +135,21 @@ class View_Flashcards extends Component {
 
     //change annotation field so it is type which react-image-annotate needs
     let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
+<<<<<<< HEAD
     if (!annotPhotoInfo) {return null;}
+=======
+    if (!annotPhotoInfo) {
+      return null;
+    }
+
+>>>>>>> 851f558e47ae5e383f7389b7e1f848c8c0111b48
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
 
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
-      <div className="u-flex u-flex-justifyCenter">
+      <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
         {/* <div className="row post">
           <div className="center_image responsive"> */}
         <div className="post">
@@ -178,7 +188,13 @@ class View_Flashcards extends Component {
             https://www.w3schools.com/tags/tag_button.asp
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-            {ownCards? (<button type="button" onClick= {this.handleDelete} value = {PhotoInfo._id} >Delete</button>) : (<p></p>)}
+            {ownCards ? (
+              <button type="button" onClick={this.handleDelete} value={PhotoInfo._id}>
+                Delete
+              </button>
+            ) : (
+              <p></p>
+            )}
             {/* {ownCards? (<button type="button" onClick= {(PhotoInfo) => {alert("click" + PhotoInfo.caption_text_s);
             let deletionReq = {deletionId: PhotoInfo._id};
             console.log("DELETION REQ", deletionReq, PhotoInfo);
@@ -197,20 +213,23 @@ class View_Flashcards extends Component {
     console.log("ViewFlashCards:::", this.props.userId);
     //let ownCards = null; //will use to see if these are your own cards
     let userNameToShow = ""; //username to display
-    {(this.state.requestingUserId === this.props.userId) ? (userNameToShow = this.state.userName + " (Me)") : (userNameToShow = this.state.userName)};
+    {
+      this.state.requestingUserId === this.props.userId
+        ? (userNameToShow = this.state.userName + " (Me)")
+        : (userNameToShow = this.state.userName);
+    }
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
     return (
-      
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
-      <div className="u-textCenter">
+      <div className="u-textCenter" style={{ width: "100%" }}>
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
 
         {/*Establishing whether a user is seeing own flashcards, if so make Me- this is earlier code*/}
         {/* {(this.state.requestingUserId === this.props.userId) ? (<p>****{this.props.userId} req and view</p>) : (<p>****{this.state.requestingUserId} req and {this.props.userId} view</p>)} */}
-        
+
         {/* {ownCards ? (userNameToShow = this.state.userName + " (Me)") : (userNameToShow = this.state.userName)} */}
         {/* If there is a photo then give info on it. Otherwise have a message saying there is 
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
@@ -232,7 +251,11 @@ class View_Flashcards extends Component {
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
             {/*below uses syntax from Nikhil's GCP example */}
-            <div>{this.state.photo_info_array.map((p) => this.GetPhotoInfo(p, (this.state.requestingUserId === this.props.userId)))}</div>
+            <div>
+              {this.state.photo_info_array.map((p) =>
+                this.GetPhotoInfo(p, this.state.requestingUserId === this.props.userId)
+              )}
+            </div>
           </>
         ) : (
           <p>Nothing to return. Please upload!</p>
