@@ -74,4 +74,13 @@ module.exports = {
       },
     },
   },
+  resolve: {
+    fallback: {
+      util: require.resolve("util/"),
+      assert: require.resolve("assert/"),
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
+      crypto: require.resolve("crypto-browserify"),
+    },
+  },
 };
