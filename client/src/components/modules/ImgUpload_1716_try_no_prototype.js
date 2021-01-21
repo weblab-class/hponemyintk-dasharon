@@ -208,7 +208,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               <br />
             </p>
             Upload file:
-            <input type="file" ref={this.fileInput} onChange={this.handleChange} />
+            {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+            Other files should be grayed out*/}
+            <input type="file" ref={this.fileInput} accept = ".png,.jpg,.jpeg" onChange={this.handleChange} />
             <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
               <div className="imgUpLeft">
                 {/* Meant to only have annotating when you uploaded an image */}
