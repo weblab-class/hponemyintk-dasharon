@@ -138,10 +138,6 @@ class View_Flashcards extends Component {
     if (!annotPhotoInfo) {
       return null;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 7757bd5560c602c38d2a551086256cb5107e8509
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
