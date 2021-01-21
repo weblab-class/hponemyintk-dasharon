@@ -58,8 +58,8 @@ class Friends_1251 extends Component {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     console.log(this.state.allUserList);
 
-    //get all users who uploaded, JavaScript lecture slide 32
-    let allUploadedUserList = this.state.allUserList.filter(userCheck => userCheck.everUploaded == true);
+    //get all users who uploaded, JavaScript lecture slide 32, revised to check photoCount
+    let allUploadedUserList = this.state.allUserList.filter(userCheck => userCheck.photoCount > 0);
     return (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         {/*Many thanks to Justin for Piazza link advice*/}

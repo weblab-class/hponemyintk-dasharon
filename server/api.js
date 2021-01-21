@@ -117,7 +117,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         message: "error uploading",
       });
     })
-    User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.everUploaded = true, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
+    User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.photoCount = userUpdating.photoCount + 1, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
 });
 
 //Deletes a photo from the database
@@ -133,7 +133,10 @@ router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
         console.log(err) 
     } 
     else{ 
-        console.log("Deleted : ", docs); 
+        console.log("Deleted : ", docs);
+        //Decrement the photo count.
+        //ref https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
+        User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.photoCount = userUpdating.photoCount - 1, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
     } 
 });
 });

@@ -16,6 +16,10 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "../modules/ReactAnnotate.js";
+import { useLocation, navigate } from "@reach/router" //ref https://reach.tech/router/api/useLocation
+
+
+
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -23,7 +27,6 @@ class View_Flashcards extends Component {
     // Initialize Default State
     this.state = {
       photo_info_array: [], //this is a photo info array
-      onlyOne: false,
       userName: "Someone",
       requestingUserId: "User_Requesting",
       requestingUserName: "UserName_Requesting",
@@ -104,6 +107,8 @@ class View_Flashcards extends Component {
     }
   };
 
+
+
   //post request to delete the relevant photo
   handleDelete = (event) => {
     event.preventDefault();
@@ -114,6 +119,15 @@ class View_Flashcards extends Component {
     let photoDeleteBody = { deletionId: event.target.value }; //set the request to be for this photo ID
     post("/api/deletePhoto", photoDeleteBody); //run the delete request
     alert("Adios photo! Au revoir! Your photo has been deleted");
+
+    //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
+    // const pageLocation = this.props.location;
+    // console.log(pageLocation);
+    // console.log(pageLocation.pathname);
+    // navigate(pageLocation.pathname);
+    window.location.reload(true); //https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
+    //what we do not want to do
+    //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
     //alert("Delete" + photoToDelete.caption_text_s);
     //event.preventDefault();
   };

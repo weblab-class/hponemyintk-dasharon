@@ -27,7 +27,7 @@ function getOrCreateUser(user) {
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
-      everUploaded: false, //ever uploaded a photo?
+      photoCount: 0, //ever uploaded a photo?
     });
 
     return newUser.save();
