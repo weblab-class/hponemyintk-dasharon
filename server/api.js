@@ -236,7 +236,7 @@ console.log(`Translation: ${translation}`);
 res.send({output : translation});
 });
 
-//Chhanges language a user wants to learn
+//Chhanges language a user wants to learn and the welcome message
 router.post("/changeLanguage", (req, res) => {
   // console.log("REQ", req);
   //Run a Mongoose query to get the right user and update the language learning for the user
@@ -246,7 +246,7 @@ router.post("/changeLanguage", (req, res) => {
   //run updates
   userUpdating.learningLanguage = req.body.newLanguage,
   userUpdating.learningLanguageLong = req.body.newLanguageLong,
-
+  userUpdating.welcomeMessage = req.body.welcomeMessageText,
   //save
   userUpdating.save()
   console.log("USER UPDATED AFTER 2", userUpdating)});

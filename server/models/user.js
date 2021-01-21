@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
   nativeLanguage: String,
   nativeLanguageLong: String,
   learningLanguage: String,
-  learningLanguageLong: String
+  learningLanguageLong: String,
+  welcomeMessage: String
 });
 
 // compile model from schema

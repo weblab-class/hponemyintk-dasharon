@@ -95,7 +95,7 @@ class App extends Component {
         <Router>
           {/* don't see 2 pages at once https://stackoverflow.com/questions/45122800/react-router-switch-behavior */}
           {/* <Skeleton path="/" /> */}
-          <Home_Page path="/Home_Page" username={this.state.username} userId={this.state.userId} />
+          <Home_Page path="/Home_Page" userId={this.state.userId} />
           <ImgUpload_1716_try_no_prototype path="/Upload" userId={this.state.userId} />
           {/*from catbook to link to different user pages*/}
           {/*from catbook to link to different user pages, also used https://stackoverflow.com/questions/57058879/how-to-create-dynamic-routes-with-react-router-dom*/}
