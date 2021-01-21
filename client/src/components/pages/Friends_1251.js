@@ -46,17 +46,19 @@ class Friends_1251 extends Component {
 
   //if requesting user's cards are being visualized, return my, otherwise return possessive of name
   getPossessive = (reqUser, visUser, visUserName) => {
-    if (reqUser === visUser)
-    {return "my" } else
-    {return visUserName + "'s"};
-  }
+    if (reqUser === visUser) {
+      return "my";
+    } else {
+      return visUserName + "'s";
+    }
+  };
 
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     console.log(this.state.allUserList);
     return (
-      <div className="u-flexColumn u-flex-alignCenter">
+      <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         {/*Many thanks to Justin for Piazza link advice*/}
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
@@ -70,7 +72,10 @@ class Friends_1251 extends Component {
             <View_Flashcards onlyOne={true} userId={u._id} key={i} />
             {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
             {/* either print my or the user with a possessive */}
-            <Link to={"/Flashcards/" + u._id}>I want to see all of {this.getPossessive(u._id, this.props.userId, u.name)} flashcards!</Link>
+            <Link to={"/Flashcards/" + u._id}>
+              I want to see all of {this.getPossessive(u._id, this.props.userId, u.name)}{" "}
+              flashcards!
+            </Link>
             <br />
           </>
         ))}
