@@ -89,13 +89,7 @@ class App extends Component {
         <br />
 
         {/* Only show image upload if logged in */}
-        {this.state.userId ? (
-          <></>
-        ) : (
-          <p>
-
-          </p>
-        )}
+        {this.state.userId ? <></> : <p></p>}
 
         <br />
         <Router>
@@ -115,11 +109,11 @@ class App extends Component {
             <View_Flashcards path={"/Flashcards/" + u._id} username = {u.name} key = {i}/>)} */}
           {/*Thanks to Justin for Piazza post on this! */}
 
-          <View_Flashcards path="/Flashcards/:userId" />
+          <View_Flashcards path="/Flashcards/:userId" onlyOne={false} />
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
           <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
-          <Skeleton path="/"/>
+          <Skeleton path="/" />
           <Quiz path="/Quiz" userId={this.state.userId} />
           <NotFound default />
         </Router>

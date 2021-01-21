@@ -38,7 +38,7 @@ import "./Image_aesthetics.css";
 // // TODO: replace this bucket name with your own bucket inside your project
 // const bucket = storage.bucket('weworld2021');
 // //translation imports https://cloud.google.com/translate/docs/basic/quickstart
-// const {Translate} = require('@google-cloud/translate').v2;
+// const { Translate } = require("@google-cloud/translate").v2;
 // // Creates a client
 // const translate = new Translate();
 class ImgUpload_1716_try_no_prototype extends React.Component {
@@ -121,7 +121,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
         quality: this.state.quality,
-        timestamp: new Date(Date.now()).toLocaleString([], {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'}), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
+        timestamp: new Date(Date.now()).toLocaleString([], {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
         //taglist: this.state.taglist,
         //DS edit 1/17 to add this
         annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
