@@ -135,14 +135,10 @@ class View_Flashcards extends Component {
 
     //change annotation field so it is type which react-image-annotate needs
     let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
-<<<<<<< HEAD
-    if (!annotPhotoInfo) {return null;}
-=======
     if (!annotPhotoInfo) {
       return null;
     }
 
->>>>>>> 851f558e47ae5e383f7389b7e1f848c8c0111b48
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
