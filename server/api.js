@@ -96,6 +96,24 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
     //User.findById(req.user._id).then(userUpdating => console.log("UPDATING AFTER 2", userUpdating), userUpdating.everUploaded = true, userUpdating.save());
 });
 
+//Deletes a photo from the database
+//ref https://kb.objectrocket.com/mongo-db/how-to-delete-documents-with-mongoose-235
+//https://www.geeksforgeeks.org/mongoose-findbyidanddelete-function/
+//https://mongoosejs.com/docs/api.html#model_Model.findByIdAndDelete
+//also tried convert to string https://stackoverflow.com/questions/11083254/casting-to-string-in-javascript
+router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
+  console.log("api should delete",req.body.deletionId,"todelete");
+  //console.log("api should delete", Str(req.body.deletionId));
+  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findByIdAndDelete(req.body.deletionId, function (err, docs) { 
+    if (err){ 
+        console.log(err) 
+    } 
+    else{ 
+        console.log("Deleted : ", docs); 
+    } 
+});
+});
+
 // Get the first photo of a user [ref: Following W6 slide 74]
 router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   console.log("api.js photosimpletest req is:::", req.query);
