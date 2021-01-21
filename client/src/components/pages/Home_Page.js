@@ -188,6 +188,13 @@ class Home_Page extends Component {
             </Link>
             , which would provide photo prompts to get the learning and fun started!
           </p>
+          <p className="questiontext">
+            How did WeWorld come about?
+          </p>
+          {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
+          <p className="answertext">
+            WeWorld is our <a href="https://weblab.mit.edu" className="linktext">MIT web.lab</a> course project. We are very grateful to the course team and Dr. Anindya Roy of MIT Open Learning for their help and advice with this project!
+          </p>
           <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>
         </div>
