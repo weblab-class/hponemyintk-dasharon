@@ -1,6 +1,6 @@
 import { render } from "react-dom";
 import React, { Component } from "react";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 // import authentication library
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
@@ -101,6 +101,20 @@ class View_Flashcards extends Component {
     }
   };
 
+  //post request to delete the relevant photo
+  handleDelete = (event) => {
+    event.preventDefault();
+    //let photoId = photoToDelete._id;
+    console.log("DELETE CLICKED");
+    console.log(event.target);
+    console.log(event.target.value);
+    let photoDeleteBody = {deletionId : event.target.value}; //set the request to be for this photo ID
+    post("/api/deletePhoto", photoDeleteBody); //run the delete request
+    alert("Adios photo! Au revoir! Your photo has been deleted");
+    //alert("Delete" + photoToDelete.caption_text_s);
+    //event.preventDefault();
+  };
+
   //cleans up annotations
   cleanAnnotInput = (initAnnotInput) => {
     initAnnotInput.map((obj) => {
@@ -111,7 +125,7 @@ class View_Flashcards extends Component {
   };
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
-  GetPhotoInfo(PhotoInfo) {
+  GetPhotoInfo(PhotoInfo, ownCards) {
     //debugging code
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
@@ -157,6 +171,19 @@ class View_Flashcards extends Component {
               icon={<FavoriteIcon fontSize="inherit" />}
               disabled
             />
+            {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
+            https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
+            https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
+            https://www.w3schools.com/howto/howto_js_popup_form.asp 
+            https://www.w3schools.com/tags/tag_button.asp
+            
+            https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
+            {ownCards? (<button type="button" onClick= {this.handleDelete} value = {PhotoInfo._id} >Delete</button>) : (<p></p>)}
+            {/* {ownCards? (<button type="button" onClick= {(PhotoInfo) => {alert("click" + PhotoInfo.caption_text_s);
+            let deletionReq = {deletionId: PhotoInfo._id};
+            console.log("DELETION REQ", deletionReq, PhotoInfo);
+              }}> 
+            Delete</button>) : (<p></p>)}*/}
           </div>
         </div>
         <br />
@@ -205,7 +232,7 @@ class View_Flashcards extends Component {
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
             {/*below uses syntax from Nikhil's GCP example */}
-            <div>{this.state.photo_info_array.map((p) => this.GetPhotoInfo(p))}</div>
+            <div>{this.state.photo_info_array.map((p) => this.GetPhotoInfo(p, (this.state.requestingUserId === this.props.userId)))}</div>
           </>
         ) : (
           <p>Nothing to return. Please upload!</p>
