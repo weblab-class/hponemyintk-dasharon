@@ -142,16 +142,24 @@ router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
     function(err, docs) {
       if (err) {
         console.log(err);
+        res.send({});
       } else {
         console.log("Deleted : ", docs);
         //Decrement the photo count.
         //ref https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
+        try {
         User.findById(req.user._id).then((userUpdating) => {
           console.log("UPDATING AFTER 2", userUpdating),
             (userUpdating.photoCount = userUpdating.photoCount - 1),
             userUpdating.save(),
             console.log("USER UPDATED AFTER 2", userUpdating);
+            res.send({});
         });
+      }
+      catch {
+        console.log('user update error')
+        res.send({});
+      }
       }
     }
   );
@@ -175,6 +183,7 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
+    res.send({});
   }
 });
 
@@ -193,6 +202,7 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
+    res.send({});
   }
 });
 
@@ -212,6 +222,7 @@ router.get("/photosimpletestOnebyid", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
+    res.send({});
   }
 });
 

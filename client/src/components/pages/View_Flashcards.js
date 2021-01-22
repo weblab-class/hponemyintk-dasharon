@@ -5,6 +5,7 @@ import { get, post } from "../../utilities";
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
+import IndividualFlashcard from "../modules/IndividualFlashcard.js";
 
 /*
 code for rating bar
@@ -205,8 +206,8 @@ class View_Flashcards extends Component {
                 value={PhotoInfo._id}
                 className="button button:hover trashCan"
                 // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-              >
-                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
+              > delete me
+                {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
@@ -224,6 +225,15 @@ class View_Flashcards extends Component {
         <br />
       </div>
     );
+  };
+
+  //pass as prop to individual flashcard components
+  //take in photo id
+  //many thanks to Jess, this should delete 1 photo
+  deletefromPhotoArray = (photoforDeletion) => {
+    this.setState({
+      photo_info_array : this.state.photo_info_array.filter((p) => (p._id !== photoforDeletion))
+    })
   };
 
   render() {
@@ -269,10 +279,11 @@ class View_Flashcards extends Component {
             )}
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
-            {/*below uses syntax from Nikhil's GCP example */}
+            {/*below uses syntax from Nikhil's GCP example 
+            make a new Individual_Flashcard object*/}
             <div>
-              {this.state.photo_info_array.map((p) =>
-                this.GetPhotoInfo(p, this.state.requestingUserId === this.props.userId)
+              {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
+                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId}/>
               )}
             </div>
           </>

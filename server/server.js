@@ -37,7 +37,7 @@ const socketManager = require("./server-socket");
 // TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGOOSE_URL;
 // TODO change database name to the name you chose
-const databaseName = "DemoDataBase_2";
+const databaseName = "Demo_2021_01_21";
 
 // connect to mongodb
 mongoose
