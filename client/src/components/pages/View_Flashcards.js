@@ -21,6 +21,8 @@ import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -201,10 +203,12 @@ class View_Flashcards extends Component {
                 type="button"
                 onClick={this.handleDelete}
                 value={PhotoInfo._id}
-                className="button button:hover"
+                className="button button:hover trashCan"
                 // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
               >
                 <FontAwesomeIcon icon={faTrashAlt} size="3x" style={{ color: "#0099ff" }} />
+                {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
+                {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
               </button>
             ) : (

@@ -55,6 +55,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   justify-content: center;
   padding: 20px;
   font-size: 2.5vmin;
+  position: relative;
 }
 
 /* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
@@ -93,6 +94,12 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
 .button:hover {
   opacity: 1;
+}
+
+.trashCan {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .paddedText {
