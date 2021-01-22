@@ -156,9 +156,9 @@ router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
             res.send({});
         });
       }
-      catch {
+      catch (e) {
         console.log('user update error')
-        res.send({});
+        res.status(400).json({ message: e.message });
       }
       }
     }
@@ -183,7 +183,6 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
-    res.send({});
   }
 });
 
@@ -202,7 +201,6 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
-    res.send({});
   }
 });
 
@@ -222,7 +220,6 @@ router.get("/photosimpletestOnebyid", auth.ensureLoggedIn, async (req, res) => {
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
-    res.send({});
   }
 });
 
