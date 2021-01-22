@@ -36,6 +36,22 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   justify-content: center;
   padding: 20px;
   font-size: 2.5vmin;
+  position: relative;
+}
+
+.imgUpTextArea {
+  font-family: Roboto, sans-serif;
+  font-size: 1.1vw;
+  /* color: var(--primary); */
+  width: 90% !important;
+  border-radius: 2%;
+  opacity: 1;
+}
+
+::placeholder {
+  /* color: var(--primary); */
+  font-size: 1.1vw;
+  opacity: 0.2;
 }
 
 .postLeft {
@@ -58,6 +74,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   position: relative;
 }
 
+/* Many thanks to Kye for the kind help with CSS styling of the trash can icon in hackathon */
 .fa-trash-alt {
   /* width: 1.5vw !important; important overrides anywhere else where you set the width */
   font-size: 2vw !important; /* !important; important overrides anywhere else where you set the width */

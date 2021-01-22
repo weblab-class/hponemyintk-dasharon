@@ -19,7 +19,7 @@ import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
 //import post as in catbook
-import { post,get } from "../../utilities.js";
+import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import "./Image_aesthetics.css";
 // import translate from 'translate';    //ref translation tlibrary
@@ -82,56 +82,64 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   }
 
   languageInfoLoad = () => {
-    get("/api/singleUserFind", {checkUserId : this.props.userId}).then((userLanguageInfo) => {
+    get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userLanguageInfo) => {
       this.setState({
-        nativeLanguage : userLanguageInfo.nativeLanguage,
-        learningLanguage : userLanguageInfo.learningLanguage,
+        nativeLanguage: userLanguageInfo.nativeLanguage,
+        learningLanguage: userLanguageInfo.learningLanguage,
       });
-    console.log("Loading language info");
-    console.log("User native language", this.state.nativeLanguage);
-    console.log("User learns", this.state.learningLanguage);
-    }
-    );
-  }
+      console.log("Loading language info");
+      console.log("User native language", this.state.nativeLanguage);
+      console.log("User learns", this.state.learningLanguage);
+    });
+  };
 
   //when a tag is submitted translate the input string
   onTagSubmit = (annotation) => {
-    
     let { geometry, data } = annotation; //1 get initial annotation and the text of it
     console.log("TRANSLATION STRING", data.text);
     const initString = data.text;
     //2 translate the input string, have as a promise- many thanks Nikhil for help! {translationString : data.text, translationLanguage : "es"}
-    post("/api/translation", {translationInput : data.text, userNativeLanguage: this.state.nativeLanguage, userTranslationLanguage: this.state.learningLanguage}).then((translatedString) =>
-    //3 get the translated string back from the API and update the data text field so the translation is stored
-    {console.log("OUTPUT", translatedString.output),
-    //consulted https://cloud.google.com/translate/docs/basic/quickstart
-    console.log("OUTPUT", translatedString.output[0]),
-    console.log("OUTPUT WAS IN", translatedString.output[1].data.translations[0].detectedSourceLanguage),
-    // console.log("OUTPUT", translatedString.output[1].data),
-    // console.log("OUTPUT", translatedString.output[1].translations),
-    // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
-      data.text = data.text + " ⟹ " + translatedString.output[0],
+    post("/api/translation", {
+      translationInput: data.text,
+      userNativeLanguage: this.state.nativeLanguage,
+      userTranslationLanguage: this.state.learningLanguage,
+    }).then((translatedString) =>
+      //3 get the translated string back from the API and update the data text field so the translation is stored
+      {
+        console.log("OUTPUT", translatedString.output),
+          //consulted https://cloud.google.com/translate/docs/basic/quickstart
+          console.log("OUTPUT", translatedString.output[0]),
+          console.log(
+            "OUTPUT WAS IN",
+            translatedString.output[1].data.translations[0].detectedSourceLanguage
+          ),
+          // console.log("OUTPUT", translatedString.output[1].data),
+          // console.log("OUTPUT", translatedString.output[1].translations),
+          // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
+          (data.text = data.text + " ⟹ " + translatedString.output[0]),
+          //3.5 print out the translation for the user
+          alert("translated " + initString + " to " + translatedString.output[0]),
+          console.log("TRANSLATED", data.text),
+          //4 set state of annotations
+          this.setState({
+            annotations: this.state.annotations.concat({
+              geometry,
+              data: {
+                ...data,
+                id: Math.random(),
+              },
+            }),
 
-      //3.5 print out the translation for the user
-      alert("translated " + initString + " to " + translatedString.output[0]),
-      console.log("TRANSLATED", data.text),
-      //4 set state of annotations
-      this.setState({
-      annotations: this.state.annotations.concat({
-        geometry,
-        data: {
-          ...data,
-          id: Math.random(),
-        },
-      }),
-
-      //add language of input tag to list of native languages detected
-      //push thod https://www.w3schools.com/jsref/jsref_push.asp
-      nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(translatedString.output[1].data.translations[0].detectedSourceLanguage),
-      })
-    //5 alert that translation worked why can this not accept objects???????
-    // alert("Translated" + {} + " to "+ {translatedString})
-  });
+            //add language of input tag to list of native languages detected
+            //push thod https://www.w3schools.com/jsref/jsref_push.asp
+            nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(
+              translatedString.output[1].data.translations[0].detectedSourceLanguage
+            ),
+          });
+        //5 alert that translation worked why can this not accept objects???????
+        // alert("Translated" + {} + " to "+ {translatedString})
+      }
+    );
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
   };
   //cleans up annotations- DS edit 1/17 since want to save as shape_kind not type, reverse of View_Flashcards
@@ -178,46 +186,63 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
     //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
-    this.readImage(this.state.raw_file).then((image_as_url) => {
-      //prep post request
-      //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
-      //now set up info for post with the image as data url
-      let test_body = {
-        caption_text: this.postCaption.current.value,
-        //tag_text: this.curTag.current.value,
-        photo_placeholder: image_as_url,
-        difficulty: this.state.difficulty,
-        quality: this.state.quality,
-        timestamp: new Date(Date.now()).toLocaleString([], {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
-        //taglist: this.state.taglist,
-        //DS edit 1/17 to add this
-        annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
-        //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
-      };
+    this.readImage(this.state.raw_file)
+      .then((image_as_url) => {
+        //prep post request
+        //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
+        //now set up info for post with the image as data url
+        console.log("PostCaption!!!!", this.postCaption.current.value);
+        let test_body = {
+          caption_text: this.postCaption.current.value,
+          //tag_text: this.curTag.current.value,
+          photo_placeholder: image_as_url,
+          difficulty: this.state.difficulty,
+          quality: this.state.quality,
+          timestamp: new Date(Date.now()).toLocaleString([], {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
+          //taglist: this.state.taglist,
+          //DS edit 1/17 to add this
+          annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
+          //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
+        };
 
-      //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
-      //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
-      //Otherwise set these to be strings saying there are no tags
-      if (this.state.annotations.length > 0) {test_body.inputLanguageInfo = this.state.nativeLanguagesDetected; test_body.translatedLanguage = this.state.learningLanguage} else {test_body.inputLanguageInfo = "No_Language_Used", test_body.translatedLanguage = "No_Language_Used"};
-      console.log("INPUT TO POST", test_body)
-      //run post request
-      post("/api/photo_simple_w_annotate", test_body);
-    }).then(
-    alert(
-      "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
-      // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
-      // + '\nDifficulty is : "'  + this.state.difficulty +'"'
-      // + '\nQuality is : "'  + this.state.quality +'"'
-    )).then(this.setState({ file: null  }),
-      this.postCaption.current.value = "" ,
-      this.fileInput.current.value = "",
-      
+        //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
+        //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
+        //Otherwise set these to be strings saying there are no tags
+        if (this.state.annotations.length > 0) {
+          test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
+          test_body.translatedLanguage = this.state.learningLanguage;
+        } else {
+          (test_body.inputLanguageInfo = "No_Language_Used"),
+            (test_body.translatedLanguage = "No_Language_Used");
+        }
+        console.log("INPUT TO POST", test_body);
+        //run post request
+        post("/api/photo_simple_w_annotate", test_body);
+      })
+      .then(
+        alert(
+          "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
+          // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
+          // + '\nDifficulty is : "'  + this.state.difficulty +'"'
+          // + '\nQuality is : "'  + this.state.quality +'"'
+        )
+      )
+      .then(
+        console.log(
+          "Before clearing ****1",
+          this.postCaption.current.value,
+          "Before clearing ****2",
+          this.fileInput.current.value
+        )
+        // this.setState({ file: null })
+        // (this.postCaption.current.value = "fas dfasdf asd"),
+        // (this.fileInput.current.value = "sdf asdf das")
       );
     event.preventDefault();
     console.log(this.state.annotations[0].data.text);
@@ -226,7 +251,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     console.log("reached");
     // console.log(translated_text);
     //console.log(annotations_cleaned_up);
-    
   };
   /*from React and Medium websites combined*/
   render() {
@@ -264,7 +288,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             Upload file:
             {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
-            <input type="file" ref={this.fileInput} accept = ".png,.jpg,.jpeg" onChange={this.handleChange} />
+            <input
+              type="file"
+              ref={this.fileInput}
+              accept=".png,.jpg,.jpeg"
+              onChange={this.handleChange}
+            />
             <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
               <div className="imgUpLeft">
                 {/* Meant to only have annotating when you uploaded an image */}
@@ -276,7 +305,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                     annotationslst={this.state.annotations}
                   />
                 ) : (
-                  
                   // <img className="u-showImg" src={this.state.file} alt="Please upload!" height="300" width="300" />
                   <p className="uploadText">Please Upload!</p>
                 )}
@@ -285,7 +313,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 <br />
                 {/* Get tag and post info*/}
                 Caption:
-                <input type="text" ref={this.postCaption} />
+                {/* <input type="text" ref={this.postCaption} /> */}
+                <textarea
+                  className="imgUpTextArea"
+                  rows="5"
+                  placeholder="Share your thoughts about the photo with your friends!"
+                  ref={this.postCaption}
+                />
                 <br />
                 {/* <Typography component="legend">Difficulty</Typography> */}
                 <p>Difficulty</p>
