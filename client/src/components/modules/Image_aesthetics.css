@@ -20,7 +20,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
 .imgUpLeft {
   display: flex;
-  width: 65%;
+  width: 60%;
   height: auto;
   align-items: center;
   margin-left: 5%;
@@ -30,7 +30,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 .imgUpRight {
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 40%;
   height: auto;
   align-items: center;
   justify-content: center;
@@ -178,7 +178,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   /*text-align: center;*/
   font-weight: 600;
   color: var(--primary); /*var(--primary);*/
-  font-size: 55px; /*ref https://www.w3schools.com/css/css_font_size.asp*/
+  font-size: 52px; /*ref https://www.w3schools.com/css/css_font_size.asp*/
   border-style: solid; /*https://www.computerhope.com/issues/ch001392.htm*/
   border-color: var(--secondary);
   border-radius: 20px;
