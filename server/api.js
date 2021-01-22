@@ -36,7 +36,6 @@ const { Translate } = require("@google-cloud/translate").v2;
 // NOTE: this file is incomplete. Eventually I'll add a function to modify an existing
 // file, but this is a pretty uncommon application in my experience, so I'll do it later.
 
-
 // The advantage of this cache is that we avoid loading images we've seen recently,
 // since GCP will charge you money if you request too much data. See GCP pricing.
 // This sets time to live to 2hrs, and to check for expired cache entries every hour.
@@ -45,7 +44,10 @@ const { Translate } = require("@google-cloud/translate").v2;
 // TODO: replace this projectId with your own GCP project id!
 const translationInfo = { projectId: "angelic-cat-301602" };
 if (process.env.GCP_PRIVATE_KEY && process.env.GCP_CLIENT_EMAIL) {
-    translationInfo.credentials = { private_key: process.env.GCP_PRIVATE_KEY, client_email: process.env.GCP_CLIENT_EMAIL };
+  translationInfo.credentials = {
+    private_key: process.env.GCP_PRIVATE_KEY,
+    client_email: process.env.GCP_CLIENT_EMAIL,
+  };
 }
 
 // Creates a client
@@ -118,8 +120,13 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
       res.status(500).send({
         message: "error uploading",
       });
-    })
-    User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.photoCount = userUpdating.photoCount + 1, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
+    });
+  User.findById(req.user._id).then((userUpdating) => {
+    console.log("UPDATING AFTER 2", userUpdating),
+      (userUpdating.photoCount = userUpdating.photoCount + 1),
+      userUpdating.save(),
+      console.log("USER UPDATED AFTER 2", userUpdating);
+  });
 });
 
 //Deletes a photo from the database
@@ -128,19 +135,26 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
 //https://mongoosejs.com/docs/api.html#model_Model.findByIdAndDelete
 //also tried convert to string https://stackoverflow.com/questions/11083254/casting-to-string-in-javascript
 router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
-  console.log("api should delete",req.body.deletionId,"todelete");
+  console.log("api should delete", req.body.deletionId, "todelete");
   //console.log("api should delete", Str(req.body.deletionId));
-  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findByIdAndDelete(req.body.deletionId, function (err, docs) { 
-    if (err){ 
-        console.log(err) 
-    } 
-    else{ 
+  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findByIdAndDelete(
+    req.body.deletionId,
+    function(err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
         console.log("Deleted : ", docs);
         //Decrement the photo count.
         //ref https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
-        User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), userUpdating.photoCount = userUpdating.photoCount - 1, userUpdating.save(),console.log("USER UPDATED AFTER 2", userUpdating)});
-    } 
-});
+        User.findById(req.user._id).then((userUpdating) => {
+          console.log("UPDATING AFTER 2", userUpdating),
+            (userUpdating.photoCount = userUpdating.photoCount - 1),
+            userUpdating.save(),
+            console.log("USER UPDATED AFTER 2", userUpdating);
+        });
+      }
+    }
+  );
 });
 
 // Get the first photo of a user [ref: Following W6 slide 74]
@@ -178,6 +192,7 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
     res.send(UserSchema); //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
+    res.status(400).json({ message: e.message });
   }
 });
 
@@ -196,6 +211,7 @@ router.get("/photosimpletestOnebyid", auth.ensureLoggedIn, async (req, res) => {
     res.send(UserSchema); //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
+    res.status(400).json({ message: e.message });
   }
 });
 
@@ -224,16 +240,16 @@ router.get("/singleUserFind", (req, res) => {
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
 router.post("/translation", async (req, res) => {
   // The text to translate
-const text = req.body.translationInput;
+  const text = req.body.translationInput;
 
-// // The target language
-const target = req.body.userTranslationLanguage;
+  // // The target language
+  const target = req.body.userTranslationLanguage;
 
-// // Translates some text into Russian
-const translation = await translate.translate(text, target);
-console.log(`Text: ${text}`);
-console.log(`Translation: ${translation}`);
-res.send({output : translation});
+  // // Translates some text into Russian
+  const translation = await translate.translate(text, target);
+  console.log(`Text: ${text}`);
+  console.log(`Translation: ${translation}`);
+  res.send({ output: translation });
 });
 
 //Chhanges language a user wants to learn and the welcome message
@@ -242,14 +258,16 @@ router.post("/changeLanguage", (req, res) => {
   //Run a Mongoose query to get the right user and update the language learning for the user
   //https://mongoosejs.com/docs/api.html#model_Model.findById
   //Learned from catbook {} means find everyone
-  User.findById(req.user._id).then(userUpdating => {console.log("UPDATING AFTER 2", userUpdating), 
-  //run updates
-  userUpdating.learningLanguage = req.body.newLanguage,
-  userUpdating.learningLanguageLong = req.body.newLanguageLong,
-  userUpdating.welcomeMessage = req.body.welcomeMessageText,
-  //save
-  userUpdating.save()
-  console.log("USER UPDATED AFTER 2", userUpdating)});
+  User.findById(req.user._id).then((userUpdating) => {
+    console.log("UPDATING AFTER 2", userUpdating),
+      //run updates
+      (userUpdating.learningLanguage = req.body.newLanguage),
+      (userUpdating.learningLanguageLong = req.body.newLanguageLong),
+      (userUpdating.welcomeMessage = req.body.welcomeMessageText),
+      //save
+      userUpdating.save();
+    console.log("USER UPDATED AFTER 2", userUpdating);
+  });
 
   // User.findOne({_id : req.query.checkUserId}).then((infoOnUser) =>
   // console.log("USER INFO", infoOnUser),
@@ -260,17 +278,17 @@ router.post("/changeLanguage", (req, res) => {
 //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
 router.post("/translationOld", async (req, res) => {
-      // The text to translate
-    const text = req.body.translationInput;
-  
-    // // The target language
-    const target = 'es';
-  
-    // // Translates some text into Russian
-    const translation = await translate.translate(text, target);
-    console.log(`Text: ${text}`);
-    console.log(`Translation: ${translation}`);
-    res.send({output : translation});
+  // The text to translate
+  const text = req.body.translationInput;
+
+  // // The target language
+  const target = "es";
+
+  // // Translates some text into Russian
+  const translation = await translate.translate(text, target);
+  console.log(`Text: ${text}`);
+  console.log(`Translation: ${translation}`);
+  res.send({ output: translation });
 });
 
 // anything else falls to this "not found" case
