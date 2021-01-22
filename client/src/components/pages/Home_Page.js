@@ -209,8 +209,7 @@ class Home_Page extends Component {
             <Link className="linktext" to="/Upload">
               Upload page
             </Link>
-            , you upload your photos and add tags (currently you have to supply the translation, and
-            we are hoping to implement translation!).
+            , you upload your photos and add tags in your native language or the language in which you feel most comfortable learning. A translation will be provided for you and placed in the tag, along with your original input!
           </p>
           <p className="questiontext">Are my photos private?</p>
           <p className="answertext">

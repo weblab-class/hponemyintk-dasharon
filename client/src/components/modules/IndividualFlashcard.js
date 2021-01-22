@@ -123,7 +123,7 @@ class IndividualFlashcard extends Component {
             https://www.w3schools.com/tags/tag_button.asp
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-            {this.props.ownPhoto ? (
+            {(this.props.ownPhoto && !this.props.onlyOne) ? (
               <button
                 type="button"
                 onClick={this.handleDelete}
