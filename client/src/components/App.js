@@ -12,7 +12,7 @@ import View_Flashcards from "./pages/View_Flashcards.js";
 import Friends_1251 from "./pages/Friends_1251.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
-import QuizSelfMade from "../components/modules/QuizSelfMade.js";
+import QuizSelfMade_DS from "../components/modules/QuizSelfMade_DS.js";
 
 import "../utilities.css";
 
@@ -115,7 +115,7 @@ class App extends Component {
           <Friends_1251 path="/Friends" userId={this.state.userId} />
           <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
           <Skeleton path="/" />
-          <QuizSelfMade path="/QuizSelfMade" userId={this.state.userId} />
+          <QuizSelfMade_DS path="/QuizSelfMade_DS" userId={this.state.userId} />
           <NotFound default />
         </Router>
       </>

@@ -31,6 +31,7 @@ class IndividualFlashcard extends Component {
       super(props);
       // Initialize Default State
       this.state = {
+        wrongAnswerInput : false
       };
     }
       //post request to delete the relevant photo
@@ -46,15 +47,6 @@ class IndividualFlashcard extends Component {
     alert("Adios photo! Au revoir! Your photo has been deleted");
     this.props.deletionFunction(this.props.photoFacts._id);
     //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
-    // const pageLocation = this.props.location;
-    // console.log(pageLocation);
-    // console.log(pageLocation.pathname);
-    // navigate(pageLocation.pathname);
-    // window.location.reload(true); //https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
-    //what we do not want to do
-    //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
-    //alert("Delete" + photoToDelete.caption_text_s);
-    //event.preventDefault();
   };
 
   //cleans up annotations
@@ -66,6 +58,31 @@ class IndividualFlashcard extends Component {
     return initAnnotInput;
   };
 
+  //if there is a wrong answer aler the answer is wrong
+  handleWrong = (event) => {
+    alert("wrong answer");
+    this.setState({wrongAnswerInput : true})
+  }
+
+  //show quiz options if this is a quiz
+  showQuizInfo = () => {
+    if (!this.state.wrongAnswerInput) {
+    return(
+<>
+      <button onClick={this.handleWrong}>{this.props.wrongAnswers[0]}</button><br></br>
+      <button onClick={this.handleWrong}>{this.props.wrongAnswers[1]}</button><br></br>
+      <button onClick={this.handleWrong}>{this.props.wrongAnswers[2]}</button><br></br>
+      <button onClick={this.handleRight}>correct</button><br></br>
+      </>);
+    }
+    else {return (
+      <>
+            <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
+            <button style= {{color : "red"}}>{this.props.wrongAnswers[1]}</button><br></br>
+            <button style= {{color : "red"}}>{this.props.wrongAnswers[2]}</button><br></br>
+            <button style= {{color : "green"}}>correct</button><br></br>
+            </>);};
+  };
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
   GetPhotoInfo = () => {
@@ -87,6 +104,8 @@ class IndividualFlashcard extends Component {
       <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
         {/* <div className="row post">
           <div className="center_image responsive"> */}
+
+        {/*The annotated image*/}
         <div className="post">
           <div className="postLeft">
             {/* <div> */}
@@ -99,11 +118,18 @@ class IndividualFlashcard extends Component {
               width="300"
             />
           </div>
+
+          {/* info on submission*/}
           <div className="postRight">
             {/* <div> */}
             <p>Submitted by: {this.props.photoFacts.uname}</p>
             <p>Submitted on: {this.props.photoFacts.submit_stamp}</p>
-            <p>Caption: {this.props.photoFacts.caption_text_s}</p>
+
+            {/*caption if not in quiz mode, otherwise show quiz questions */}
+            {!this.props.forQuiz?
+            (<p>Caption: {this.props.photoFacts.caption_text_s}</p>) : (this.showQuizInfo())}
+
+            {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
             <p>Difficulty</p>
             <Rating precision={0.5} name="difficultyRating" value={this.props.photoFacts.difficulty} disabled />
@@ -116,6 +142,7 @@ class IndividualFlashcard extends Component {
               icon={<FavoriteIcon fontSize="inherit" />}
               disabled
             />
+
             {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
             https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
             https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
@@ -123,26 +150,16 @@ class IndividualFlashcard extends Component {
             https://www.w3schools.com/tags/tag_button.asp
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-            {(this.props.ownPhoto && !this.props.onlyOne) ? (
+            {(this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz) ? (
               <button
                 type="button"
                 onClick={this.handleDelete}
-                className="button button:hover trashCan"
-                // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-              > 
+                className="button button:hover trashCan"> 
                 <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
-                {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
               </button>
             ) : (
               <p></p>
             )}
-            {/* {ownCards? (<button type="button" onClick= {(PhotoInfo) => {alert("click" + PhotoInfo.caption_text_s);
-            let deletionReq = {deletionId: PhotoInfo._id};
-            console.log("DELETION REQ", deletionReq, PhotoInfo);
-              }}> 
-            Delete</button>) : (<p></p>)}*/}
           </div>
         </div>
         <br />

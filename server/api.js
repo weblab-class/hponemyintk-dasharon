@@ -186,6 +186,26 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   }
 });
 
+// Get all photos
+router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
+  // console.log("api.js photosimpletest req is:::", req.query);
+  try {
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
+    }); //1 get one photo array from mongoose
+    //iterate through all user's photos, note this could incorporate a map/promise all
+    for (let u_info = 0; u_info < UserSchema.length; u_info++) {
+      const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
+      UserSchema[u_info].photo_placeholder = imagePromise;
+    } //3 replace photo placeholder with the base64 DataURL from GCP
+    // console.log("api.js:::","Here printing google image",imagePromise);
+    res.send({infoOnPhotos: UserSchema});
+    //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
+  } catch (e) {
+    console.log("ERR getImages this shouldn't happen");
+    res.status(400).json({ message: e.message });
+  }
+});
+
 // Was working, to Get the first photo of a user [ref: Following W6 slide 74], 1/16 00:28 edit to get multiple images
 // Dina added back 1/17 to get working when only 1 image is wanted
 router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
