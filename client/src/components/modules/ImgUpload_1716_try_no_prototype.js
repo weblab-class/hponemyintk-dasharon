@@ -215,12 +215,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       // + '\nDifficulty is : "'  + this.state.difficulty +'"'
       // + '\nQuality is : "'  + this.state.quality +'"'
     )).then(this.setState({ file: null  }),
-      this.postCaption.current.value = "" ,
-      this.fileInput.current.value = "",
+      // this.postCaption.current.value = "test" ,
+      // this.fileInput.current.value = "test2",
       
       );
     event.preventDefault();
-    console.log(this.state.annotations[0].data.text);
+    //console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations);
     console.log("reached");
@@ -283,9 +283,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               </div>
               <div className="imgUpRight">
                 <br />
-                {/* Get tag and post info*/}
+                {/* Get caption and post info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea*/}
                 Caption:
-                <input type="text" ref={this.postCaption} />
+                <input height = "100" type="text" ref={this.postCaption} />
+                {/* <textarea rows="10" columns="20" type="text" ref={this.postCaption} /> */}
                 <br />
                 {/* <Typography component="legend">Difficulty</Typography> */}
                 <p>Difficulty</p>
