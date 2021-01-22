@@ -206,7 +206,7 @@ class View_Flashcards extends Component {
                 className="button button:hover trashCan"
                 // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
               >
-                <FontAwesomeIcon icon={faTrashAlt} size="3x" style={{ color: "#0099ff" }} />
+                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
