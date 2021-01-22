@@ -53,6 +53,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
       nativeLanguagesDetected: [],
+      captionText: "",
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -207,13 +208,17 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       console.log("INPUT TO POST", test_body)
       //run post request
       post("/api/photo_simple_w_annotate", test_body);
-    });
+    }).then(
     alert(
       "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
       // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
       // + '\nDifficulty is : "'  + this.state.difficulty +'"'
       // + '\nQuality is : "'  + this.state.quality +'"'
-    );
+    )).then(this.setState({ file: null  }),
+      this.postCaption.current.value = "" ,
+      this.fileInput.current.value = "",
+      
+      );
     event.preventDefault();
     console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
@@ -221,7 +226,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     console.log("reached");
     // console.log(translated_text);
     //console.log(annotations_cleaned_up);
-    this.setState({ file: null }); //try a refresh
+    
   };
   /*from React and Medium websites combined*/
   render() {
@@ -271,7 +276,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                     annotationslst={this.state.annotations}
                   />
                 ) : (
-                  <img className="u-showImg" src={this.state.file} height="300" width="300" />
+                  
+                  // <img className="u-showImg" src={this.state.file} alt="Please upload!" height="300" width="300" />
+                  <p className="uploadText">Please Upload!</p>
                 )}
               </div>
               <div className="imgUpRight">

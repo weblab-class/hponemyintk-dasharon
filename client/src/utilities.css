@@ -98,6 +98,8 @@ form {
 
 .u-showImg {
   object-fit: contain;
+  border: none;
+  border-color: var(--white);
 }
 
 .u-offsetByX {
