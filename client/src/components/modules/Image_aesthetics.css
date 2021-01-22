@@ -83,6 +83,18 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   border-radius: 5px;
 }
 
+.button {
+  transition-duration: 0s;
+  opacity: 0.7;
+  border: none;
+  background-color: transparent;
+  color: "#1f75ff";
+}
+
+.button:hover {
+  opacity: 1;
+}
+
 .paddedText {
   padding: var(--l);
 }

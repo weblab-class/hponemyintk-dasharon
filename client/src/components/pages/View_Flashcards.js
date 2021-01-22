@@ -16,10 +16,11 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "../modules/ReactAnnotate.js";
-import { useLocation, navigate } from "@reach/router" //ref https://reach.tech/router/api/useLocation
+import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/router/api/useLocation
 
-
-
+// get our fontawesome imports
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -106,8 +107,6 @@ class View_Flashcards extends Component {
       });
     }
   };
-
-
 
   //post request to delete the relevant photo
   handleDelete = (event) => {
@@ -198,8 +197,15 @@ class View_Flashcards extends Component {
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
             {ownCards ? (
-              <button type="button" onClick={this.handleDelete} value={PhotoInfo._id}>
-                Delete
+              <button
+                type="button"
+                onClick={this.handleDelete}
+                value={PhotoInfo._id}
+                className="button button:hover"
+                // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
+              >
+                <FontAwesomeIcon icon={faTrashAlt} size="3x" style={{ color: "#0099ff" }} />
+                {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
               </button>
             ) : (
               <p></p>
