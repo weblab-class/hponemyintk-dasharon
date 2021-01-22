@@ -44,7 +44,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   font-size: 1.1vw;
   /* color: var(--primary); */
   width: 90% !important;
-  border-radius: 2%;
+  /* border-radius: 2%; */
   opacity: 1;
 }
 

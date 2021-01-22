@@ -40,7 +40,7 @@ class NavBar extends Component {
                   Review
                 </Link>
               )}
-              <Link to="/Quiz" className="NavBar-link">
+              <Link to="/QuizSelfMade" className="NavBar-link">
                 Quizzes
               </Link>
               <Link to="/Friends" className="NavBar-link">
