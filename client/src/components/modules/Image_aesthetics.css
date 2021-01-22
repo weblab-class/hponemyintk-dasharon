@@ -178,11 +178,11 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   /*text-align: center;*/
   font-weight: 600;
   color: var(--primary); /*var(--primary);*/
-  font-size: 52px; /*ref https://www.w3schools.com/css/css_font_size.asp*/
+  font-size: 3vw; /*ref https://www.w3schools.com/css/css_font_size.asp*/
   border-style: solid; /*https://www.computerhope.com/issues/ch001392.htm*/
   border-color: var(--secondary);
-  border-radius: 20px;
-  padding: 80px 110px 80px 110px;
+  border-radius: 2%;
+  padding: 20%;
 }
 
 /*ref https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element*/
