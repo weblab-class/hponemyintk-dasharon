@@ -58,6 +58,10 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   position: relative;
 }
 
+.fa-trash-alt {
+  /* width: 1.5vw !important; important overrides anywhere else where you set the width */
+  font-size: 2vw !important; /* !important; important overrides anywhere else where you set the width */
+}
 /* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
 /* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
 .post {
