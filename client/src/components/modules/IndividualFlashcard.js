@@ -5,7 +5,7 @@ import { shuffle } from "../../utilities";
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
 import "./Image_aesthetics.css";
-
+const clonedeep = require('lodash.clonedeep');
 /*
 code for rating bar
 https://material-ui.com/components/rating/
@@ -31,7 +31,8 @@ class IndividualFlashcard extends Component {
       super(props);
       // Initialize Default State
       this.state = {
-        wasAnswerInput : false
+        wasAnswerInput : false,
+        answerArray: []
       };
     }
       //post request to delete the relevant photo
@@ -95,19 +96,20 @@ class IndividualFlashcard extends Component {
       }
     ];
     const shuffledArray = shuffle(answerArray); //shuffle array and return
-    return shuffledArray;
+    this.setState({answerArray : shuffledArray});
   };
-
   //show quiz options if this is a quiz
   showQuizInfo = () => {
     
-    //make answer array
-    let answerArrayrec = this.createAnswerArray();
+    //make answer array if not shuffled yet
+    
+    // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
     if (!this.state.wasAnswerInput) {
+      this.createAnswerArray();
     return(
 
 <>
-{answerArrayrec.map((ans, k) => <button onClick={this.handleClickonAnswer} key = {k}>{ans.text}</button>)}
+{this.state.answerArray.map((ans, k) => <button onClick={this.handleClickonAnswer} key = {k}>{ans.text}</button>)}
       {/* <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[0]}</button><br></br>
       <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[1]}</button><br></br>
       <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[2]}</button><br></br>
@@ -118,7 +120,7 @@ class IndividualFlashcard extends Component {
     }
     else {return (
       <>
-      {answerArrayrec.map((ans, k) => <button style = {{color:ans.color}} key = {k}>{ans.text}</button>)}
+      {this.state.answerArray.map((ans, k) => <button style = {{color:ans.color}} key = {k}>{ans.text}</button>)}
             {/* <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[1]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[2]}</button><br></br>
