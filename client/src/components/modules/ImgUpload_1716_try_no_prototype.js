@@ -22,6 +22,10 @@ import ReactAnnotate from "./ReactAnnotate.js";
 import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import "./Image_aesthetics.css";
+
+// get our fontawesome imports
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSave } from "@fortawesome/free-regular-svg-icons";
 // import translate from 'translate';    //ref translation tlibrary
 // require('dotenv').config();
 // // Code from Nikhil's https://github.com/weblab-workshops/gcp-example - comments below from Nikhil
@@ -337,8 +341,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                   }}
                   icon={<FavoriteIcon fontSize="inherit" />}
                 />
+                <div>
+                  <p></p>
+                </div>
                 <br />
-                <input type="submit" value="Submit flashcard!" />
+                {/* <input type="submit">
+                  <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
+                </input> */}
+                <button type="button" className="button button:hover saveIcon">
+                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} />
+                </button>
               </div>
             </div>
           </div>

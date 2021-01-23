@@ -35,7 +35,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   align-items: center;
   justify-content: center;
   padding: 20px;
-  font-size: 2.5vmin;
+  font-size: 1.4vw;
   position: relative;
 }
 
@@ -74,11 +74,6 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   position: relative;
 }
 
-/* Many thanks to Kye for the kind help with CSS styling of the trash can icon in hackathon */
-.fa-trash-alt {
-  /* width: 1.5vw !important; important overrides anywhere else where you set the width */
-  font-size: 2vw !important; /* !important; important overrides anywhere else where you set the width */
-}
 /* ref: https://codepen.io/MustafaEmad/pen/NArYZL */
 /* ref: https://www.w3schools.com/css/css3_shadows_box.asp */
 .post {
@@ -121,6 +116,22 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   position: absolute;
   top: 0;
   right: 0;
+}
+
+/* Many thanks to Kye for the kind help with CSS styling of the trash can icon in hackathon */
+.fa-trash-alt {
+  /* width: 1.5vw !important; important overrides anywhere else where you set the width */
+  font-size: 2vw !important; /* !important; important overrides anywhere else where you set the width */
+}
+
+.saveIcon {
+  position: absolute;
+  top: 90%;
+  right: -2%;
+}
+
+.fa-save {
+  font-size: 3vw !important; /* !important; important overrides anywhere else where you set the width */
 }
 
 .paddedText {
