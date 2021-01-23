@@ -5,7 +5,7 @@ import { shuffle } from "../../utilities";
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
 import "./Image_aesthetics.css";
-const clonedeep = require('lodash.clonedeep');
+const clonedeep = require("lodash.clonedeep");
 /*
 code for rating bar
 https://material-ui.com/components/rating/
@@ -27,23 +27,23 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 //this gives 1 flashcard
 
 class IndividualFlashcard extends Component {
-    constructor(props) {
-      super(props);
-      // Initialize Default State
-      this.state = {
-        wasAnswerInput : false,
-        answerArray: []
-      };
-    }
-      //post request to delete the relevant photo
-      //many thanks to Jess for help revising to exclude target.value which is not ideal in hackathon
+  constructor(props) {
+    super(props);
+    // Initialize Default State
+    this.state = {
+      wasAnswerInput: false,
+    };
+    this.answerArray = [];
+  }
+  //post request to delete the relevant photo
+  //many thanks to Jess for help revising to exclude target.value which is not ideal in hackathon
   handleDelete = (event) => {
     event.preventDefault();
     //let photoId = photoToDelete._id;
     console.log("DELETE CLICKED");
     console.log(this.props.photoFacts._id);
     // console.log(event.target.value);
-    let photoDeleteBody = { deletionId: this.props.photoFacts._id}; //set the request to be for this photo ID
+    let photoDeleteBody = { deletionId: this.props.photoFacts._id }; //set the request to be for this photo ID
     post("/api/deletePhoto", photoDeleteBody); //run the delete request
     alert("Adios photo! Au revoir! Your photo has been deleted");
     this.props.deletionFunction(this.props.photoFacts._id);
@@ -52,7 +52,7 @@ class IndividualFlashcard extends Component {
 
   //cleans up annotations many thanks to Justin in Office Hours for forEach and push and editing
   cleanAnnotInput = (initAnnotInput) => {
-    let newInput = []
+    let newInput = [];
 
     initAnnotInput.forEach((obj) => {
       let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
@@ -67,14 +67,14 @@ class IndividualFlashcard extends Component {
 
   //Color answers by whether or not they are correct
   handleClickonAnswer = (event) => {
-    this.setState({wasAnswerInput : true})
+    this.setState({ wasAnswerInput: true });
   };
 
   //when next is pressed, delete from array so next photo is seen
   //using prop function from quiz component
   handleNext = () => {
     this.props.movetoNextPhoto();
-    this.setState({wasAnswerInput : false})
+    this.setState({ wasAnswerInput: false });
   };
 
   //create answer array in a randomized order
@@ -83,49 +83,59 @@ class IndividualFlashcard extends Component {
     let answerArray = [
       {
         text: this.props.wrongAnswers[0],
-        color: "red"
-      }, {
+        color: "red",
+      },
+      {
         text: this.props.wrongAnswers[1],
-        color: "red"
-      }, {
+        color: "red",
+      },
+      {
         text: this.props.wrongAnswers[2],
-        color: "red"
-      }, {
+        color: "red",
+      },
+      {
         text: this.props.photoFacts.annotation_info_array[0].data.text,
-        color: "green"
-      }
+        color: "green",
+      },
     ];
     const shuffledArray = shuffle(answerArray); //shuffle array and return
-    this.setState({answerArray : shuffledArray});
+    return shuffledArray;
   };
   //show quiz options if this is a quiz
   showQuizInfo = () => {
-    
     //make answer array if not shuffled yet
-    
+
     // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
     if (!this.state.wasAnswerInput) {
-      this.createAnswerArray();
-    return(
-
-<>
-{this.state.answerArray.map((ans, k) => <button onClick={this.handleClickonAnswer} key = {k}>{ans.text}</button>)}
-      {/* <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[0]}</button><br></br>
+      this.answerArray = this.createAnswerArray();
+      return (
+        <>
+          {this.answerArray.map((ans, k) => (
+            <button onClick={this.handleClickonAnswer} key={k}>
+              {ans.text}
+            </button>
+          ))}
+          {/* <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[0]}</button><br></br>
       <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[1]}</button><br></br>
       <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[2]}</button><br></br>
       <button onClick={this.handleClickonAnswer}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
-      </>
-
+        </>
       );
-    }
-    else {return (
-      <>
-      {this.state.answerArray.map((ans, k) => <button style = {{color:ans.color}} key = {k}>{ans.text}</button>)}
-            {/* <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
+    } else {
+      return (
+        <>
+          {this.answerArray.map((ans, k) => (
+            <button style={{ color: ans.color }} key={k}>
+              {ans.text}
+            </button>
+          ))}
+          {/* <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[1]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[2]}</button><br></br>
             <button style= {{color : "green"}}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
-            </>);};
+        </>
+      );
+    }
   };
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -133,11 +143,12 @@ class IndividualFlashcard extends Component {
     //debugging code
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
-    
+
     console.log("ANNOT ARRAY", this.props.photoFacts.annotation_info_array);
     let annotPhotoInfo = this.cleanAnnotInput(this.props.photoFacts.annotation_info_array);
     if (!annotPhotoInfo) {
-       return null; }
+      return null;
+    }
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
@@ -169,13 +180,21 @@ class IndividualFlashcard extends Component {
             <p>Submitted on: {this.props.photoFacts.submit_stamp}</p>
 
             {/*caption if not in quiz mode, otherwise show quiz questions */}
-            {!this.props.forQuiz?
-            (<p>Caption: {this.props.photoFacts.caption_text_s}</p>) : (this.showQuizInfo())}
+            {!this.props.forQuiz ? (
+              <p>Caption: {this.props.photoFacts.caption_text_s}</p>
+            ) : (
+              this.showQuizInfo()
+            )}
 
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
             <p>Difficulty</p>
-            <Rating precision={0.5} name="difficultyRating" value={this.props.photoFacts.difficulty} disabled />
+            <Rating
+              precision={0.5}
+              name="difficultyRating"
+              value={this.props.photoFacts.difficulty}
+              disabled
+            />
             <p>Quality</p>
             {/* <Typography component="legend">Quality</Typography> *{PhotoInfo.quality} */}
             <Rating
@@ -193,19 +212,26 @@ class IndividualFlashcard extends Component {
             https://www.w3schools.com/tags/tag_button.asp
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-            {(this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz) ? (
+            {this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz ? (
               <button
                 type="button"
                 onClick={this.handleDelete}
-                className="button button:hover trashCan"> 
+                className="button button:hover trashCan"
+              >
                 <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
               </button>
             ) : (
               <p></p>
             )}
-            
+
             {/*if this is a quiz, add a next button*/}
-            {(this.props.forQuiz) ? (<button type="button" onClick={this.handleNext}>Next</button>) : (<p></p>)}
+            {this.props.forQuiz ? (
+              <button type="button" onClick={this.handleNext}>
+                Next
+              </button>
+            ) : (
+              <p></p>
+            )}
           </div>
         </div>
         <br />
@@ -215,10 +241,8 @@ class IndividualFlashcard extends Component {
 
   //give 1 flashcard
   render() {
-      return(
-          this.GetPhotoInfo()
-      );
-  };
+    return this.GetPhotoInfo();
+  }
 }
 
 export default IndividualFlashcard;
