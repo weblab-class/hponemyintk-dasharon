@@ -138,7 +138,7 @@ export default class Simple extends Component {
                 onMouseOut={this.onMouseOut(annotation.data.id)}
                 key={annotation.data.id}
               >
-                {annotation.data.text}
+                {annotation.data.textforBox}
               </Comment>
             ))}
           </Comments>
@@ -170,7 +170,7 @@ export default class Simple extends Component {
                 onMouseOut={this.onMouseOut(annotation.data.id)}
                 key={annotation.data.id}
               >
-                {annotation.data.text}
+                {annotation.data.textforBox}
               </Comment>
             ))}
           </Comments>
