@@ -8,10 +8,10 @@ import { get } from "../../utilities";
 class QuizSelfMade_DS extends Component {
   constructor(props) {
     super(props);
-
-    
-
-    this.state = { dataSet : [] };
+    this.state = { dataSet : [],
+    onPhoto: 0,
+    looped: false,
+    loaded: false}
     //this.handleClick = this.handleClick.bind(this);
   } // end constructor
 
@@ -39,10 +39,18 @@ class QuizSelfMade_DS extends Component {
   //pass as prop to individual flashcard components
   //take in photo id
   //many thanks to Jess, this should delete 1 photo then another should show up
-  deletefromPhotoArray = (photoforDeletion) => {
-    this.setState({
-      photo_info_array : this.state.dataSet.filter((p) => (p._id !== photoforDeletion))
-    })
+  movetoNextPhoto = () => {
+    // this.setState({
+    //   photo_info_array : this.state.dataSet.filter((p) => (p._id !== photoforDeletion))
+    // })
+    console.log("starting movetonextphoto")
+    if (this.state.onPhoto < 3) {
+      this.setState({onPhoto : this.state.onPhoto + 1})
+    }
+    else {
+      this.setState({onPhoto : 0, looped : true})
+    };
+    console.log("CHANGING ON PHOTO TO", this.state.onPhoto)
   };
 
   //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
@@ -78,9 +86,10 @@ class QuizSelfMade_DS extends Component {
         console.log("question array", questionArray);
       this.setState({
         dataSet: questionArray,
+        loaded : true
       });
       });
-    }
+    };
 
   handleClick(choice) {
     if (choice == this.state.dataSet[this.state.current].correct) {
@@ -101,12 +110,9 @@ class QuizSelfMade_DS extends Component {
   render() {
     return (
       <div className="u-flex u-flex-justifyCenter">
-        <div className="postColumn">
-          {(this.state.dataSet.length > 0)? 
-          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[0].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers}/>): (<p>All Done!</p>)
-          }
-          {console.log(this.state.dataSet)}
-        </div>
+          {this.state.loaded? 
+          ((this.state.dataSet.length > 0) ? 
+          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[this.state.onPhoto].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers} movetoNextPhoto = {this.movetoNextPhoto} hasLooped={this.state.looped}/>): (<p>No photos!</p>)) : (<p>Loading!</p>)}
       </div>
     );
   }

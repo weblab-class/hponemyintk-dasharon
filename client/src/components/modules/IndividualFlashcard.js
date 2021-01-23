@@ -31,7 +31,7 @@ class IndividualFlashcard extends Component {
       super(props);
       // Initialize Default State
       this.state = {
-        wrongAnswerInput : false
+        wasAnswerInput : false
       };
     }
       //post request to delete the relevant photo
@@ -49,24 +49,41 @@ class IndividualFlashcard extends Component {
     //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
   };
 
-  //cleans up annotations
+  //cleans up annotations many thanks to Justin in Office Hours for forEach and push and editing
   cleanAnnotInput = (initAnnotInput) => {
-    initAnnotInput.map((obj) => {
-      obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
-      delete obj.geometry.shape_kind;
+    let newInput = []
+
+    initAnnotInput.forEach((obj) => {
+      let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
+      newInput.push(newObj);
+      // let newObj = {};
+      // newObj.data = obj.data;
+      // obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
+      // delete obj.geometry.shape_kind;
     });
-    return initAnnotInput;
+    return newInput;
   };
 
-  //if there is a wrong answer aler the answer is wrong
+  //if there is a wrong answer alert the answer is wrong
   handleWrong = (event) => {
-    alert("wrong answer");
-    this.setState({wrongAnswerInput : true})
-  }
+    this.setState({wasAnswerInput : true})
+  };
+
+    //if there is a correct answer alert the answer is wrong
+    handleRight = (event) => {
+      this.setState({wasAnswerInput : true})
+    };
+
+  //when next is pressed, delete from array so next photo is seen
+  //using prop function from quiz component
+  handleNext = () => {
+    this.props.movetoNextPhoto();
+    this.setState({wasAnswerInput : false})
+  };
 
   //show quiz options if this is a quiz
   showQuizInfo = () => {
-    if (!this.state.wrongAnswerInput) {
+    if (!this.state.wasAnswerInput) {
     return(
 <>
       <button onClick={this.handleWrong}>{this.props.wrongAnswers[0]}</button><br></br>
@@ -89,12 +106,35 @@ class IndividualFlashcard extends Component {
     //debugging code
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
-
-    //change annotation field so it is type which react-image-annotate needs
+    
+    // //if in quiz and already looped use annotations as they are
+    // if (c) {
+    //   console.log("HAS LOOPED");
+    //   let annotPhotoInfo = this.props.photoFacts.annotation_info_array;
+    //   console.log(annotPhotoInfo);
+    //   if (!annotPhotoInfo) {
+    //     return null;
+    //   }}
+    // else
+    // //otherwisechange annotation field so it is type which react-image-annotate needs
+    // {
+    // console.log(this.props.hasLooped)
+    console.log("ANNOT ARRAY", this.props.photoFacts.annotation_info_array);
     let annotPhotoInfo = this.cleanAnnotInput(this.props.photoFacts.annotation_info_array);
     if (!annotPhotoInfo) {
-      return null;
-    }
+       return null; } //else {let annotPhotoInfo = [];
+      //   if (!annotPhotoInfo) {
+      //     return null; }}
+    // }
+    // else {
+    //   console.log("LOOPED");
+    //   console.log(this.props.photoFacts.annotation_info_array[0].geometry);
+    //   let annotPhotoInfo = this.props.photoFacts.annotation_info_array;
+    //   if (!annotPhotoInfo) {
+    //     return null; }
+    //   }
+    // }
+    // }};
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
@@ -160,6 +200,9 @@ class IndividualFlashcard extends Component {
             ) : (
               <p></p>
             )}
+            
+            {/*if this is a quiz, add a next button*/}
+            {(this.props.forQuiz) ? (<button type="button" onClick={this.handleNext}>Next</button>) : (<p></p>)}
           </div>
         </div>
         <br />
