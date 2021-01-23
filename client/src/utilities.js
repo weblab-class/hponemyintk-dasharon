@@ -61,3 +61,15 @@ export function post(endpoint, params = {}) {
       throw `POST request to ${endpoint} failed with error:\n${error}`;
     });
 }
+
+//shuffle array to rearrange array ref https://flaviocopes.com/how-to-shuffle-array-javascript/
+//https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+export function shuffle(arrayInput) {
+        for(let iii = arrayInput.length - 1; iii > 0; iii--){
+          const jjj = Math.floor(Math.random() * iii)
+          const temp = arrayInput[iii]
+          arrayInput[iii] = arrayInput[jjj]
+          arrayInput[jjj] = temp
+        };
+        return arrayInput;
+      }

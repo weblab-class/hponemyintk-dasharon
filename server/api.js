@@ -190,8 +190,8 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
   // console.log("api.js photosimpletest req is:::", req.query);
   try {
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({}); //1 get one photo array from mongoose
-    //iterate through all user's photos, note this could incorporate a map/promise all
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({}).limit(10); //1 get photo array from mongoose
+    //iterate through all user's photos, note this could incorporate a map/promise all, limit to 5 photos, ref https://www.tutorialspoint.com/find-a-specified-amount-of-records-in-mongodb
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
       UserSchema[u_info].photo_placeholder = imagePromise;

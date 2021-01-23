@@ -1,6 +1,6 @@
 import { render } from "react-dom";
 import React, { Component } from "react";
-import { get, post } from "../../utilities";
+import { shuffle } from "../../utilities";
 // import authentication library
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
@@ -64,15 +64,10 @@ class IndividualFlashcard extends Component {
     return newInput;
   };
 
-  //if there is a wrong answer alert the answer is wrong
-  handleWrong = (event) => {
+  //Color answers by whether or not they are correct
+  handleClickonAnswer = (event) => {
     this.setState({wasAnswerInput : true})
   };
-
-    //if there is a correct answer alert the answer is wrong
-    handleRight = (event) => {
-      this.setState({wasAnswerInput : true})
-    };
 
   //when next is pressed, delete from array so next photo is seen
   //using prop function from quiz component
@@ -81,23 +76,53 @@ class IndividualFlashcard extends Component {
     this.setState({wasAnswerInput : false})
   };
 
+  //create answer array in a randomized order
+  createAnswerArray = () => {
+    //set up array of answer objects- 1 text 2 color
+    let answerArray = [
+      {
+        text: this.props.wrongAnswers[0],
+        color: "red"
+      }, {
+        text: this.props.wrongAnswers[1],
+        color: "red"
+      }, {
+        text: this.props.wrongAnswers[2],
+        color: "red"
+      }, {
+        text: this.props.photoFacts.annotation_info_array[0].data.text,
+        color: "green"
+      }
+    ];
+    const shuffledArray = shuffle(answerArray); //shuffle array and return
+    return shuffledArray;
+  };
+
   //show quiz options if this is a quiz
   showQuizInfo = () => {
+    
+    //make answer array
+    let answerArrayrec = this.createAnswerArray();
     if (!this.state.wasAnswerInput) {
     return(
+
 <>
-      <button onClick={this.handleWrong}>{this.props.wrongAnswers[0]}</button><br></br>
-      <button onClick={this.handleWrong}>{this.props.wrongAnswers[1]}</button><br></br>
-      <button onClick={this.handleWrong}>{this.props.wrongAnswers[2]}</button><br></br>
-      <button onClick={this.handleRight}>correct</button><br></br>
-      </>);
+{answerArrayrec.map((ans, k) => <button onClick={this.handleClickonAnswer} key = {k}>{ans.text}</button>)}
+      {/* <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[0]}</button><br></br>
+      <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[1]}</button><br></br>
+      <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[2]}</button><br></br>
+      <button onClick={this.handleClickonAnswer}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
+      </>
+
+      );
     }
     else {return (
       <>
-            <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
+      {answerArrayrec.map((ans, k) => <button style = {{color:ans.color}} key = {k}>{ans.text}</button>)}
+            {/* <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[1]}</button><br></br>
             <button style= {{color : "red"}}>{this.props.wrongAnswers[2]}</button><br></br>
-            <button style= {{color : "green"}}>correct</button><br></br>
+            <button style= {{color : "green"}}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
             </>);};
   };
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.

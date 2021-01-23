@@ -283,7 +283,7 @@ class View_Flashcards extends Component {
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne}/>
+                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false}/>
               )}
             </div>
           </>

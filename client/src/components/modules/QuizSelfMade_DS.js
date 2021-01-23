@@ -97,7 +97,7 @@ class QuizSelfMade_DS extends Component {
 
           let questionObject = {photoData : newPhotoInfo, //record this photo with only the new 1 annotation- not all
                             //annotationtoDisplay: ImageInfo.infoOnPhotos[ii].annotation_info_array[annot], //record this annotation
-                            wrongAnswers : ["wrong1", "wrong2", "wrong3"]}; //initial test wrong answers
+                            wrongAnswers : ["perro", "libro", "mariposa"]}; //initial test wrong answers
                             console.log(questionObject);
 
           //run concatentation once in each inner for loop
