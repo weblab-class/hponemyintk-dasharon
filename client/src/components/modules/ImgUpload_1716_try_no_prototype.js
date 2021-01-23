@@ -186,58 +186,57 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
     //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
-    this.readImage(this.state.raw_file)
-      .then((image_as_url) => {
-        //prep post request
-        //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
-        //now set up info for post with the image as data url
-        console.log("PostCaption!!!!", this.postCaption.current.value);
-        let test_body = {
-          caption_text: this.postCaption.current.value,
-          //tag_text: this.curTag.current.value,
-          photo_placeholder: image_as_url,
-          difficulty: this.state.difficulty,
-          quality: this.state.quality,
-          timestamp: new Date(Date.now()).toLocaleString([], {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          }), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
-          //taglist: this.state.taglist,
-          //DS edit 1/17 to add this
-          annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
-          //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
-        };
+    this.readImage(this.state.raw_file).then((image_as_url) => {
+      //prep post request
+      //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
+      //now set up info for post with the image as data url
+      console.log("PostCaption!!!!", this.postCaption.current.value);
+      let test_body = {
+        caption_text: this.postCaption.current.value,
+        //tag_text: this.curTag.current.value,
+        photo_placeholder: image_as_url,
+        difficulty: this.state.difficulty,
+        quality: this.state.quality,
+        timestamp: new Date(Date.now()).toLocaleString([], {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }), //record date, from https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i, https://stackoverflow.com/questions/17913681/how-do-i-use-tolocaletimestring-without-displaying-seconds
+        //taglist: this.state.taglist,
+        //DS edit 1/17 to add this
+        annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
+        //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
+      };
+      console.log("After test_body*");
 
-        //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
-        //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
-        //Otherwise set these to be strings saying there are no tags
-        if (this.state.annotations.length > 0) {
-          test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
-          test_body.translatedLanguage = this.state.learningLanguage;
-        } else {
-          (test_body.inputLanguageInfo = "No_Language_Used"),
-            (test_body.translatedLanguage = "No_Language_Used");
-        }
-        console.log("INPUT TO POST", test_body);
-        //run post request
-        post("/api/photo_simple_w_annotate", test_body);
-      })
-      .then(
+      //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
+      //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
+      //Otherwise set these to be strings saying there are no tags
+      if (this.state.annotations.length > 0) {
+        test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
+        test_body.translatedLanguage = this.state.learningLanguage;
+      } else {
+        (test_body.inputLanguageInfo = "No_Language_Used"),
+          (test_body.translatedLanguage = "No_Language_Used");
+      }
+      console.log("INPUT TO POST", test_body);
+      //run post request
+      post("/api/photo_simple_w_annotate", test_body).then(() => {
         alert(
           "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
           // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
           // + '\nDifficulty is : "'  + this.state.difficulty +'"'
           // + '\nQuality is : "'  + this.state.quality +'"'
-        )
-      )
-      .then(
-        this.setState({ file: null })
-        // this.postCaption.current.value = "test" ,
-        // this.fileInput.current.value = "test2",
-      );
+        ),
+          this.setState({ file: null }),
+          (this.postCaption.current.value = ""),
+          (this.fileInput.current.value = ""),
+          console.log("This is console log in imgupload****");
+      });
+    });
+
     event.preventDefault();
     //console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
@@ -282,12 +281,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             Upload file:
             {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
-            <input
-              type="file"
-              ref={this.fileInput}
-              accept=".png,.jpg,.jpeg"
-              onChange={this.handleChange}
-            />
+            <div>
+              <input
+                type="file"
+                ref={this.fileInput}
+                accept=".png,.jpg,.jpeg"
+                onChange={this.handleChange}
+              />
+            </div>
             <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
               <div className="imgUpLeft">
                 {/* Meant to only have annotating when you uploaded an image */}

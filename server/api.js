@@ -126,6 +126,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
       (userUpdating.photoCount = userUpdating.photoCount + 1),
       userUpdating.save(),
       console.log("USER UPDATED AFTER 2", userUpdating);
+    res.send(userUpdating);
   });
 });
 
@@ -148,18 +149,17 @@ router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
         //Decrement the photo count.
         //ref https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
         try {
-        User.findById(req.user._id).then((userUpdating) => {
-          console.log("UPDATING AFTER 2", userUpdating),
-            (userUpdating.photoCount = userUpdating.photoCount - 1),
-            userUpdating.save(),
-            console.log("USER UPDATED AFTER 2", userUpdating);
+          User.findById(req.user._id).then((userUpdating) => {
+            console.log("UPDATING AFTER 2", userUpdating),
+              (userUpdating.photoCount = userUpdating.photoCount - 1),
+              userUpdating.save(),
+              console.log("USER UPDATED AFTER 2", userUpdating);
             res.send({});
-        });
-      }
-      catch (e) {
-        console.log('user update error')
-        res.status(400).json({ message: e.message });
-      }
+          });
+        } catch (e) {
+          console.log("user update error");
+          res.status(400).json({ message: e.message });
+        }
       }
     }
   );
@@ -190,15 +190,14 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
   // console.log("api.js photosimpletest req is:::", req.query);
   try {
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
-    }); //1 get one photo array from mongoose
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({}); //1 get one photo array from mongoose
     //iterate through all user's photos, note this could incorporate a map/promise all
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
       UserSchema[u_info].photo_placeholder = imagePromise;
     } //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);
-    res.send({infoOnPhotos: UserSchema});
+    res.send({ infoOnPhotos: UserSchema });
     //here res is shorthand for asking the server (port3000) to send back this stiched up schema back to frontend (port5000)
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
