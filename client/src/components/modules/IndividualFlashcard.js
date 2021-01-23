@@ -94,7 +94,7 @@ class IndividualFlashcard extends Component {
         color: "red",
       },
       {
-        text: this.props.photoFacts.annotation_info_array[0].data.text,
+        text: this.props.correctAnswer,
         color: "green",
       },
     ];

@@ -87,6 +87,9 @@ class QuizSelfMade_DS extends Component {
         
         for (let annot = 0; annot < ImageInfo.infoOnPhotos[ii].annotation_info_array.length; annot++)
         {
+          const onewordwrongAnswers = ["perro", "libro", "mariposa", "semana", "reloj", "domingo"]; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
+          const twowordwrongAnswers = ["dos libros", "mi amigo", "feliz cumpleaños", "yo sonrío"]; //two word wrong answers, maybe pull three for each
+                            
           //nested spread operator, will this copy everything?
           // let newPhotoInfo = {...ImageInfo.infoOnPhotos[ii], annotation_info_array: {...ImageInfo.infoOnPhotos[ii].annotation_info_array, geometry : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.geometry}, data : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.data}} }; //make a copy of object
           //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
@@ -95,9 +98,20 @@ class QuizSelfMade_DS extends Component {
           newPhotoInfo.annotation_info_array = [allAnnotArray[annot]] //replace the copy's annotation with just 1 annotation
           //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
 
+          //record correct anser and change tag
+          const correctAnswer = newPhotoInfo.annotation_info_array[0].data.text //get correct answer
+          newPhotoInfo.annotation_info_array[0].data.text = "Please select the correct answer!" //change the text
+          
+          //maybe only go here if correctAnswer has 1-2 words?
+          
           let questionObject = {photoData : newPhotoInfo, //record this photo with only the new 1 annotation- not all
                             //annotationtoDisplay: ImageInfo.infoOnPhotos[ii].annotation_info_array[annot], //record this annotation
-                            wrongAnswers : ["perro", "libro", "mariposa"]}; //initial test wrong answers
+                            correctAnswer : correctAnswer,
+
+                            //Maybe add in a check of how many words are in the correct answer, and if there are 1 or 2, randomly select 3 choice from the appropriate array above?
+
+                            wrongAnswers : ["perro", "libro", "mariposa"]}; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
+                            
                             console.log(questionObject);
 
           //run concatentation once in each inner for loop
@@ -143,7 +157,7 @@ class QuizSelfMade_DS extends Component {
           {this.state.loaded? 
           //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
           ((this.state.dataSet.length > 0) ? 
-          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[this.state.onPhoto].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers} movetoNextPhoto = {this.movetoNextPhoto} />): (<p>No photos!</p>)) : (<p>Loading!</p>)}
+          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[this.state.onPhoto].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers} movetoNextPhoto = {this.movetoNextPhoto} correctAnswer = {this.state.dataSet[this.state.onPhoto].correctAnswer} />): (<p>No photos!</p>)) : (<p>Loading!</p>)}
       </div>
     );
   }
