@@ -172,7 +172,7 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
       uid: req.query.userId,
-    }); //1 get one photo array from mongoose
+    }).sort({"submit_stamp_raw": -1}); //1 get one photo array from mongoose, sort so latest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
     //iterate through all user's photos, note this could incorporate a map/promise all
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
@@ -213,7 +213,7 @@ router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({
       uid: req.query.userId,
-    }); //1 get one photo array from mongoose
+    }).sort({"submit_stamp_raw" : -1}); //1 get one photo array from mongoose and get newest, ref https://stackoverflow.com/questions/12467102/how-to-get-the-latest-and-oldest-record-in-mongoose-js-or-just-the-timespan-bet
     const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder); //2 convert to google cloud object
     UserSchema.photo_placeholder = imagePromise; //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);
