@@ -1,5 +1,21 @@
 import React, { Component } from "react";
 import Annotation from "react-image-annotation";
+import { PointSelector, RectangleSelector, OvalSelector } from "react-image-annotation";
+
+const Box = ({ children, geometry, style }) => (
+  <div
+    style={{
+      ...style,
+      position: "absolute",
+      left: `${geometry.x}%`,
+      top: `${geometry.y}%`,
+      height: `${geometry.height}%`,
+      width: `${geometry.width}%`,
+    }}
+  >
+    {children}
+  </div>
+);
 
 export default class Simple extends Component {
   state = {
@@ -33,6 +49,24 @@ export default class Simple extends Component {
     });
   };
 
+  renderHighlight = ({ annotation, active }) => {
+    const { geometry } = annotation;
+    if (!geometry) return null;
+
+    return (
+      <Box
+        key={annotation.data.id}
+        geometry={geometry}
+        style={{
+          border: "solid 1px black",
+          boxShadow: active && "0 0 20px 20px rgba(255, 255, 255, 0.3) inset",
+        }}
+      >
+        Custom Highlight
+      </Box>
+    );
+  };
+
   //render with or without an option to edit with a tag
   render() {
     //if edits are allowed return with an onChange
@@ -62,6 +96,7 @@ export default class Simple extends Component {
           annotations={this.props.annotationslst}
           type={this.state.type}
           value={this.state.annotation}
+          renderHighlight={this.renderHighlight}
           allowTouch
         />
       );
