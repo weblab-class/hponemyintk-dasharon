@@ -4,6 +4,7 @@ import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
 import { get } from "../../utilities";
+const clonedeep = require('lodash.clonedeep');
 
 class QuizSelfMade_DS extends Component {
   constructor(props) {
@@ -89,7 +90,8 @@ class QuizSelfMade_DS extends Component {
           //nested spread operator, will this copy everything?
           // let newPhotoInfo = {...ImageInfo.infoOnPhotos[ii], annotation_info_array: {...ImageInfo.infoOnPhotos[ii].annotation_info_array, geometry : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.geometry}, data : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.data}} }; //make a copy of object
           //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
-          let newPhotoInfo = Object.assign(ImageInfo.infoOnPhotos[ii]);
+          //let newPhotoInfo = Object.assign(ImageInfo.infoOnPhotos[ii]);
+          const newPhotoInfo = clonedeep(ImageInfo.infoOnPhotos[ii]) //ref https://flaviocopes.com/how-to-clone-javascript-object/
           newPhotoInfo.annotation_info_array = [allAnnotArray[annot]] //replace the copy's annotation with just 1 annotation
           //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
 
@@ -102,6 +104,15 @@ class QuizSelfMade_DS extends Component {
           questionArray = questionArray.concat(questionObject);
         }
       }
+
+        //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
+        //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+        for(let iii = questionArray.length - 1; iii > 0; iii--){
+          const jjj = Math.floor(Math.random() * iii)
+          const temp = questionArray[iii]
+          questionArray[iii] = questionArray[jjj]
+          questionArray[jjj] = temp
+        };
         console.log("question array", questionArray);
       this.setState({
         dataSet: questionArray,
