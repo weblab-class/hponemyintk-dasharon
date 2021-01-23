@@ -176,12 +176,12 @@ class IndividualFlashcard extends Component {
           {/* info on submission*/}
           <div className="postRight">
             {/* <div> */}
-            <p>Submitted by: {this.props.photoFacts.uname}</p>
-            <p>Submitted on: {this.props.photoFacts.submit_stamp}</p>
+            <p>{this.props.photoFacts.uname}</p>
+            <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
 
             {/*caption if not in quiz mode, otherwise show quiz questions */}
             {!this.props.forQuiz ? (
-              <p>Caption: {this.props.photoFacts.caption_text_s}</p>
+              <p>{this.props.photoFacts.caption_text_s}</p>
             ) : (
               this.showQuizInfo()
             )}
@@ -230,7 +230,7 @@ class IndividualFlashcard extends Component {
                 Next
               </button>
             ) : (
-              <p></p>
+<p></p>
             )}
           </div>
         </div>

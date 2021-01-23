@@ -113,12 +113,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             "OUTPUT WAS IN",
             translatedString.output[1].data.translations[0].detectedSourceLanguage
           ),
-          // console.log("OUTPUT", translatedString.output[1].data),
-          // console.log("OUTPUT", translatedString.output[1].translations),
-          // console.log("OUTPUT", translatedString.output[1].data.translations[0].translatedText),
-          (data.text = data.text + " ⟹ " + translatedString.output[0]),
+
+          data.text = translatedString.output[0], //set translated word to be in tag
+          data.textforBox = initString, //set original word to be in box
           //3.5 print out the translation for the user
-          alert("translated " + initString + " to " + translatedString.output[0]),
+          
           console.log("TRANSLATED", data.text),
           //4 set state of annotations
           this.setState({
@@ -130,14 +129,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               },
             }),
 
-            //add language of input tag to list of native languages detected
-            //push thod https://www.w3schools.com/jsref/jsref_push.asp
+            //add language of input tag to list of native languages detected ref push thod https://www.w3schools.com/jsref/jsref_push.asp
             nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(
               translatedString.output[1].data.translations[0].detectedSourceLanguage
             ),
           });
-        //5 alert that translation worked why can this not accept objects???????
-        // alert("Translated" + {} + " to "+ {translatedString})
+          console.log("NEW OBJECT", data)
+
       }
     );
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
@@ -183,6 +181,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   };
   /*from React website above*/
   handleSubmit = (event) => {
+    const submitTime = Date.now(); //set submit time
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
     //Get the image as a data URL which is a promise. Then set up the schema info and have a post occur, modeled off of Skeleton.js in Nikhil's tutorial linked above
@@ -197,7 +196,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
         quality: this.state.quality,
-        timestamp: new Date(Date.now()).toLocaleString([], {
+        timestampRaw: submitTime, //this is not easily readable but is sortable
+        timestamp: new Date(Date.now()).toLocaleString([], { //this is as not easily sortable but is readable
           year: "numeric",
           month: "long",
           day: "numeric",

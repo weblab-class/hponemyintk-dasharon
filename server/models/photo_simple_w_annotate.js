@@ -12,7 +12,8 @@ const AnnotInfoSchema = new mongoose.Schema(
    data:
       {
         id: Number,
-        text: String
+        text: String, //this is the word in the language the user learns
+        textforBox: String, //this is the word in the native language
       },
     geometry:
     {
@@ -35,6 +36,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   uname: String,
   uid: String,
   submit_stamp: String,
+  submit_stamp_raw: String,
   inputLanguages: [String],
   translatedLanguage: String,
   annotation_info_array: [AnnotInfoSchema], //[annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible

@@ -105,6 +105,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         quality: req.body.quality,
         uname: req.user.name,
         uid: req.user._id,
+        submit_stamp_raw: req.body.timestampRaw,
         submit_stamp: req.body.timestamp,
         inputLanguages: req.body.inputLanguageInfo,
         translatedLanguage: req.body.translatedLanguage,
