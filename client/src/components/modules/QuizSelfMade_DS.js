@@ -44,7 +44,7 @@ class QuizSelfMade_DS extends Component {
     //   photo_info_array : this.state.dataSet.filter((p) => (p._id !== photoforDeletion))
     // })
     console.log("starting movetonextphoto")
-    if (this.state.onPhoto < 3) {
+    if (this.state.onPhoto < (this.state.dataSet.length - 1)) {
       this.setState({onPhoto : this.state.onPhoto + 1})
     }
     else {
@@ -76,13 +76,32 @@ class QuizSelfMade_DS extends Component {
         console.log("first elemt", ImageInfo[0]);
         console.log("first photo?", ImageInfo.infoOnPhotos[0]);
         let questionArray = []
-        for (let i = 0; i < ImageInfo.infoOnPhotos.length; i++)
+
+        //loop through each photo
+        for (let ii = 0; ii < ImageInfo.infoOnPhotos.length; ii++)
         {
-          let questionObject = {photoData : ImageInfo.infoOnPhotos[i],
-                            wrongAnswers : ["wrong1", "wrong2", "wrong3"]};
+        //get the entire array set up, and then will edit each photoData object so only 1 annotation is recorded in each entry
+        let allAnnotArray = ImageInfo.infoOnPhotos[ii].annotation_info_array;
+        //loop through each annotation
+        
+        for (let annot = 0; annot < ImageInfo.infoOnPhotos[ii].annotation_info_array.length; annot++)
+        {
+          //nested spread operator, will this copy everything?
+          // let newPhotoInfo = {...ImageInfo.infoOnPhotos[ii], annotation_info_array: {...ImageInfo.infoOnPhotos[ii].annotation_info_array, geometry : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.geometry}, data : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.data}} }; //make a copy of object
+          //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
+          let newPhotoInfo = Object.assign(ImageInfo.infoOnPhotos[ii]);
+          newPhotoInfo.annotation_info_array = [allAnnotArray[annot]] //replace the copy's annotation with just 1 annotation
+          //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
+
+          let questionObject = {photoData : newPhotoInfo, //record this photo with only the new 1 annotation- not all
+                            //annotationtoDisplay: ImageInfo.infoOnPhotos[ii].annotation_info_array[annot], //record this annotation
+                            wrongAnswers : ["wrong1", "wrong2", "wrong3"]}; //initial test wrong answers
                             console.log(questionObject);
+
+          //run concatentation once in each inner for loop
           questionArray = questionArray.concat(questionObject);
         }
+      }
         console.log("question array", questionArray);
       this.setState({
         dataSet: questionArray,
@@ -111,8 +130,9 @@ class QuizSelfMade_DS extends Component {
     return (
       <div className="u-flex u-flex-justifyCenter">
           {this.state.loaded? 
+          //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
           ((this.state.dataSet.length > 0) ? 
-          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[this.state.onPhoto].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers} movetoNextPhoto = {this.movetoNextPhoto} hasLooped={this.state.looped}/>): (<p>No photos!</p>)) : (<p>Loading!</p>)}
+          (<IndividualFlashcard forQuiz ={true} photoFacts = {this.state.dataSet[this.state.onPhoto].photoData} wrongAnswers = {this.state.dataSet[0].wrongAnswers} movetoNextPhoto = {this.movetoNextPhoto} />): (<p>No photos!</p>)) : (<p>Loading!</p>)}
       </div>
     );
   }

@@ -107,34 +107,10 @@ class IndividualFlashcard extends Component {
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
     
-    // //if in quiz and already looped use annotations as they are
-    // if (c) {
-    //   console.log("HAS LOOPED");
-    //   let annotPhotoInfo = this.props.photoFacts.annotation_info_array;
-    //   console.log(annotPhotoInfo);
-    //   if (!annotPhotoInfo) {
-    //     return null;
-    //   }}
-    // else
-    // //otherwisechange annotation field so it is type which react-image-annotate needs
-    // {
-    // console.log(this.props.hasLooped)
     console.log("ANNOT ARRAY", this.props.photoFacts.annotation_info_array);
     let annotPhotoInfo = this.cleanAnnotInput(this.props.photoFacts.annotation_info_array);
     if (!annotPhotoInfo) {
-       return null; } //else {let annotPhotoInfo = [];
-      //   if (!annotPhotoInfo) {
-      //     return null; }}
-    // }
-    // else {
-    //   console.log("LOOPED");
-    //   console.log(this.props.photoFacts.annotation_info_array[0].geometry);
-    //   let annotPhotoInfo = this.props.photoFacts.annotation_info_array;
-    //   if (!annotPhotoInfo) {
-    //     return null; }
-    //   }
-    // }
-    // }};
+       return null; }
     //debugging code
     // console.log("Revised annotation array");
     // console.log(annotPhotoInfo);
