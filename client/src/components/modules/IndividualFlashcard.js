@@ -133,10 +133,7 @@ class IndividualFlashcard extends Component {
           {this.props.curAnsInfo[0] ? (
             <p style={{ color: "green" }}>You got the right anwer!!!</p>
           ) : (
-            <p style={{ color: "red" }}>
-              You chose {this.props.curAnsInfo[1]}, but the right answer is
-              {this.props.correctAnswer}.
-            </p>
+            <p style={{ color: "red" }}>The right answer is {this.props.correctAnswer}.</p>
           )}
           {console.log("this.props.curAnsInfo", this.props.curAnsInfo)}
         </>
@@ -209,18 +206,8 @@ class IndividualFlashcard extends Component {
             {/* <div> */}
             <p>{this.props.photoFacts.uname}</p>
             <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
-
             {/*caption if not in quiz mode, otherwise show quiz questions */}
-            {!this.props.forQuiz ? (
-              this.showCaption()
-            ) : (
-              <>
-                {this.showQuizInfo()}
-                <p> Correct: {this.props.correctCt}</p>
-                <p> Incorrect:{this.props.incorrectCt}</p>
-              </>
-            )}
-
+            {!this.props.forQuiz ? this.showCaption() : <>{this.showQuizInfo()}</>}
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
             <p>Difficulty</p>
@@ -239,7 +226,6 @@ class IndividualFlashcard extends Component {
               icon={<FavoriteIcon fontSize="inherit" />}
               disabled
             /> */}
-
             {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
             https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
             https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
@@ -263,12 +249,21 @@ class IndividualFlashcard extends Component {
             if this is a quiz and an answer is not selected, no next button
             if this is not a quiz then have comments block*/}
             {this.props.forQuiz ? ( //Case 1A- in quiz and input answer- show next
-              this.props.wasAnswerInput ? (
+              // this.props.wasAnswerInput ? (
+              //   <button type="button" onClick={this.props.handleNext}>
+              //     Next
+              //   </button>
+              // ) : (
+              //   <p></p>
+              // ) //Case1B- in quiz and did not yet input answer- show empty tag
+              !this.props.isDone ? (
                 <button type="button" onClick={this.props.handleNext}>
                   Next
                 </button>
               ) : (
-                <p></p>
+                <button type="button" onClick={this.props.handleFinish}>
+                  Finish!
+                </button>
               ) //Case1B- in quiz and did not yet input answer- show empty tag
             ) : (
               //Case 2- not in quiz and then show comments block
