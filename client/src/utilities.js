@@ -65,11 +65,26 @@ export function post(endpoint, params = {}) {
 //shuffle array to rearrange array ref https://flaviocopes.com/how-to-shuffle-array-javascript/
 //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
 export function shuffle(arrayInput) {
-        for(let iii = arrayInput.length - 1; iii > 0; iii--){
-          const jjj = Math.floor(Math.random() * iii)
-          const temp = arrayInput[iii]
-          arrayInput[iii] = arrayInput[jjj]
-          arrayInput[jjj] = temp
-        };
-        return arrayInput;
-      }
+  for (let iii = arrayInput.length - 1; iii > 0; iii--) {
+    const jjj = Math.floor(Math.random() * iii);
+    const temp = arrayInput[iii];
+    arrayInput[iii] = arrayInput[jjj];
+    arrayInput[jjj] = temp;
+  }
+  return arrayInput;
+}
+
+// function to get n random item from a given array
+// ref: https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
+export function getRandom(arr, n) {
+  var result = new Array(n),
+    len = arr.length,
+    taken = new Array(len);
+  if (n > len) throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+    var x = Math.floor(Math.random() * len);
+    result[n] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}

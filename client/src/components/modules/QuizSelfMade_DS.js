@@ -3,7 +3,7 @@ import "./Image_aesthetics.css";
 import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
-import { get } from "../../utilities";
+import { get, getRandom } from "../../utilities";
 const clonedeep = require("lodash.clonedeep");
 
 class QuizSelfMade_DS extends Component {
@@ -12,7 +12,7 @@ class QuizSelfMade_DS extends Component {
     this.state = {
       dataSet: [],
       onPhoto: 0,
-      looped: false,
+      isDone: false,
       loaded: false,
       // the following 2 are for counting correct/inccorect stat in quiz
       correctCt: 0,
@@ -60,8 +60,9 @@ class QuizSelfMade_DS extends Component {
     console.log("starting movetonextphoto");
     if (this.state.onPhoto < this.state.dataSet.length - 1) {
       this.setState({ onPhoto: this.state.onPhoto + 1 });
-    } else {
-      this.setState({ onPhoto: 0, looped: true });
+    }
+    if (this.state.onPhoto === this.state.dataSet.length - 1) {
+      this.setState({ isDone: true });
     }
     console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
   };
@@ -101,9 +102,6 @@ class QuizSelfMade_DS extends Component {
           annot < ImageInfo.infoOnPhotos[ii].annotation_info_array.length;
           annot++
         ) {
-          const onewordwrongAnswers = ["perro", "libro", "mariposa", "semana", "reloj", "domingo"]; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
-          const twowordwrongAnswers = ["dos libros", "mi amigo", "feliz cumpleaños", "yo sonrío"]; //two word wrong answers, maybe pull three for each
-
           //nested spread operator, will this copy everything?
           // let newPhotoInfo = {...ImageInfo.infoOnPhotos[ii], annotation_info_array: {...ImageInfo.infoOnPhotos[ii].annotation_info_array, geometry : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.geometry}, data : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.data}} }; //make a copy of object
           //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
@@ -117,6 +115,96 @@ class QuizSelfMade_DS extends Component {
           newPhotoInfo.annotation_info_array[0].data.text = "Please select the correct answer!"; //change the text
 
           //maybe only go here if correctAnswer has 1-2 words?
+          // https://www.ef.com/wwen/english-resources/english-vocabulary/top-50-nouns/
+          const onewordwrongAnswers = [
+            "perro",
+            "libro",
+            "mariposa",
+            "semana",
+            "reloj",
+            "domingo",
+            "zona",
+            "libro",
+            "negocio",
+            "caja",
+            "niño",
+            "empresa",
+            "país",
+            "día",
+            "ojo",
+            "hecho",
+            "familia",
+            "gobierno",
+            "grupo",
+            "mano",
+            "casa",
+            "trabajo",
+            "vida",
+            "lote",
+            "hombre",
+            "dinero",
+            "mes",
+            "madre",
+            "Señor",
+            "noche",
+            "número",
+            "Vamos",
+            "personas",
+            "cuadrado",
+            "punto",
+            "problema",
+            "programa",
+            "pregunta",
+            "derecho",
+            "habitación",
+            "colegio",
+            "estado",
+            "historia",
+            "estudiante",
+            "estudiar",
+            "sistema",
+            "cosa",
+            "hora",
+            "agua",
+            "camino",
+            "semana",
+            "mujer",
+            "palabra",
+            "trabajo",
+            "mundo",
+            "año",
+          ]; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
+          const twowordwrongAnswers = [
+            "dos libros",
+            "mi amigo",
+            "feliz cumpleaños",
+            "yo sonrío",
+            "Buenos días",
+            "hermoso dia",
+            "perro impresionante",
+            "vida pacifica",
+            "deliciosa manzana",
+            "increíble cascada",
+            "agua refrescante",
+            "mango dulce",
+            "teléfono inteligente",
+            "buen día",
+            "buen trabajo",
+            "buenas tardes",
+          ]; //two word wrong answers, maybe pull three for each
+          let corAnsLen = correctAnswer.split(" ").length;
+          let tmpWrongList = [];
+          if (corAnsLen == 1) {
+            tmpWrongList = getRandom(onewordwrongAnswers, 3);
+          } else {
+            tmpWrongList = getRandom(twowordwrongAnswers, 3);
+          }
+          console.log(
+            "tmpWrongList,corAnsLen,correctAnser",
+            tmpWrongList,
+            corAnsLen,
+            correctAnswer
+          );
 
           let questionObject = {
             photoData: newPhotoInfo, //record this photo with only the new 1 annotation- not all
@@ -125,7 +213,7 @@ class QuizSelfMade_DS extends Component {
 
             //Maybe add in a check of how many words are in the correct answer, and if there are 1 or 2, randomly select 3 choice from the appropriate array above?
 
-            wrongAnswers: ["perro", "libro", "mariposa"],
+            wrongAnswers: tmpWrongList,
           }; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
 
           console.log(questionObject);
@@ -133,6 +221,7 @@ class QuizSelfMade_DS extends Component {
           //run concatentation once in each inner for loop
           questionArray = questionArray.concat(questionObject);
         }
+        console.log("questionArray", questionArray);
       }
 
       //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
@@ -153,17 +242,11 @@ class QuizSelfMade_DS extends Component {
 
   handleClick = (ansString, corAns) => {
     this.setState({ wasAnswerInput: true }); //Color answers by whether or not they are correct
-    console.log("ansString == corAns", ansString.text, corAns);
     if (ansString.text == corAns) {
       this.setState({ correctCt: this.state.correctCt + 1 });
     } else {
       this.setState({ incorrectCt: this.state.incorrectCt + 1 });
     }
-    console.log(
-      "this.state.correctCt,this.state.incorrectCt",
-      this.state.correctCt,
-      this.state.incorrectCt
-    );
   };
 
   render() {
@@ -175,7 +258,7 @@ class QuizSelfMade_DS extends Component {
             <IndividualFlashcard
               forQuiz={true}
               photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
-              wrongAnswers={this.state.dataSet[0].wrongAnswers}
+              wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
               correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
               handleClick={this.handleClick}
               handleNext={this.handleNext}
