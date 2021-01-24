@@ -22,22 +22,22 @@ class QuizSelfMade_DS extends Component {
       curAnsInfo: [],
       readings: [
         {
-          name: "Rights",
+          name: "Correct",
           value: 0,
           percent: 0,
-          color: "green",
+          color: "#5CB85C",
         },
         {
-          name: "Wrongs",
+          name: "Incorrect",
           value: 0,
           percent: 0,
-          color: "red",
+          color: "#D9534F",
         },
         {
           name: "Skipped",
           value: 0,
           percent: 0,
-          color: "#ffa73d",
+          color: "#F0AD4E",
         },
         {
           name: "Unanswered",

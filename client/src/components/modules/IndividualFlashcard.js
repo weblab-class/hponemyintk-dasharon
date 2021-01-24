@@ -117,9 +117,16 @@ class IndividualFlashcard extends Component {
       return (
         <>
           {this.answerArray.map((ans, k) => (
-            <button onClick={() => this.props.handleClick(ans, this.props.correctAnswer)} key={k}>
-              {ans.text}
-            </button>
+            <>
+              <button
+                className="myButton"
+                onClick={() => this.props.handleClick(ans, this.props.correctAnswer)}
+                key={k}
+              >
+                {ans.text}
+              </button>
+              <div>&nbsp;</div>
+            </>
           ))}
         </>
       );
@@ -127,15 +134,18 @@ class IndividualFlashcard extends Component {
       return (
         <>
           {this.answerArray.map((ans, k) => (
-            <button style={{ color: ans.color }} key={k} disabled>
-              {ans.text}
-            </button>
+            <>
+              <button className="myButton" style={{ color: ans.color }} key={k} disabled>
+                {ans.text}
+              </button>
+              <div>&nbsp;</div>
+            </>
           ))}
-          {this.props.curAnsInfo[0] ? (
+          {/* {this.props.curAnsInfo[0] ? (
             <p style={{ color: "green" }}>You got the right anwer!!!</p>
           ) : (
             <p style={{ color: "red" }}>The right answer is {this.props.correctAnswer}.</p>
-          )}
+          )} */}
           {console.log("this.props.curAnsInfo", this.props.curAnsInfo)}
         </>
       );
@@ -205,7 +215,9 @@ class IndividualFlashcard extends Component {
           {/* info on submission-user nam link to profileandddate*/}
           <div className="postRight">
             {/* <div> */}
-            <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">{this.props.photoFacts.uname}</Link>
+            <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
+              {this.props.photoFacts.uname}
+            </Link>
             <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
             {/*caption if not in quiz mode, otherwise show quiz questions */}
             {!this.props.forQuiz ? this.showCaption() : <>{this.showQuizInfo()}</>}
