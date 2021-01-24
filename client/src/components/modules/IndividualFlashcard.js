@@ -249,13 +249,6 @@ class IndividualFlashcard extends Component {
             if this is a quiz and an answer is not selected, no next button
             if this is not a quiz then have comments block*/}
             {this.props.forQuiz ? ( //Case 1A- in quiz and input answer- show next
-              // this.props.wasAnswerInput ? (
-              //   <button type="button" onClick={this.props.handleNext}>
-              //     Next
-              //   </button>
-              // ) : (
-              //   <p></p>
-              // ) //Case1B- in quiz and did not yet input answer- show empty tag
               !this.props.isDone ? (
                 <button type="button" onClick={this.props.handleNext}>
                   Next

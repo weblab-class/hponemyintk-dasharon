@@ -34,6 +34,12 @@ class QuizSelfMade_DS extends Component {
           color: "red",
         },
         {
+          name: "Skipped",
+          value: 0,
+          percent: 0,
+          color: "#ffa73d",
+        },
+        {
           name: "Unanswered",
           value: 100,
           percent: 100,
@@ -47,6 +53,13 @@ class QuizSelfMade_DS extends Component {
   //when next is pressed, delete from array so next photo is seen
   //using prop function from quiz component
   handleNext = () => {
+    !this.state.wasAnswerInput &&
+      this.updateProgress(
+        this.state.readings[0].value,
+        this.state.readings[1].value,
+        this.state.readings[2].value + 1,
+        this.state.readings[3].value - 1
+      );
     this.movetoNextPhoto();
     this.setState({ wasAnswerInput: false });
   };
@@ -77,15 +90,17 @@ class QuizSelfMade_DS extends Component {
   }
 
   // functions to update the progress bar values
-  updateProgress = (corCt, incorCt, unansCt) => {
+  updateProgress = (corCt, incorCt, skipCt, unansCt) => {
     let tmpReadings = clonedeep(this.state.readings);
     tmpReadings[0].value = corCt;
     tmpReadings[1].value = incorCt;
-    tmpReadings[2].value = unansCt;
+    tmpReadings[2].value = skipCt;
+    tmpReadings[3].value = unansCt;
     // update percentages
-    tmpReadings[0].percent = (corCt / (corCt + incorCt + unansCt)) * 100;
-    tmpReadings[1].percent = (incorCt / (corCt + incorCt + unansCt)) * 100;
-    tmpReadings[2].percent = (unansCt / (corCt + incorCt + unansCt)) * 100;
+    tmpReadings[0].percent = (corCt / (corCt + incorCt + unansCt + skipCt)) * 100;
+    tmpReadings[1].percent = (incorCt / (corCt + incorCt + unansCt + skipCt)) * 100;
+    tmpReadings[2].percent = (skipCt / (corCt + incorCt + unansCt + skipCt)) * 100;
+    tmpReadings[3].percent = (unansCt / (corCt + incorCt + unansCt + skipCt)) * 100;
     this.setState({ readings: tmpReadings });
   };
 
@@ -267,6 +282,7 @@ class QuizSelfMade_DS extends Component {
       this.updateProgress(
         this.state.readings[0].value,
         this.state.readings[1].value,
+        this.state.readings[2].value,
         questionArray.length
       );
       console.log("this.state.readings", this.state.readings);
@@ -296,13 +312,15 @@ class QuizSelfMade_DS extends Component {
       this.updateProgress(
         this.state.readings[0].value + 1,
         this.state.readings[1].value,
-        this.state.readings[2].value - 1
+        this.state.readings[2].value,
+        this.state.readings[3].value - 1
       );
     } else {
       this.updateProgress(
         this.state.readings[0].value,
         this.state.readings[1].value + 1,
-        this.state.readings[2].value - 1
+        this.state.readings[2].value,
+        this.state.readings[3].value - 1
       );
     }
   };
@@ -310,6 +328,27 @@ class QuizSelfMade_DS extends Component {
   render() {
     return (
       <>
+        {this.state.showResult ? (
+          <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+            <div className="postColumn">
+              <img
+                src="https://agilites.com/images/news/news-congrads-kkluyshnik-02-04-19.jpg"
+                height="300"
+                width="auto"
+              />
+              <h1 className="u-textCenter">Congrats you are done with the quiz!!!</h1>
+              <div className="u-flex u-flex-justifyCenter">
+                <MultiColorProgressBar readings={this.state.readings} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className="u-flex u-flex-justifyCenter">
+              <MultiColorProgressBar readings={this.state.readings} />
+            </div>
+          </div>
+        )}
         <div className="u-flex u-flex-justifyCenter">
           {this.state.loaded ? (
             //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
@@ -335,27 +374,6 @@ class QuizSelfMade_DS extends Component {
             <p>Loading!</p>
           )}
         </div>
-        {this.state.showResult ? (
-          <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
-            <div className="postColumn">
-              <img
-                src="https://agilites.com/images/news/news-congrads-kkluyshnik-02-04-19.jpg"
-                height="300"
-                width="auto"
-              />
-              <h1 className="u-textCenter">Congrats you are done with the quiz!!!</h1>
-              <div className="u-flex u-flex-justifyCenter">
-                <MultiColorProgressBar readings={this.state.readings} />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className="u-flex u-flex-justifyCenter">
-              <MultiColorProgressBar readings={this.state.readings} />
-            </div>
-          </div>
-        )}
       </>
     );
   }
