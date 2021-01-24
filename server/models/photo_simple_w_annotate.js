@@ -33,7 +33,6 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   tag_text_s: String,
   photo_placeholder: String,
   difficulty: Number,
-  quality: Number,
   uname: String,
   uid: String,
   submit_stamp: String,

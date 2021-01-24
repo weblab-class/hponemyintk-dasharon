@@ -52,7 +52,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     this.state = {
       file: null,
       difficulty: 0,
-      quality: 0,
       annotations: [], // get tags locations and info
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
@@ -60,6 +59,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       submittedCaption: false,
       translatedCaption: "",
       originalCaption: "",
+      raw_file: null,
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -161,6 +161,19 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       raw_file: event.target.files[0], //raw file for the readImage function to get a data URL
       //file_as_data_url: readImage(event.target.files[0]).then((data_rep) => {return data_rep;}) //clumsy 1st attempt to handle how readImage gives back a promise
     });
+
+    //if already submitted caption reset
+    if (this.state.submittedCaption) {
+      this.setState(
+        {
+          submittedCaption : false,
+          translatedCaption: "",
+          originalCaption: "",
+          annotations: [],
+          difficulty: 0,
+        }
+      )
+    };
   };
   //From Nikhil GCP tutorial, to get to image that can be saved, with many thanks!
   //(https://github.com/weblab-workshops/gcp-example/tree/main/server)
@@ -236,7 +249,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
-        quality: this.state.quality,
         timestampRaw: submitTime, //this is not easily readable but is sortable
         timestamp: new Date(Date.now()).toLocaleString([], { //this is as not easily sortable but is readable
           year: "numeric",
@@ -373,6 +385,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 <Rating
                   precision={0.5}
                   name="difficultyRating"
+                  value={this.state.difficulty}
                   onChange={(event, newvalue) => {
                     this.setState({ difficulty: newvalue });
                   }}

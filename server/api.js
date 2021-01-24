@@ -98,7 +98,6 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         tag_text_s: req.body.tag_text,
         photo_placeholder: image_upload_info,
         difficulty: req.body.difficulty,
-        quality: req.body.quality,
         uname: req.user.name,
         uid: req.user._id,
         submit_stamp_raw: req.body.timestampRaw,
