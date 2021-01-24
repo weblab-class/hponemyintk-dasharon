@@ -125,6 +125,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           (data.text = translatedString.output[0]), //set translated word to be in tag
           (data.textforBox = initString), //set original word to be in box
           //3.5 print out the translation for the user
+          data.nativeLanguageTag = initString, //also store native and learning language tags explicitly for flipping
+          data.learningLanguageTag = translatedString.output[0]
 
           console.log("TRANSLATED", data.text),
           //4 set state of annotations

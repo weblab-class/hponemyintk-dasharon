@@ -18,7 +18,8 @@ class Friends_1251 extends Component {
     this.state = {
       allUserList: [], //set initial user list to be empty
       allPhotos: [],
-      showInNativeLanguage: false
+      showInNativeLanguage: false,
+      neverSwitched: false
     };
   }
 
@@ -39,7 +40,7 @@ class Friends_1251 extends Component {
     }
   }
 
-  //async/await ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+  //async/await course slides were very helpful
   getUsers = async() => {
     try {
     const allUsers = await get("/api/all_user_find");
@@ -77,6 +78,7 @@ class Friends_1251 extends Component {
     //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
     switchLanguage = (event) => {
       this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
+      console.log("IN SWITCH LANGUAGE", this.state.showInNativeLanguage);
       this.runFlip();
     };
 
@@ -86,11 +88,17 @@ class Friends_1251 extends Component {
       {
         for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
         {
-          const initialTag = this.state.allPhotos[pp].annotation_info_array[aa].data.text;
-          const initialText = this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox;
-          this.state.allPhotos[pp].annotation_info_array[aa].data.text = initialText;
-          this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox = initialTag;
-          console.log("in inner loop");
+          console.log("BOOLEAN", this.state.showInNativeLanguage)
+          if (!this.state.showInNativeLanguage)
+          {
+          this.state.allPhotos[pp].annotation_info_array[aa].data.text = this.state.allPhotos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+          this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox = this.state.allPhotos[pp].annotation_info_array[aa].data.learningLanguageTag;
+          }
+          else
+          {
+            this.state.allPhotos[pp].annotation_info_array[aa].data.text = this.state.allPhotos[pp].annotation_info_array[aa].data.learningLanguageTag;
+            this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox = this.state.allPhotos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+          }
         }
       }
 };

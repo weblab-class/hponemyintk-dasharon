@@ -14,6 +14,8 @@ const AnnotInfoSchema = new mongoose.Schema(
         id: Number,
         text: String, //this is the word in the language the user learns
         textforBox: String, //this is the word in the native language
+        nativeLanguageTag: String, //also store explicitly for flipping
+        learningLanguageTag: String //also store explicitly for flipping
       },
     geometry:
     {
