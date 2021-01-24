@@ -28,7 +28,8 @@ const AnnotInfoSchema = new mongoose.Schema(
 
 //define a comment schema for the database
 const PhotoSimpleAnnotSchema = new mongoose.Schema({
-  caption_text_s: String, //This holds the thoughts on the photo that are not tags
+  captionTextOriginal: String, //This holds the thoughts on the photo that are not tags- in native language
+  captionTextTranslated: String, //This holds the thoughts on the photo that are not tags- in language learning
   tag_text_s: String,
   photo_placeholder: String,
   difficulty: Number,

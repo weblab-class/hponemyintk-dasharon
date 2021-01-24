@@ -113,6 +113,10 @@ export default class Simple extends Component {
 
   //render with or without an option to edit with a tag
   render() {
+    let tagText = "Tags:";
+    //Decide whether should be tag or tags in text
+    console.log("LIST", this.props.annotationslst)
+    if(this.props.annotationslst.length === 1) {tagText = "Tag:"};
     //if edits are allowed return with an onChange
     if (this.props.allowEdits) {
       return (
@@ -130,7 +134,7 @@ export default class Simple extends Component {
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
             allowTouch
           />
-          <h4>Tags:</h4>
+          <h4>{tagText}</h4>
           <Comments>
             {this.props.annotationslst.map((annotation) => (
               <Comment
@@ -162,7 +166,7 @@ export default class Simple extends Component {
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
             allowTouch
           />
-          <h4>Tags:</h4>
+          <h4>{tagText}</h4>
           <Comments>
             {this.props.annotationslst.map((annotation) => (
               <Comment

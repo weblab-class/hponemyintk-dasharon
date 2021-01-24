@@ -100,6 +100,7 @@ class View_Flashcards extends Component {
         this.setState({
           photo_info_array: [ImageInfo_one],
         });
+        this.runFlip(); //flip to start with the language you are learning
       });
     } else {
       console.log("Here in View_Flashcards.js before get request!!!2222");
@@ -108,8 +109,24 @@ class View_Flashcards extends Component {
         this.setState({
           photo_info_array: ImageInfo,
         });
+        this.runFlip(); //flip to start with the language you are learning
       });
     }
+  };
+
+  runFlip = () => {
+        //Flip the tags and printout languages in each annotation for each photo
+        for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
+        {
+          for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
+          {
+            const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
+            const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
+            this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
+            this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
+            console.log("in inner loop");
+          }
+        }
   };
 
   //post request to delete the relevant photo
@@ -138,6 +155,19 @@ class View_Flashcards extends Component {
   //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
   switchLanguage = (event) => {
     this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
+    this.runFlip();
+    //Flip the tags and printout languages in each annotation for each photo
+    // for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
+    // {
+    //   for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
+    //   {
+    //     const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
+    //     const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
+    //     this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
+    //     this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
+    //     console.log("in inner loop");
+    //   }
+    // }
   };
 
   //cleans up annotations
@@ -149,89 +179,6 @@ class View_Flashcards extends Component {
     return initAnnotInput;
   };
 
-  //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
-  GetPhotoInfo = (PhotoInfo, ownCards) => {
-    //debugging code
-    // console.log("Initial annotation array");
-    // console.log(PhotoInfo.annotation_info_array);
-
-    //change annotation field so it is type which react-image-annotate needs
-    let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
-    if (!annotPhotoInfo) {
-      return null;
-    }
-    //debugging code
-    // console.log("Revised annotation array");
-    // console.log(annotPhotoInfo);
-
-    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
-    return (
-      <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
-        {/* <div className="row post">
-          <div className="center_image responsive"> */}
-        <div className="post">
-          <div className="postLeft">
-            {/* <div> */}
-            <ReactAnnotate
-              allowEdits={false}
-              border-radius="10%"
-              img_using={PhotoInfo.photo_placeholder}
-              annotationslst={annotPhotoInfo}
-              height="300"
-              width="300"
-            />
-          </div>
-          <div className="postRight">
-            {/* <div> */}
-            <p>Submitted by: {PhotoInfo.uname}</p>
-            <p>Submitted on: {PhotoInfo.submit_stamp}</p>
-            <p>Caption: {PhotoInfo.caption_text_s}</p>
-            {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
-            <p>Difficulty</p>
-            <Rating precision={0.5} name="difficultyRating" value={PhotoInfo.difficulty} disabled />
-            <p>Quality</p>
-            {/* <Typography component="legend">Quality</Typography> *{PhotoInfo.quality} */}
-            <Rating
-              precision={0.5}
-              name="qualityRating"
-              value={PhotoInfo.quality}
-              icon={<FavoriteIcon fontSize="inherit" />}
-              disabled
-            />
-            {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
-            https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
-            https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
-            https://www.w3schools.com/howto/howto_js_popup_form.asp 
-            https://www.w3schools.com/tags/tag_button.asp
-            
-            https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-            {ownCards ? (
-              <button
-                type="button"
-                onClick={this.handleDelete}
-                value={PhotoInfo._id}
-                className="button button:hover trashCan"
-                // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-              > delete me
-                {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
-              </button>
-            ) : (
-              <p></p>
-            )}
-            {/* {ownCards? (<button type="button" onClick= {(PhotoInfo) => {alert("click" + PhotoInfo.caption_text_s);
-            let deletionReq = {deletionId: PhotoInfo._id};
-            console.log("DELETION REQ", deletionReq, PhotoInfo);
-              }}> 
-            Delete</button>) : (<p></p>)}*/}
-          </div>
-        </div>
-        <br />
-      </div>
-    );
-  };
 
   //pass as prop to individual flashcard components
   //take in photo id
@@ -255,17 +202,20 @@ class View_Flashcards extends Component {
     }
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
+    let langSwitchText = "Show comments and captions in language learning!";
+    if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
+    
     return (
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter" style={{ width: "100%" }}>
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
-
+    
         <button
                 type="button"
                 onClick={this.switchLanguage}
                 // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-              > Flip languages!
+              > {langSwitchText}
                 {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}

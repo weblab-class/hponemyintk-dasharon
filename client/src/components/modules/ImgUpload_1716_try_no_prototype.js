@@ -57,7 +57,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
       nativeLanguagesDetected: [],
-      captionText: "",
+      submittedCaption: false,
+      translatedCaption: "",
+      originalCaption: "",
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -183,6 +185,19 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       r.readAsDataURL(blob);
     });
   };
+
+  submitCaption = (event) => {
+    //Preserve initial caption
+    const originalLanguageCaption = this.postCaption.current.value;
+    post("/api/translation", { //run post request to translate
+      translationInput: originalLanguageCaption,
+      userNativeLanguage: this.state.nativeLanguage,
+      userTranslationLanguage: this.state.learningLanguage,
+    }).then( (translatedString) => { //save translation
+      this.setState({translatedCaption: translatedString.output[0], submittedCaption: true, originalCaption: originalLanguageCaption}),
+      console.log(translatedString.output[0]);
+    });
+  };
   /*from React website above*/
   handleSubmit = (event) => {
     const submitTime = Date.now(); //set submit time
@@ -195,7 +210,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //now set up info for post with the image as data url
       console.log("PostCaption!!!!", this.postCaption.current.value);
       let test_body = {
-        caption_text: this.postCaption.current.value,
+        caption_text_original: this.state.originalCaption, 
+        caption_text_translated: this.state.translatedCaption,
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
@@ -254,16 +270,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
-      <form onSubmit={this.handleSubmit}>
-        {/* Give a handle for uploading and previewing images */}
-        {/* <div className="u-offsetByX">
-          <img className="u-showImg" src={this.state.file}/> 
-          height = "300" width="300"/> 
-        </div> */}
-        {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
-        {/* <div className="u-img">
-        <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
-        </div> */}
+      // <form onSubmit={this.handleSubmit}>
+        // {/* Give a handle for uploading and previewing images */}
+        // {/* <div className="u-offsetByX">
+        //   <img className="u-showImg" src={this.state.file}/> 
+        //   height = "300" width="300"/> 
+        // </div> */}
+        // {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
+        // {/* <div className="u-img">
+        // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+        // </div> */}
         <div className="u-flex u-flex-justifyCenter">
           <div className="postColumn paddedText">
             <p>
@@ -319,6 +335,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                   placeholder="Share your thoughts about the photo with your friends!"
                   ref={this.postCaption}
                 />
+                <button onClick = {this.submitCaption}>Submit</button>
                 <br />
                 {/* <Typography component="legend">Difficulty</Typography> */}
                 <p>Difficulty</p>
@@ -349,13 +366,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                   <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 </input> */}
                 <button type="button" className="button button:hover saveIcon">
-                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} />
+                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} onClick = {this.handleSubmit}/>
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </form>
+      // {/* </form> */}
     );
   }
 }
