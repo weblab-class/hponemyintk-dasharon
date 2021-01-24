@@ -75,29 +75,24 @@ class IndividualFlashcard extends Component {
     initAnnotInput.forEach((obj) => {
       let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
 
+      const nativeTag = newObj.data.nativeLanguageTag;
+      const learningTag = newObj.data.learningLanguageTag;
+      console.log("BOOLEAN", this.state.showInNativeLanguage);
+      if (!this.props.showInNativeLanguage) {
+        newObj.data.text = newObj.data.nativeLanguageTag;
+        newObj.data.textforBox = newObj.data.learningLanguageTag;
+      } else {
+        newObj.data.text = newObj.data.learningLanguageTag;
+        newObj.data.textforBox = newObj.data.nativeLanguageTag;
+      }
 
-        const nativeTag = newObj.data.nativeLanguageTag;
-        const learningTag = newObj.data.learningLanguageTag;
-        console.log("BOOLEAN", this.state.showInNativeLanguage)
-        if (!this.props.showInNativeLanguage)
-        {
-          newObj.data.text = newObj.data.nativeLanguageTag;
-          newObj.data.textforBox = newObj.data.learningLanguageTag;
-        }
-        else
-        {
-          newObj.data.text = newObj.data.learningLanguageTag;
-          newObj.data.textforBox = newObj.data.nativeLanguageTag;
-        }
+      console.log("NEW OBJECT, newObj");
 
-        console.log("NEW OBJECT, newObj")
-      
       newInput.push(newObj);
       // let newObj = {};
       // newObj.data = obj.data;
       // obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
       // delete obj.geometry.shape_kind;
-    
     });
     return newInput;
   };
@@ -139,7 +134,7 @@ class IndividualFlashcard extends Component {
           {this.answerArray.map((ans, k) => (
             <>
               <button
-                className="myButton"
+                className="quizButton"
                 onClick={() => this.props.handleClick(ans, this.props.correctAnswer)}
                 key={k}
               >
@@ -156,10 +151,53 @@ class IndividualFlashcard extends Component {
           <p>What is *** in Spanish?</p>
           {this.answerArray.map((ans, k) => (
             <>
-              <button className="myButton" style={{ color: ans.color }} key={k} disabled>
-                {ans.text}
-              </button>
-              <div>&nbsp;</div>
+              {console.log(
+                "***this.props.clickedAns,this.props.correctAnswer,ans",
+                this.props.clickedAns.text,
+                this.props.correctAnswer,
+                ans
+              )}
+              {ans.text == this.props.clickedAns ? (
+                <>
+                  {this.props.clickedAns == this.props.correctAnswer ? (
+                    <>
+                      <button
+                        className="quizButtonClickedCor"
+                        style={{ color: ans.color }}
+                        key={k}
+                        disabled
+                      >
+                        {ans.text}
+                      </button>
+                      <div>&nbsp;</div>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="quizButtonClicked"
+                        style={{ color: ans.color }}
+                        key={k}
+                        disabled
+                      >
+                        {ans.text}
+                      </button>
+                      <div>&nbsp;</div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button
+                    className="quizButtonNotClicked"
+                    style={{ color: ans.color }}
+                    key={k}
+                    disabled
+                  >
+                    {ans.text}
+                  </button>
+                  <div>&nbsp;</div>
+                </>
+              )}
             </>
           ))}
           {/* {this.props.curAnsInfo[0] ? (

@@ -20,6 +20,7 @@ class QuizSelfMade_DS extends Component {
       // for counting correct/inccorect stat in quiz and progress bar
       wasAnswerInput: false,
       curAnsInfo: [],
+      clickedAns: "",
       readings: [
         {
           name: "Correct",
@@ -344,6 +345,7 @@ class QuizSelfMade_DS extends Component {
     this.setState({
       wasAnswerInput: true,
       curAnsInfo: [ansString.text === corAns, ansString.text],
+      clickedAns: ansString.text,
     }); //Color answers by whether or not they are correct
     if (ansString.text === corAns) {
       this.updateProgress(
@@ -414,6 +416,7 @@ class QuizSelfMade_DS extends Component {
                   wasAnswerInput={this.state.wasAnswerInput}
                   curAnsInfo={this.state.curAnsInfo}
                   isDone={this.state.isDone}
+                  clickedAns={this.state.clickedAns}
                 />
               )
             ) : (
