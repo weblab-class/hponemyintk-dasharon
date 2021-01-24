@@ -93,7 +93,8 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
       //if success then set up schema //If not error continue [ref: https://stackoverflow.com/questions/30469261/checking-for-typeof-error-in-js]
       // [credit: from OH 1/13/21 many thanks to Johan for debugging help!]
       const newPhoto_simplea = new PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose({
-        caption_text_s: req.body.caption_text,
+        captionTextOriginal: req.body.caption_text_original,
+        captionTextTranslated: req.body.caption_text_translated,
         tag_text_s: req.body.tag_text,
         photo_placeholder: image_upload_info,
         difficulty: req.body.difficulty,

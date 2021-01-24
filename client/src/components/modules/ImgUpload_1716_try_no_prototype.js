@@ -57,7 +57,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
       nativeLanguagesDetected: [],
-      captionText: "",
+      submittedCaption: false,
+      translatedCaption: "",
+      originalCaption: "",
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -183,8 +185,42 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       r.readAsDataURL(blob);
     });
   };
-  /*from React website above*/
+
+  submitCaption = (event) => {
+    //Preserve initial caption
+    const originalLanguageCaption = this.postCaption.current.value;
+    post("/api/translation", { //run post request to translate
+      translationInput: originalLanguageCaption,
+      userNativeLanguage: this.state.nativeLanguage,
+      userTranslationLanguage: this.state.learningLanguage,
+    }).then( (translatedString) => { //save translation
+      this.setState({translatedCaption: translatedString.output[0], submittedCaption: true, originalCaption: originalLanguageCaption}),
+      console.log(translatedString.output[0]);
+    });
+  };
+
   handleSubmit = (event) => {
+    event.preventDefault();
+       //submit caption if haven't yet, and it will get translated and then submit
+       if (!this.state.submittedCaption)
+       {
+         const originalLanguageCaption = this.postCaption.current.value;
+         post("/api/translation", { //run post request to translate
+           translationInput: originalLanguageCaption,
+           userNativeLanguage: this.state.nativeLanguage,
+           userTranslationLanguage: this.state.learningLanguage,
+         }).then( (translatedString) => { //save translation
+           this.setState({translatedCaption: translatedString.output[0], submittedCaption: true, originalCaption: originalLanguageCaption}),
+           console.log(translatedString.output[0]); console.log("STATE BEFORE SUSBMIT", this.state);this.runSubmit()});
+       }
+       else {this.runSubmit()};
+  };
+
+  /*from React website above*/
+  runSubmit = () => {
+
+ 
+    console.log("STATE IN SUBMIT", this.state)
     const submitTime = Date.now(); //set submit time
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
@@ -193,9 +229,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //prep post request
       //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
       //now set up info for post with the image as data url
-      console.log("PostCaption!!!!", this.postCaption.current.value);
+      // console.log("PostCaption!!!!", this.postCaption.current.value);
       let test_body = {
-        caption_text: this.postCaption.current.value,
+        caption_text_original: this.state.originalCaption, 
+        caption_text_translated: this.state.translatedCaption,
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
@@ -234,14 +271,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           // + '\nDifficulty is : "'  + this.state.difficulty +'"'
           // + '\nQuality is : "'  + this.state.quality +'"'
         ),
-          this.setState({ file: null }),
+          this.setState({ file: null , submittedCaption: false, originalCaption: "", translatedCaption: ""}),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = ""),
           console.log("This is console log in imgupload****");
       });
     });
 
-    event.preventDefault();
+    
     //console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations);
@@ -252,18 +289,19 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React and Medium websites combined*/
   render() {
     //Chatbook login protection
+    console.log("CAPTION?", this.state.submittedCaption)
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
-      <form onSubmit={this.handleSubmit}>
-        {/* Give a handle for uploading and previewing images */}
-        {/* <div className="u-offsetByX">
-          <img className="u-showImg" src={this.state.file}/> 
-          height = "300" width="300"/> 
-        </div> */}
-        {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
-        {/* <div className="u-img">
-        <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
-        </div> */}
+      // <form onSubmit={this.handleSubmit}>
+        // {/* Give a handle for uploading and previewing images */}
+        // {/* <div className="u-offsetByX">
+        //   <img className="u-showImg" src={this.state.file}/> 
+        //   height = "300" width="300"/> 
+        // </div> */}
+        // {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
+        // {/* <div className="u-img">
+        // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+        // </div> */}
         <div className="u-flex u-flex-justifyCenter">
           <div className="postColumn paddedText">
             <p>
@@ -313,13 +351,23 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 {/* Get caption and post info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea*/}
                 Caption:
                 {/* <input type="text" ref={this.postCaption} /> */}
-                <textarea
+
+
+                  {/*if caption not submitted, show box. Otherwise showtranslated caption*/}
+                {(!this.state.submittedCaption) ? (
+                  <>
+                                  <textarea
                   className="imgUpTextArea"
                   rows="5"
                   placeholder="Share your thoughts about the photo with your friends!"
                   ref={this.postCaption}
                 />
-                <br />
+                <button onClick = {this.submitCaption}>Translate now please!</button>
+                <br /> 
+              </>
+                 ) :(<p>{"'" + this.state.originalCaption + "' translated to '" + this.state.translatedCaption + "'"}</p>) }
+
+
                 {/* <Typography component="legend">Difficulty</Typography> */}
                 <p>Difficulty</p>
                 <Rating
@@ -329,18 +377,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                     this.setState({ difficulty: newvalue });
                   }}
                 />
+
+                
                 {/* <Typography component="legend">Quality</Typography> */}
-                <p>Quality</p>
-                <Rating
-                  precision={0.5}
-                  // value={this.state.value}
-                  name="qualityRating"
-                  // onChange={this.updateValue}
-                  onChange={(event, newvalue) => {
-                    this.setState({ quality: newvalue });
-                  }}
-                  icon={<FavoriteIcon fontSize="inherit" />}
-                />
                 <div>
                   <p></p>
                 </div>
@@ -349,13 +388,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                   <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 </input> */}
                 <button type="button" className="button button:hover saveIcon">
-                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} />
+                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} onClick = {this.handleSubmit}/>
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </form>
+      // {/* </form> */}
     );
   }
 }

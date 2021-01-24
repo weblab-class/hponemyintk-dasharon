@@ -1,7 +1,7 @@
 import { render } from "react-dom";
 import React, { Component } from "react";
 import { shuffle } from "../../utilities";
-import { get } from "../../utilities.js";
+import { get, post } from "../../utilities.js";
 // import authentication library
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
@@ -135,6 +135,7 @@ class IndividualFlashcard extends Component {
     }
   };
 
+<<<<<<< HEAD
   // From catbook this gets called when the user pushes "Submit", so their
   // post gets added to the screen right away
   addNewComment = (commentObj) => {
@@ -142,6 +143,28 @@ class IndividualFlashcard extends Component {
       comments: this.state.comments.concat([commentObj]),
     });
   };
+=======
+  //Show caption with hover option to see in other language, and have a chance to flip languages
+  showCaption = () => {
+    if (this.props.showInNativeLanguage) {
+      return(
+        <span className ="tooltip">{this.props.photoFacts.captionTextOriginal}
+        <span className = "tooltiptext">{this.props.photoFacts.captionTextTranslated}</span></span>
+      )} else
+      { return(
+        <span className ="tooltip">{this.props.photoFacts.captionTextTranslated}
+      <span className = "tooltiptext">{this.props.photoFacts.captionTextOriginal}</span></span>
+      )};
+  };
+
+    // From catbook this gets called when the user pushes "Submit", so their
+    // post gets added to the screen right away
+    addNewComment = (commentObj) => {
+      this.setState({
+        comments: this.state.comments.concat([commentObj]),
+      });
+    };
+>>>>>>> 7be03ca7cd00114642c440016b48524eafcd18c9
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -184,7 +207,7 @@ class IndividualFlashcard extends Component {
 
             {/*caption if not in quiz mode, otherwise show quiz questions */}
             {!this.props.forQuiz ? (
-              <p>{this.props.photoFacts.caption_text_s}</p>
+              this.showCaption()
             ) : (
               <>
                 {this.showQuizInfo()}
@@ -222,10 +245,10 @@ class IndividualFlashcard extends Component {
             {this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz ? (
               <button
                 type="button"
-                onClick={this.handleDelete}
+                
                 className="button button:hover trashCan"
               >
-                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
+                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} onClick={this.handleDelete} />
               </button>
             ) : (
               <p></p>
