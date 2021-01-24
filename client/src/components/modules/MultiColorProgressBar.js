@@ -17,7 +17,7 @@ class MultiColorProgressBar extends Component {
         if (item.value > 0) {
           return (
             <div className="value" style={{ color: item.color, width: item.value + "%" }} key={i}>
-              <span>{item.value}%</span>
+              <span>{item.value}</span>
             </div>
           );
         }

@@ -1,5 +1,8 @@
 .multicolor-bar {
-  margin: 20px 20%;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 0px 20%;
 }
 
 .multicolor-bar .values .value {
@@ -14,7 +17,7 @@
 
 .multicolor-bar .bars .bar {
   float: left;
-  height: 15px;
+  height: 20px;
 }
 
 .multicolor-bar .bars div.bar:first-of-type {

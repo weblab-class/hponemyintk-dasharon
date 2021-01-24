@@ -20,6 +20,26 @@ class QuizSelfMade_DS extends Component {
       incorrectCt: 0,
       wasAnswerInput: false,
       curAnsInfo: [],
+      readings: [
+        {
+          name: "Rights",
+          value: 1,
+          percent: 2,
+          color: "green",
+        },
+        {
+          name: "Wrongs",
+          value: 0,
+          percent: 4,
+          color: "red",
+        },
+        {
+          name: "Unanswered",
+          value: 99,
+          percent: 94,
+          color: "orange",
+        },
+      ],
     };
     // this.handleClick = this.handleClick.bind(this);
   } // end constructor
@@ -51,6 +71,19 @@ class QuizSelfMade_DS extends Component {
       console.log("SHOULD LOG OUT");
     }
   }
+
+  // functions to update the progress bar values
+  updateProgress = (corCt, incorCt, unansCt) => {
+    let tmpReadings = clonedeep(this.state.readings);
+    tmpReadings[0].value = corCt;
+    tmpReadings[1].value = incorCt;
+    tmpReadings[2].value = unansCt;
+    // update percentages
+    tmpReadings[0].percent = (corCt / (corCt + incorCt + unansCt)) * 100;
+    tmpReadings[1].percent = (incorCt / (corCt + incorCt + unansCt)) * 100;
+    tmpReadings[2].percent = (unansCt / (corCt + incorCt + unansCt)) * 100;
+    this.setState({ readings: tmpReadings });
+  };
 
   //pass as prop to individual flashcard components
   //take in photo id
@@ -226,6 +259,10 @@ class QuizSelfMade_DS extends Component {
         console.log("questionArray", questionArray);
       }
 
+      // Initialize the total unanswered questions stat in readings array for the progress bar
+      this.updateProgress(this.state.correctCt, this.state.incorrectCt, questionArray.length);
+      console.log("this.state.readings", this.state.readings);
+
       //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
       //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
       for (let iii = questionArray.length - 1; iii > 0; iii--) {
@@ -254,54 +291,36 @@ class QuizSelfMade_DS extends Component {
     }
   };
 
-  readings = [
-    {
-      name: "Rights",
-      value: 10,
-      color: "green",
-    },
-    {
-      name: "Wrongs",
-      value: 10,
-      color: "red",
-    },
-    {
-      name: "Unanswered",
-      value: 80,
-      color: "orange",
-    },
-  ];
-
   render() {
     return (
-      <div className="u-flex u-flex-justifyCenter">
-        {this.state.loaded ? (
-          //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
-          this.state.dataSet.length > 0 ? (
-            <>
-              <div>
-                <IndividualFlashcard
-                  forQuiz={true}
-                  photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
-                  wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
-                  correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
-                  handleClick={this.handleClick}
-                  handleNext={this.handleNext}
-                  wasAnswerInput={this.state.wasAnswerInput}
-                  correctCt={this.state.correctCt}
-                  incorrectCt={this.state.incorrectCt}
-                  curAnsInfo={this.state.curAnsInfo}
-                />
-                <MultiColorProgressBar readings={this.readings} />
-              </div>
-            </>
+      <>
+        <div className="u-flex u-flex-justifyCenter">
+          {this.state.loaded ? (
+            //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
+            this.state.dataSet.length > 0 ? (
+              <IndividualFlashcard
+                forQuiz={true}
+                photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
+                wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
+                correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
+                handleClick={this.handleClick}
+                handleNext={this.handleNext}
+                wasAnswerInput={this.state.wasAnswerInput}
+                correctCt={this.state.correctCt}
+                incorrectCt={this.state.incorrectCt}
+                curAnsInfo={this.state.curAnsInfo}
+              />
+            ) : (
+              <p>No photos!</p>
+            )
           ) : (
-            <p>No photos!</p>
-          )
-        ) : (
-          <p>Loading!</p>
-        )}
-      </div>
+            <p>Loading!</p>
+          )}
+        </div>
+        <div className="u-flex u-flex-justifyCenter">
+          <MultiColorProgressBar readings={this.state.readings} />
+        </div>
+      </>
     );
   }
 }
