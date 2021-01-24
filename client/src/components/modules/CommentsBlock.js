@@ -63,7 +63,7 @@ class CommentsBlock extends Component {
     };
 
   render() {
-    console.log("PHOTO IS", this.props.photo);
+    // console.log("PHOTO IS", this.props.photo);
     return (
         
       <div className="Card-commentSection">
