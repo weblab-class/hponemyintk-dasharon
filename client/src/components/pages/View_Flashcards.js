@@ -236,14 +236,18 @@ class View_Flashcards extends Component {
               "ViewFlashCards:::Printing photo_placeholder",
               this.state.photo_info_array
             )}
-            <p className="nametext">{userNameToShow}</p>
+            
             {this.props.onlyOne ? (
               <></>
             ) : (
+              <>
+              <p className="nametext">{userNameToShow}</p>
               <p className="u-textCenter">
-                There are {this.state.photo_info_array.length} flashcards for {userNameToShow}
+              {this.state.photo_info_array.length} flashcards
+                {/* There are {this.state.photo_info_array.length} flashcards for {userNameToShow} */}
                 {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
               </p>
+              </>
             )}
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}

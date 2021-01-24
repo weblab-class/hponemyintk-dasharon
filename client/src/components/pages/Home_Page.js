@@ -275,7 +275,7 @@ class Home_Page extends Component {
           </p>
           {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
           <p className="answertext">
-            WeWorld is our <a href="https://weblab.mit.edu" className="linktext">MIT web.lab</a> course project. We are very grateful to the course team and Dr. Anindya Roy of MIT Open Learning for their help and advice with this project!
+            WeWorld is our <a href="https://weblab.mit.edu" className="linktext">MIT web.lab</a> course project. We are very grateful to the course team and our test users for their help and advice with this project!
           </p>
           <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>

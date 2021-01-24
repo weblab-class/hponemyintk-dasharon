@@ -75,10 +75,10 @@ class Friends_1251 extends Component {
             <View_Flashcards onlyOne={true} userId={u._id} key={i} />
             {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
             {/* either print my or the user with a possessive */}
-            <Link to={"/Flashcards/" + u._id}>
+            {/* <Link to={"/Flashcards/" + u._id}>
               I want to see all of {this.getPossessive(u._id, this.props.userId, u.name)}{" "}
               flashcards!
-            </Link>
+            </Link> */}
             <br />
           </>
         ))}

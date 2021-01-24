@@ -2,6 +2,7 @@ import { render } from "react-dom";
 import React, { Component } from "react";
 import { shuffle } from "../../utilities";
 import { get, post } from "../../utilities.js";
+import { Link } from "@reach/router";
 // import authentication library
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
@@ -201,10 +202,10 @@ class IndividualFlashcard extends Component {
             />
           </div>
 
-          {/* info on submission*/}
+          {/* info on submission-user nam link to profileandddate*/}
           <div className="postRight">
             {/* <div> */}
-            <p>{this.props.photoFacts.uname}</p>
+            <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">{this.props.photoFacts.uname}</Link>
             <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
             {/*caption if not in quiz mode, otherwise show quiz questions */}
             {!this.props.forQuiz ? this.showCaption() : <>{this.showQuizInfo()}</>}
