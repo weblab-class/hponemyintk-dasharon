@@ -109,25 +109,25 @@ class View_Flashcards extends Component {
         this.setState({
           photo_info_array: ImageInfo,
         });
-        this.runFlip(); //flip to start with the language you are learning
+        // this.runFlip(); //flip to start with the language you are learning
       });
     }
   };
 
-  runFlip = () => {
-        //Flip the tags and printout languages in each annotation for each photo
-        for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
-        {
-          for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
-          {
-            const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
-            const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
-            this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
-            this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
-            console.log("in inner loop");
-          }
-        }
-  };
+  // runFlip = () => {
+  //       //Flip the tags and printout languages in each annotation for each photo
+  //       for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
+  //       {
+  //         for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
+  //         {
+  //           const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
+  //           const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
+  //           this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
+  //           this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
+  //           console.log("in inner loop");
+  //         }
+  //       }
+  // };
 
   //post request to delete the relevant photo
   handleDelete = (event) => {
@@ -155,7 +155,7 @@ class View_Flashcards extends Component {
   //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
   switchLanguage = (event) => {
     this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
-    this.runFlip();
+    // ss
     //Flip the tags and printout languages in each annotation for each photo
     // for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
     // {

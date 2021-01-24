@@ -7,6 +7,7 @@ import { get } from "../../utilities";
 import { Link } from "@reach/router";
 import View_Flashcards from "../pages/View_Flashcards.js";
 import IndividualFlashcard from "../modules/IndividualFlashcard.js";
+const clonedeep = require("lodash.clonedeep");
 
 //This is an initial attempt at the friend page, to print users, hopefully leading to
 //Being able to add friends and see profiles
@@ -19,7 +20,7 @@ class Friends_1251 extends Component {
       allUserList: [], //set initial user list to be empty
       allPhotos: [],
       showInNativeLanguage: false,
-      neverSwitched: false
+      haveSwitched: false
     };
   }
 
@@ -50,15 +51,15 @@ class Friends_1251 extends Component {
     let allPhotoList = [];
     for (let uu = 0; uu < this.state.allUserList.length; uu++)
     {
-      console.log(uu, "USER INFO", this.state.allUserList[uu]);
+      // console.log(uu, "USER INFO", this.state.allUserList[uu]);
       const newPhoto = await get("/api/photosimpletestOne", { userId: this.state.allUserList[uu]._id });
-      console.log("PHOTO", newPhoto);
+      // console.log("PHOTO", newPhoto);
       allPhotoList = allPhotoList.concat(newPhoto);
     };
     
     this.setState({allPhotos : allPhotoList});
-    this.runFlip();
-    console.log("ALL PHOTOS", this.state.allPhotos)
+    //this.runFlipInit();
+    // console.log("ALL PHOTOS", this.state.allPhotos)
     }
     catch (e) {console.log(e)}
   };
@@ -77,31 +78,66 @@ class Friends_1251 extends Component {
 
     //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
     switchLanguage = (event) => {
-      this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
-      console.log("IN SWITCH LANGUAGE", this.state.showInNativeLanguage);
-      this.runFlip();
-    };
+      
+    //   if (!this.state.everSwitched)
+    //   {this.setState({everSwitched : true})
+    // console.log("SWITCH 1")}
+    //   else {const languagePreference = !this.state.showInNativeLanguage;
+    //     this.setState({showInNativeLanguage : languagePreference})
+    //   console.log("LATER SWITCH")};
 
-    runFlip = () => {
-      //Flip the tags and printout languages in each annotation for each photo
-      for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
-      {
-        for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
-        {
-          console.log("BOOLEAN", this.state.showInNativeLanguage)
-          if (!this.state.showInNativeLanguage)
-          {
-          this.state.allPhotos[pp].annotation_info_array[aa].data.text = this.state.allPhotos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-          this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox = this.state.allPhotos[pp].annotation_info_array[aa].data.learningLanguageTag;
-          }
-          else
-          {
-            this.state.allPhotos[pp].annotation_info_array[aa].data.text = this.state.allPhotos[pp].annotation_info_array[aa].data.learningLanguageTag;
-            this.state.allPhotos[pp].annotation_info_array[aa].data.textforBox = this.state.allPhotos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-          }
-        }
-      }
+    //   //run flip
+    //   console.log("IN SWITCH LANGUAGE", thiss.state.showInNativeLanguage);
+  
+      this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
+      // let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
+      // console.log("PHOTOS in runflip", photos)
+      // //Flip the tags and printout languages in each annotation for each photo
+      // for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
+      // {
+      //   for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
+      //   {
+          
+      //     const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+      //     const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+      //     console.log("BOOLEAN", this.state.showInNativeLanguage)
+      //     if (!this.state.showInNativeLanguage)
+      //     {
+      //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+      //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+      //     }
+      //     else
+      //     {
+      //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+      //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+      //     }
+      //   }
+      // }
+      // this.setState({allPhotos: photos})
 };
+
+runFlipInit = () =>{
+  let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
+  console.log("PHOTOS in runflip", photos)
+  //Flip the tags and printout languages in each annotation for each photo
+  for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
+  {
+    for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
+    {
+      
+      const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+      const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+      console.log("BOOLEAN", this.state.showInNativeLanguage)
+      if (!this.state.showInNativeLanguage)
+      {
+        photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+        photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+      }
+
+    }
+  }
+  this.setState({allPhotos: photos})
+}
 
   render() {
     //Chatbook login protection

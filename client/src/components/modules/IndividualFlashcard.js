@@ -42,7 +42,7 @@ class IndividualFlashcard extends Component {
     event.preventDefault();
     //let photoId = photoToDelete._id;
     console.log("DELETE CLICKED");
-    console.log(this.props.photoFacts._id);
+    // console.log(this.props.photoFacts._id);
     // console.log(event.target.value);
     let photoDeleteBody = { deletionId: this.props.photoFacts._id }; //set the request to be for this photo ID
     post("/api/deletePhoto", photoDeleteBody); //run the delete request
@@ -74,11 +74,30 @@ class IndividualFlashcard extends Component {
 
     initAnnotInput.forEach((obj) => {
       let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
+
+
+        const nativeTag = newObj.data.nativeLanguageTag;
+        const learningTag = newObj.data.learningLanguageTag;
+        console.log("BOOLEAN", this.state.showInNativeLanguage)
+        if (!this.props.showInNativeLanguage)
+        {
+          newObj.data.text = newObj.data.nativeLanguageTag;
+          newObj.data.textforBox = newObj.data.learningLanguageTag;
+        }
+        else
+        {
+          newObj.data.text = newObj.data.learningLanguageTag;
+          newObj.data.textforBox = newObj.data.nativeLanguageTag;
+        }
+
+        console.log("NEW OBJECT, newObj")
+      
       newInput.push(newObj);
       // let newObj = {};
       // newObj.data = obj.data;
       // obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
       // delete obj.geometry.shape_kind;
+    
     });
     return newInput;
   };
@@ -188,7 +207,7 @@ class IndividualFlashcard extends Component {
     // console.log("Initial annotation array");
     // console.log(PhotoInfo.annotation_info_array);
 
-    console.log("ANNOT ARRAY", this.props.photoFacts.annotation_info_array);
+    // console.log("ANNOT ARRAY", this.props.photoFacts.annotation_info_array);
     let annotPhotoInfo = this.cleanAnnotInput(this.props.photoFacts.annotation_info_array);
     if (!annotPhotoInfo) {
       return null;
