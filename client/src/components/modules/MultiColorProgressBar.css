@@ -49,3 +49,9 @@
   margin-left: 2px;
   vertical-align: middle;
 }
+
+.progValue {
+  float: left;
+  text-align: center;
+  color: white;
+}

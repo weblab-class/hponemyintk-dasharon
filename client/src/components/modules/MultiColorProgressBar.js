@@ -14,9 +14,9 @@ class MultiColorProgressBar extends Component {
       parent.readings &&
       parent.readings.length &&
       parent.readings.map(function(item, i) {
-        if (item.value > 0) {
+        if (item.percent > 0) {
           return (
-            <div className="value" style={{ color: item.color, width: item.value + "%" }} key={i}>
+            <div className="value" style={{ color: item.color, width: item.percent + "%" }} key={i}>
               <span>{item.value}</span>
             </div>
           );
@@ -27,11 +27,11 @@ class MultiColorProgressBar extends Component {
       parent.readings &&
       parent.readings.length &&
       parent.readings.map(function(item, i) {
-        if (item.value > 0) {
+        if (item.percent > 0) {
           return (
             <div
               className="graduation"
-              style={{ color: item.color, width: item.value + "%" }}
+              style={{ color: item.color, width: item.percent + "%" }}
               key={i}
             >
               <span>|</span>
@@ -44,13 +44,15 @@ class MultiColorProgressBar extends Component {
       parent.readings &&
       parent.readings.length &&
       parent.readings.map(function(item, i) {
-        if (item.value > 0) {
+        if (item.percent > 0) {
           return (
             <div
               className="bar"
-              style={{ backgroundColor: item.color, width: item.value + "%" }}
+              style={{ backgroundColor: item.color, width: item.percent + "%" }}
               key={i}
-            ></div>
+            >
+              {/* <span clssName="progValue">{item.value}</span> */}
+            </div>
           );
         }
       }, this);
@@ -59,7 +61,7 @@ class MultiColorProgressBar extends Component {
       parent.readings &&
       parent.readings.length &&
       parent.readings.map(function(item, i) {
-        if (item.value > 0) {
+        if (item.percent > 0) {
           return (
             <div className="legend" key={i}>
               <span className="dot" style={{ color: item.color }}>

@@ -5,6 +5,7 @@ import "../../utilities.css";
 import IndividualFlashcard from "./IndividualFlashcard.js";
 import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
 import { get, getRandom } from "../../utilities";
+import { FlareSharp } from "@material-ui/icons";
 const clonedeep = require("lodash.clonedeep");
 
 class QuizSelfMade_DS extends Component {
@@ -15,29 +16,28 @@ class QuizSelfMade_DS extends Component {
       onPhoto: 0,
       isDone: false,
       loaded: false,
-      // the following 2 are for counting correct/inccorect stat in quiz
-      correctCt: 0,
-      incorrectCt: 0,
+      showResult: false,
+      // for counting correct/inccorect stat in quiz and progress bar
       wasAnswerInput: false,
       curAnsInfo: [],
       readings: [
         {
           name: "Rights",
-          value: 1,
-          percent: 2,
+          value: 0,
+          percent: 0,
           color: "green",
         },
         {
           name: "Wrongs",
           value: 0,
-          percent: 4,
+          percent: 0,
           color: "red",
         },
         {
           name: "Unanswered",
-          value: 99,
-          percent: 94,
-          color: "orange",
+          value: 100,
+          percent: 100,
+          color: "#b9c0c9",
         },
       ],
     };
@@ -49,6 +49,10 @@ class QuizSelfMade_DS extends Component {
   handleNext = () => {
     this.movetoNextPhoto();
     this.setState({ wasAnswerInput: false });
+  };
+
+  handleFinish = () => {
+    this.setState({ showResult: true });
   };
 
   componentDidMount() {
@@ -96,7 +100,7 @@ class QuizSelfMade_DS extends Component {
     if (this.state.onPhoto < this.state.dataSet.length - 1) {
       this.setState({ onPhoto: this.state.onPhoto + 1 });
     }
-    if (this.state.onPhoto === this.state.dataSet.length - 1) {
+    if (this.state.onPhoto === this.state.dataSet.length - 2) {
       this.setState({ isDone: true });
     }
     console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
@@ -260,7 +264,11 @@ class QuizSelfMade_DS extends Component {
       }
 
       // Initialize the total unanswered questions stat in readings array for the progress bar
-      this.updateProgress(this.state.correctCt, this.state.incorrectCt, questionArray.length);
+      this.updateProgress(
+        this.state.readings[0].value,
+        this.state.readings[1].value,
+        questionArray.length
+      );
       console.log("this.state.readings", this.state.readings);
 
       //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
@@ -285,9 +293,17 @@ class QuizSelfMade_DS extends Component {
       curAnsInfo: [ansString.text === corAns, ansString.text],
     }); //Color answers by whether or not they are correct
     if (ansString.text === corAns) {
-      this.setState({ correctCt: this.state.correctCt + 1 });
+      this.updateProgress(
+        this.state.readings[0].value + 1,
+        this.state.readings[1].value,
+        this.state.readings[2].value - 1
+      );
     } else {
-      this.setState({ incorrectCt: this.state.incorrectCt + 1 });
+      this.updateProgress(
+        this.state.readings[0].value,
+        this.state.readings[1].value + 1,
+        this.state.readings[2].value - 1
+      );
     }
   };
 
@@ -298,18 +314,20 @@ class QuizSelfMade_DS extends Component {
           {this.state.loaded ? (
             //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
             this.state.dataSet.length > 0 ? (
-              <IndividualFlashcard
-                forQuiz={true}
-                photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
-                wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
-                correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
-                handleClick={this.handleClick}
-                handleNext={this.handleNext}
-                wasAnswerInput={this.state.wasAnswerInput}
-                correctCt={this.state.correctCt}
-                incorrectCt={this.state.incorrectCt}
-                curAnsInfo={this.state.curAnsInfo}
-              />
+              !this.state.showResult && (
+                <IndividualFlashcard
+                  forQuiz={true}
+                  photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
+                  wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
+                  correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
+                  handleClick={this.handleClick}
+                  handleNext={this.handleNext}
+                  handleFinish={this.handleFinish}
+                  wasAnswerInput={this.state.wasAnswerInput}
+                  curAnsInfo={this.state.curAnsInfo}
+                  isDone={this.state.isDone}
+                />
+              )
             ) : (
               <p>No photos!</p>
             )
@@ -317,9 +335,27 @@ class QuizSelfMade_DS extends Component {
             <p>Loading!</p>
           )}
         </div>
-        <div className="u-flex u-flex-justifyCenter">
-          <MultiColorProgressBar readings={this.state.readings} />
-        </div>
+        {this.state.showResult ? (
+          <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+            <div className="postColumn">
+              <img
+                src="https://agilites.com/images/news/news-congrads-kkluyshnik-02-04-19.jpg"
+                height="300"
+                width="auto"
+              />
+              <h1 className="u-textCenter">Congrats you are done with the quiz!!!</h1>
+              <div className="u-flex u-flex-justifyCenter">
+                <MultiColorProgressBar readings={this.state.readings} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className="u-flex u-flex-justifyCenter">
+              <MultiColorProgressBar readings={this.state.readings} />
+            </div>
+          </div>
+        )}
       </>
     );
   }
