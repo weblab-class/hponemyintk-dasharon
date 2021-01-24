@@ -62,7 +62,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       translatedCaption: "",
       originalCaption: "",
       raw_file: null,
-      oldCaption: ""
+      oldCaption: "",
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -122,11 +122,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             "OUTPUT WAS IN",
             translatedString.output[1].data.translations[0].detectedSourceLanguage
           ),
-
-          data.text = translatedString.output[0], //set translated word to be in tag
-          data.textforBox = initString, //set original word to be in box
+          (data.text = translatedString.output[0]), //set translated word to be in tag
+          (data.textforBox = initString), //set original word to be in box
           //3.5 print out the translation for the user
-          
+
           console.log("TRANSLATED", data.text),
           //4 set state of annotations
           this.setState({
@@ -143,8 +142,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               translatedString.output[1].data.translations[0].detectedSourceLanguage
             ),
           });
-          console.log("NEW OBJECT", data)
-
+        console.log("NEW OBJECT", data);
       }
     );
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
@@ -167,16 +165,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
     //if already submitted caption reset
     if (this.state.submittedCaption) {
-      this.setState(
-        {
-          // submittedCaption : false,
-          // translatedCaption: "",
-          // originalCaption: "",
-          annotations: [],
-          // oldCaption: "",
-        }
-      )
-    };
+      this.setState({
+        // submittedCaption : false,
+        // translatedCaption: "",
+        // originalCaption: "",
+        annotations: [],
+        // oldCaption: "",
+      });
+    }
   };
   //From Nikhil GCP tutorial, to get to image that can be saved, with many thanks!
   //(https://github.com/weblab-workshops/gcp-example/tree/main/server)
@@ -205,51 +201,62 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   submitCaption = (event) => {
     //Preserve initial caption
     const originalLanguageCaption = this.postCaption.current.value;
-    post("/api/translation", { //run post request to translate
+    post("/api/translation", {
+      //run post request to translate
       translationInput: originalLanguageCaption,
       userNativeLanguage: this.state.nativeLanguage,
       userTranslationLanguage: this.state.learningLanguage,
-    }).then( (translatedString) => { //save translation
-      this.setState({translatedCaption: translatedString.output[0], submittedCaption: true, originalCaption: originalLanguageCaption}),
-      console.log(translatedString.output[0]);
+    }).then((translatedString) => {
+      //save translation
+      this.setState({
+        translatedCaption: translatedString.output[0],
+        submittedCaption: true,
+        originalCaption: originalLanguageCaption,
+      }),
+        console.log(translatedString.output[0]);
     });
   };
 
   //If you want to edit the caption go back and edit
   //keep current value of post to the original caption for ease
   editCaption = (event) => {
-    this.setState(
-      {
+    this.setState({
       oldCaption: this.state.originalCaption, //set old caption to be original for purposes of pre-populating the form
       submittedCaption: false,
       translatedCaption: "",
       originalCaption: "",
-      }
-    );
-  }
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-       //submit caption if haven't yet, and it will get translated and then submit
-       if (!this.state.submittedCaption)
-       {
-         const originalLanguageCaption = this.postCaption.current.value;
-         post("/api/translation", { //run post request to translate
-           translationInput: originalLanguageCaption,
-           userNativeLanguage: this.state.nativeLanguage,
-           userTranslationLanguage: this.state.learningLanguage,
-         }).then( (translatedString) => { //save translation
-           this.setState({translatedCaption: translatedString.output[0], submittedCaption: true, originalCaption: originalLanguageCaption}),
-           console.log(translatedString.output[0]); console.log("STATE BEFORE SUSBMIT", this.state);this.runSubmit()});
-       }
-       else {this.runSubmit()};
+    //submit caption if haven't yet, and it will get translated and then submit
+    if (!this.state.submittedCaption) {
+      const originalLanguageCaption = this.postCaption.current.value;
+      post("/api/translation", {
+        //run post request to translate
+        translationInput: originalLanguageCaption,
+        userNativeLanguage: this.state.nativeLanguage,
+        userTranslationLanguage: this.state.learningLanguage,
+      }).then((translatedString) => {
+        //save translation
+        this.setState({
+          translatedCaption: translatedString.output[0],
+          submittedCaption: true,
+          originalCaption: originalLanguageCaption,
+        }),
+          console.log(translatedString.output[0]);
+        console.log("STATE BEFORE SUSBMIT", this.state);
+        this.runSubmit();
+      });
+    } else {
+      this.runSubmit();
+    }
   };
 
   /*from React website above*/
   runSubmit = () => {
-
- 
-    console.log("STATE IN SUBMIT", this.state)
+    console.log("STATE IN SUBMIT", this.state);
     const submitTime = Date.now(); //set submit time
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
@@ -260,13 +267,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //now set up info for post with the image as data url
       // console.log("PostCaption!!!!", this.postCaption.current.value);
       let test_body = {
-        caption_text_original: this.state.originalCaption, 
+        caption_text_original: this.state.originalCaption,
         caption_text_translated: this.state.translatedCaption,
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
         timestampRaw: submitTime, //this is not easily readable but is sortable
-        timestamp: new Date(Date.now()).toLocaleString([], { //this is as not easily sortable but is readable
+        timestamp: new Date(Date.now()).toLocaleString([], {
+          //this is as not easily sortable but is readable
           year: "numeric",
           month: "long",
           day: "numeric",
@@ -299,14 +307,18 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           // + '\nDifficulty is : "'  + this.state.difficulty +'"'
           // + '\nQuality is : "'  + this.state.quality +'"'
         ),
-          this.setState({ file: null , submittedCaption: false, originalCaption: "", translatedCaption: ""}),
+          this.setState({
+            file: null,
+            submittedCaption: false,
+            originalCaption: "",
+            translatedCaption: "",
+          }),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = ""),
           console.log("This is console log in imgupload****");
       });
     });
 
-    
     //console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
     console.log("Printing annotations here:::", this.state.annotations);
@@ -317,132 +329,140 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React and Medium websites combined*/
   render() {
     //Chatbook login protection
-    console.log("CAPTION?", this.state.submittedCaption)
+    console.log("CAPTION?", this.state.submittedCaption);
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
       // <form onSubmit={this.handleSubmit}>
-        // {/* Give a handle for uploading and previewing images */}
-        // {/* <div className="u-offsetByX">
-        //   <img className="u-showImg" src={this.state.file}/> 
-        //   height = "300" width="300"/> 
-        // </div> */}
-        // {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
-        // {/* <div className="u-img">
-        // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
-        // </div> */}
-        <div className="u-flex u-flex-justifyCenter">
-          <div className="postColumn paddedText">
-            <p>
-              Let's get the learning fun started! Please upload an image and tag it with the word(s)
-              you would like to learn. You can tag by clicking and dragging on the image. You will
-              need to submit the tag(s) before submitting the image for them to be recorded. You can
-              add a caption to share your thoughts on the image, and you should rate the difficulty
-              (how hard the tags are) and quality (how helpful the tags are to other learners).{" "}
-              <br />
-            </p>
-            <p className="u-bold">
-              Disclaimer: Please note currently all users can see everyone's content given this is
-              an early testing version of the website. So please do not share any image or text you
-              do not want shared publicly. Also your timestamp of use and name are recorded and
-              associated with your image.
-              <br />
-              <br />
-            </p>
-            Upload file:
-            {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+      // {/* Give a handle for uploading and previewing images */}
+      // {/* <div className="u-offsetByX">
+      //   <img className="u-showImg" src={this.state.file}/>
+      //   height = "300" width="300"/>
+      // </div> */}
+      // {/* If there is no image file then do not have anything shown, and when there is an image file it will be able to be tagged */}
+      // {/* <div className="u-img">
+      // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
+      // </div> */}
+      <div className="u-flex u-flex-justifyCenter">
+        <div className="postColumn paddedText">
+          <p>
+            Let's get the learning fun started! Please upload an image and tag it with the word(s)
+            you would like to learn. You can tag by clicking and dragging on the image. You will
+            need to submit the tag(s) before submitting the image for them to be recorded. You can
+            add a caption to share your thoughts on the image, and you should rate the difficulty
+            (how hard the tags are) and quality (how helpful the tags are to other learners). <br />
+          </p>
+          <p className="u-bold">
+            Disclaimer: Please note currently all users can see everyone's content given this is an
+            early testing version of the website. So please do not share any image or text you do
+            not want shared publicly. Also your timestamp of use and name are recorded and
+            associated with your image.
+            <br />
+            <br />
+          </p>
+          Upload file:
+          {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
-            <div>
-              <input
-                type="file"
-                ref={this.fileInput}
-                accept=".png,.jpg,.jpeg"
-                onChange={this.handleChange}
-              />
-            </div>
-            <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
-              <div className="imgUpLeft">
-                {/* Meant to only have annotating when you uploaded an image */}
-                {this.state.file ? (
-                  <ReactAnnotate
-                    allowEdits={true}
-                    img_using={this.state.file}
-                    onTagSubmit={this.onTagSubmit}
-                    annotationslst={this.state.annotations}
-                  />
-                ) : (
-                  // <img className="u-showImg" src={this.state.file} alt="Please upload!" height="300" width="300" />
-                  <p className="uploadText">Please Upload!</p>
-                )}
-              </div>
-              <div className="imgUpRight">
-                <br />
-                {/* Get caption and post info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea*/}
-                Caption:
-                {/* <input type="text" ref={this.postCaption} /> */}
-
-
-                  {/*if caption not submitted, show box. Otherwise show translated caption and give a chance to edit
-                  ref https://stackoverflow.com/questions/4055199/html-how-to-pre-populate-form-field-with-known-value-upon-load/4055233*/}
-                {(!this.state.submittedCaption) ? (
-                 (this.state.oldCaption === "") ? (
-                  //If never edited show a blank text box 
-                  <>
-                  <textarea
-                  className="imgUpTextArea"
-                  rows="5"
-                  placeholder="Share your thoughts about the photo with your friends!!!"
-                  ref={this.postCaption}
-                  />
-                <button onClick = {this.submitCaption}>Translate now please!</button>
-                <br /> 
-              </>
-                ) : (
-                  <>
-                  <textarea
-                  className="imgUpTextArea"
-                  rows="5"
-                  defaultValue = {this.state.oldCaption}
-                  ref={this.postCaption}
-                  />
-                <button onClick = {this.submitCaption}>Translate now please!</button>
-                <br /> 
-              </>
-                )) :
-                  //If submittedd show the translation and an edit button
-                 (<p>{"'" + this.state.originalCaption + "' translated to '" + this.state.translatedCaption + "'"}
-                 <button type="button">
-                 <FontAwesomeIcon icon={faPencilAlt} style={{ color: "#0099ff" }} onClick = {this.editCaption}/>
-                 </button>
-                 </p>) }
-
-
-                {/* <Typography component="legend">Difficulty</Typography> */}
-                <p>Difficulty</p>
-                <Rating
-                  precision={0.5}
-                  name="difficultyRating"
-                  value={this.state.difficulty}
-                  onChange={(event, newvalue) => {
-                    this.setState({ difficulty: newvalue });
-                  }}
+          <div>
+            <input
+              type="file"
+              ref={this.fileInput}
+              accept=".png,.jpg,.jpeg"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
+            <div className="imgUpLeft">
+              {/* Meant to only have annotating when you uploaded an image */}
+              {this.state.file ? (
+                <ReactAnnotate
+                  allowEdits={true}
+                  img_using={this.state.file}
+                  onTagSubmit={this.onTagSubmit}
+                  annotationslst={this.state.annotations}
                 />
-
-                
-                {/* <Typography component="legend">Quality</Typography> */}
-                <div>
-                  <p></p>
-                </div>
-                <br />
-                {/* <input type="submit">
+              ) : (
+                // <img className="u-showImg" src={this.state.file} alt="Please upload!" height="300" width="300" />
+                <p className="uploadText">Please Upload!</p>
+              )}
+            </div>
+            <div className="imgUpRight">
+              <br />
+              {/* Get caption and post info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea*/}
+              Caption:
+              {/* <input type="text" ref={this.postCaption} /> */}
+              {/*if caption not submitted, show box. Otherwise show translated caption and give a chance to edit
+                  ref https://stackoverflow.com/questions/4055199/html-how-to-pre-populate-form-field-with-known-value-upon-load/4055233*/}
+              {!this.state.submittedCaption ? (
+                this.state.oldCaption === "" ? (
+                  //If never edited show a blank text box
+                  <>
+                    <textarea
+                      className="imgUpTextArea"
+                      rows="5"
+                      placeholder="Share your thoughts about the photo with your friends!!!"
+                      ref={this.postCaption}
+                    />
+                    <button onClick={this.submitCaption}>Translate now please!</button>
+                    <br />
+                  </>
+                ) : (
+                  <>
+                    <textarea
+                      className="imgUpTextArea"
+                      rows="5"
+                      defaultValue={this.state.oldCaption}
+                      ref={this.postCaption}
+                    />
+                    <button onClick={this.submitCaption}>Translate now please!</button>
+                    <br />
+                  </>
+                )
+              ) : (
+                //If submittedd show the translation and an edit button
+                <p>
+                  {"'" +
+                    this.state.originalCaption +
+                    "' translated to '" +
+                    this.state.translatedCaption +
+                    "'"}
+                  <button type="button">
+                    <FontAwesomeIcon
+                      icon={faPencilAlt}
+                      style={{ color: "#0099ff" }}
+                      onClick={this.editCaption}
+                    />
+                  </button>
+                </p>
+              )}
+              {/* <Typography component="legend">Difficulty</Typography> */}
+              <p>Difficulty</p>
+              <Rating
+                precision={0.5}
+                name="difficultyRating"
+                value={this.state.difficulty}
+                onChange={(event, newvalue) => {
+                  this.setState({ difficulty: newvalue });
+                }}
+              />
+              {/* <Typography component="legend">Quality</Typography> */}
+              <div>
+                <p></p>
+              </div>
+              <br />
+              {/* <input type="submit">
                   <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 </input> */}
-                <button type="button" className="button button:hover saveIcon">
-                  <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} onClick = {this.handleSubmit}/>
-                </button>
-              </div>
+              <button type="button" className="button button:hover saveIcon">
+                <FontAwesomeIcon
+                  icon={faSave}
+                  style={{ color: "#0099ff" }}
+                  onClick={this.handleSubmit}
+                />
+              </button>
             </div>
           </div>
         </div>
+      </div>
       // {/* </form> */}
     );
   }
