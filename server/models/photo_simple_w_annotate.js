@@ -34,6 +34,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   captionTextTranslated: String, //This holds the thoughts on the photo that are not tags- in language learning
   tag_text_s: String,
   photo_placeholder: String,
+  goodforQuiz: Boolean, //Boolean whether this should be used on the quiz- has tags, at least one of which has fewer than 3 words
   difficulty: Number,
   uname: String,
   uid: String,

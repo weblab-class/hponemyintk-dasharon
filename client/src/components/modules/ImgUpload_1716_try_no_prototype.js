@@ -63,6 +63,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       originalCaption: "",
       raw_file: null,
       oldCaption: "",
+      neverUploaded: true
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -77,7 +78,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     if (this.props.userId) {
       this.languageInfoLoad();
     } else {
-      console.log("SHOULD LOG OUT");
+      //console.log("SHOULD LOG OUT");
     }
   }
 
@@ -86,7 +87,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
       this.languageInfoLoad();
     } else {
-      console.log("SHOULD LOG OUT");
+      //console.log("SHOULD LOG OUT");
     }
   }
 
@@ -96,9 +97,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         nativeLanguage: userLanguageInfo.nativeLanguage,
         learningLanguage: userLanguageInfo.learningLanguage,
       });
-      console.log("Loading language info");
-      console.log("User native language", this.state.nativeLanguage);
-      console.log("User learns", this.state.learningLanguage);
+      //console.log("Loading language info");
+      //console.log("User native language", this.state.nativeLanguage);
+      //console.log("User learns", this.state.learningLanguage);
     });
   };
 
@@ -160,6 +161,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from Medium website above*/
   handleChange = (event) => {
     this.setState({
+      neverUploaded : false,
       file: URL.createObjectURL(event.target.files[0]),
       raw_file: event.target.files[0], //raw file for the readImage function to get a data URL
       //file_as_data_url: readImage(event.target.files[0]).then((data_rep) => {return data_rep;}) //clumsy 1st attempt to handle how readImage gives back a promise
@@ -259,6 +261,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React website above*/
   runSubmit = () => {
     console.log("STATE IN SUBMIT", this.state);
+
+    //check if this is good for quiz
+    //does any annotation have fewer than 3 words?
+    let goodforQuiz = false;
+    for (let aa = 0; aa < this.state.annotations.length; aa++)
+    {
+      //check word count ref https://stackoverflow.com/questions/18679576/counting-words-in-string/30335883
+      if (this.state.annotations[aa].data.learningLanguageTag.split(" ").length < 3) {goodforQuiz = true}
+    };
+
     const submitTime = Date.now(); //set submit time
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
     // translated_text = translate(this.state.annotations.data.text[0], { to: 'es', engine: 'google', key: process.env.GCP_PRIVATE_KEY});
@@ -274,6 +286,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
+        goodforQuiz: goodforQuiz, //checks if good for quiz
         timestampRaw: submitTime, //this is not easily readable but is sortable
         timestamp: new Date(Date.now()).toLocaleString([], {
           //this is as not easily sortable but is readable
@@ -293,14 +306,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
       //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
       //Otherwise set these to be strings saying there are no tags
-      if (this.state.annotations.length > 0) {
+      
         test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
         test_body.translatedLanguage = this.state.learningLanguage;
-      } else {
-        (test_body.inputLanguageInfo = "No_Language_Used"),
-          (test_body.translatedLanguage = "No_Language_Used");
-      }
-      console.log("INPUT TO POST", test_body);
+
+      //console.log("INPUT TO POST", test_body);
       //run post request
       post("/api/photo_simple_w_annotate", test_body).then(() => {
         alert(
@@ -323,15 +333,15 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
     //console.log(this.state.annotations[0].data.text);
     //why is there type and not shape_kind?
-    console.log("Printing annotations here:::", this.state.annotations);
-    console.log("reached");
+    //console.log("Printing annotations here:::", this.state.annotations);
+    //console.log("reached");
     // console.log(translated_text);
     //console.log(annotations_cleaned_up);
   };
   /*from React and Medium websites combined*/
   render() {
     //Chatbook login protection
-    console.log("CAPTION?", this.state.submittedCaption);
+    //console.log("CAPTION?", this.state.submittedCaption);
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
       // <form onSubmit={this.handleSubmit}>
@@ -454,13 +464,15 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               {/* <input type="submit">
                   <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 </input> */}
+                {/*only have save button if never uploaded */}
+                {this.state.neverUploaded ? (<></>) : (
               <button type="button" className="button button:hover saveIcon">
                 <FontAwesomeIcon
                   icon={faSave}
                   style={{ color: "#0099ff" }}
                   onClick={this.handleSubmit}
                 />
-              </button>
+              </button>)}
             </div>
           </div>
         </div>
