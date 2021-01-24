@@ -26,6 +26,8 @@ import "./Image_aesthetics.css";
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-regular-svg-icons";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+
 // import translate from 'translate';    //ref translation tlibrary
 // require('dotenv').config();
 // // Code from Nikhil's https://github.com/weblab-workshops/gcp-example - comments below from Nikhil
@@ -60,6 +62,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       translatedCaption: "",
       originalCaption: "",
       raw_file: null,
+      oldCaption: ""
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -166,11 +169,11 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     if (this.state.submittedCaption) {
       this.setState(
         {
-          submittedCaption : false,
-          translatedCaption: "",
-          originalCaption: "",
+          // submittedCaption : false,
+          // translatedCaption: "",
+          // originalCaption: "",
           annotations: [],
-          difficulty: 0,
+          // oldCaption: "",
         }
       )
     };
@@ -211,6 +214,19 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       console.log(translatedString.output[0]);
     });
   };
+
+  //If you want to edit the caption go back and edit
+  //keep current value of post to the original caption for ease
+  editCaption = (event) => {
+    this.setState(
+      {
+      oldCaption: this.state.originalCaption, //set old caption to be original for purposes of pre-populating the form
+      submittedCaption: false,
+      translatedCaption: "",
+      originalCaption: "",
+      }
+    );
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -365,19 +381,39 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 {/* <input type="text" ref={this.postCaption} /> */}
 
 
-                  {/*if caption not submitted, show box. Otherwise showtranslated caption*/}
+                  {/*if caption not submitted, show box. Otherwise show translated caption and give a chance to edit
+                  ref https://stackoverflow.com/questions/4055199/html-how-to-pre-populate-form-field-with-known-value-upon-load/4055233*/}
                 {(!this.state.submittedCaption) ? (
+                 (this.state.oldCaption === "") ? (
+                  //If never edited show a blank text box 
                   <>
-                                  <textarea
+                  <textarea
                   className="imgUpTextArea"
                   rows="5"
-                  placeholder="Share your thoughts about the photo with your friends!"
+                  placeholder="Share your thoughts about the photo with your friends!!!"
                   ref={this.postCaption}
-                />
+                  />
                 <button onClick = {this.submitCaption}>Translate now please!</button>
                 <br /> 
               </>
-                 ) :(<p>{"'" + this.state.originalCaption + "' translated to '" + this.state.translatedCaption + "'"}</p>) }
+                ) : (
+                  <>
+                  <textarea
+                  className="imgUpTextArea"
+                  rows="5"
+                  defaultValue = {this.state.oldCaption}
+                  ref={this.postCaption}
+                  />
+                <button onClick = {this.submitCaption}>Translate now please!</button>
+                <br /> 
+              </>
+                )) :
+                  //If submittedd show the translation and an edit button
+                 (<p>{"'" + this.state.originalCaption + "' translated to '" + this.state.translatedCaption + "'"}
+                 <button type="button">
+                 <FontAwesomeIcon icon={faPencilAlt} style={{ color: "#0099ff" }} onClick = {this.editCaption}/>
+                 </button>
+                 </p>) }
 
 
                 {/* <Typography component="legend">Difficulty</Typography> */}
