@@ -91,21 +91,7 @@ export default class Simple extends Component {
   // *** for hiding overlay when showing images ***
   // **********************************************
   renderOverlay = () => {
-    return (
-      <div
-        style={{
-          background: "rgba(0, 0, 0, 0.3)",
-          color: "white",
-          padding: 5,
-          pointerEvents: "none",
-          position: "absolute",
-          top: 5,
-          left: 5,
-        }}
-      >
-        ""
-      </div>
-    );
+    return <></>;
   };
 
   // ***************************************************
