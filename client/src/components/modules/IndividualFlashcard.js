@@ -1,6 +1,7 @@
 import { render } from "react-dom";
 import React, { Component } from "react";
 import { shuffle } from "../../utilities";
+import { get } from "../../utilities.js";
 // import authentication library
 // const auth = require("../../../../server/auth");
 import "../../utilities.css";
@@ -17,6 +18,7 @@ import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
 import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/router/api/useLocation
+import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,6 +34,7 @@ class IndividualFlashcard extends Component {
     // Initialize Default State
     this.state = {
       wasAnswerInput: false,
+      comments: [],
     };
     this.answerArray = [];
   }
@@ -49,6 +52,23 @@ class IndividualFlashcard extends Component {
     this.props.deletionFunction(this.props.photoFacts._id);
     //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
   };
+
+  //get comments, this is from catbook, many thanks to Kye for indicating we can use this code!
+  componentDidMount() {
+    get("/api/comment", { parent: this.props.photoFacts._id }).then((comments) => {
+      this.setState({
+        comments: comments,
+      });
+    });
+  }
+
+  // componentDidUpdate() {
+  //   get("/api/comment", { parent: this.props.photoFacts._id }).then((comments) => {
+  //     this.setState({
+  //       comments: comments,
+  //     });
+  //   });
+  // }
 
   //cleans up annotations many thanks to Justin in Office Hours for forEach and push and editing
   cleanAnnotInput = (initAnnotInput) => {
@@ -115,10 +135,6 @@ class IndividualFlashcard extends Component {
               {ans.text}
             </button>
           ))}
-          {/* <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[0]}</button><br></br>
-      <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[1]}</button><br></br>
-      <button onClick={this.handleClickonAnswer}>{this.props.wrongAnswers[2]}</button><br></br>
-      <button onClick={this.handleClickonAnswer}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
         </>
       );
     } else {
@@ -129,14 +145,19 @@ class IndividualFlashcard extends Component {
               {ans.text}
             </button>
           ))}
-          {/* <button style= {{color : "red"}}>{this.props.wrongAnswers[0]}</button><br></br>
-            <button style= {{color : "red"}}>{this.props.wrongAnswers[1]}</button><br></br>
-            <button style= {{color : "red"}}>{this.props.wrongAnswers[2]}</button><br></br>
-            <button style= {{color : "green"}}>{this.props.photoFacts.annotation_info_array[0].data.text}</button><br></br> */}
         </>
       );
     }
   };
+
+    // From catbook this gets called when the user pushes "Submit", so their
+    // post gets added to the screen right away
+    addNewComment = (commentObj) => {
+      this.setState({
+        comments: this.state.comments.concat([commentObj]),
+      });
+    };
+
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
   GetPhotoInfo = () => {
@@ -149,9 +170,6 @@ class IndividualFlashcard extends Component {
     if (!annotPhotoInfo) {
       return null;
     }
-    //debugging code
-    // console.log("Revised annotation array");
-    // console.log(annotPhotoInfo);
 
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
@@ -229,8 +247,14 @@ class IndividualFlashcard extends Component {
               <button type="button" onClick={this.handleNext}>
                 Next
               </button>
-            ) : (
-<p></p>
+            ) : ( /*this is from catbook*/
+              <CommentsBlock
+              photo={this.props.photoFacts}
+              comments={this.state.comments}
+              addNewComment={this.addNewComment}
+              viewingUserId={this.props.viewingUserId}
+              showInNativeLanguage={this.props.showInNativeLanguage}
+            />
             )}
           </div>
         </div>

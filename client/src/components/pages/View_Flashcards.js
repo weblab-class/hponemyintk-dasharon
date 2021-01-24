@@ -34,6 +34,7 @@ class View_Flashcards extends Component {
       userName: "Someone",
       requestingUserId: "User_Requesting",
       requestingUserName: "UserName_Requesting",
+      showInNativeLanguage: false,
       //nameForPrint: "SomeoneName",
     };
   }
@@ -132,6 +133,11 @@ class View_Flashcards extends Component {
     //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
     //alert("Delete" + photoToDelete.caption_text_s);
     //event.preventDefault();
+  };
+
+  //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
+  switchLanguage = (event) => {
+    this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
   };
 
   //cleans up annotations
@@ -254,6 +260,18 @@ class View_Flashcards extends Component {
       <div className="u-textCenter" style={{ width: "100%" }}>
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
+
+        <button
+                type="button"
+                onClick={this.switchLanguage}
+                // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
+              > Flip languages!
+                {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
+                {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
+                {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
+                {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
+              </button>
+
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
 
         {/*Establishing whether a user is seeing own flashcards, if so make Me- this is earlier code*/}
@@ -283,7 +301,7 @@ class View_Flashcards extends Component {
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false}/>
+                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage}/>
               )}
             </div>
           </>

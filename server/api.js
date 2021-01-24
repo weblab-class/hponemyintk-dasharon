@@ -14,6 +14,7 @@ const User = require("./models/user");
 const Photo = require("./models/photo"); //add 1/12 to enable photo schema to be used
 const PhotoSimple = require("./models/photo_simple"); //add 1/12 to enable photo schema to be used
 const PhotoSimpleAnnotModels = require("./models/photo_simple_w_annotate"); //add 1/12 to enable photo schema to be used
+const Comment = require("./models/comment");
 
 // import authentication library
 const auth = require("./auth");
@@ -75,13 +76,7 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-//Get photos from Mongoose and post photos to Mongoose, using web lab catbook api methods for stories as a model copied from api.js
-router.get("/photos", (req, res) => {
-  // if no more info will get all photos
-  // will actually photo for certain user/friends and
-  // certain  difficulty/etc.
-  Photo.find({}).then((photos) => res.send(photos));
-});
+
 
 //1/13 annotating
 router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
@@ -302,21 +297,26 @@ router.post("/changeLanguage", (req, res) => {
   // res.send(infoOnUser))
 });
 
-//1/21/21 This was working, going to edit to make for other languages though
-//run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
-//ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
-router.post("/translationOld", async (req, res) => {
-  // The text to translate
-  const text = req.body.translationInput;
+//comment post and get requests are from catbook, many thanks to Kye for indicating we can use this!
+router.post("/comment", auth.ensureLoggedIn, (req, res) => {
+  const newComment = new Comment({
+    creator_id: req.user._id,
+    creator_name: req.user.name,
+    parent: req.body.parent,
+    contentTranslated: req.body.contentTranslated,
+    contentOriginal: req.body.contentOriginal,
+    timestampRaw: req.body.timestampRaw,
+    timestampPrintable: req.body.timeStampPrintable
+  });
 
-  // // The target language
-  const target = "es";
+  newComment.save().then((comment) => res.send(comment));
+});
 
-  // // Translates some text into Russian
-  const translation = await translate.translate(text, target);
-  console.log(`Text: ${text}`);
-  console.log(`Translation: ${translation}`);
-  res.send({ output: translation });
+router.get("/comment", (req, res) => {
+  //1 get comment array from mongoose, sort so earliest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
+  Comment.find({ parent: req.query.parent }).sort({"submit_stamp_raw": 1}).then((comments) => {
+    res.send(comments);
+  });
 });
 
 // anything else falls to this "not found" case
@@ -341,3 +341,29 @@ module.exports = router;
 //photo_output.photo_placeholder = image_promise_output; //3 replace the placeholder with the actual output
 // console.log(photo_output.photo_placeholder);
 // res.send({message: "Successfully updated user."}) //send back https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+
+
+// //1/21/21 This was working, going to edit to make for other languages though
+// //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
+// //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
+// router.post("/translationOld", async (req, res) => {
+//   // The text to translate
+//   const text = req.body.translationInput;
+
+//   // // The target language
+//   const target = "es";
+
+//   // // Translates some text into Russian
+//   const translation = await translate.translate(text, target);
+//   console.log(`Text: ${text}`);
+//   console.log(`Translation: ${translation}`);
+//   res.send({ output: translation });
+// });
+
+// //Get photos from Mongoose and post photos to Mongoose, using web lab catbook api methods for stories as a model copied from api.js
+// router.get("/photos", (req, res) => {
+//   // if no more info will get all photos
+//   // will actually photo for certain user/friends and
+//   // certain  difficulty/etc.
+//   Photo.find({}).then((photos) => res.send(photos));
+// });
