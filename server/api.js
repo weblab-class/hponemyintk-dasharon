@@ -262,6 +262,8 @@ router.get("/singleUserFind", (req, res) => {
 //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
 router.post("/translation", async (req, res) => {
+
+  console.log("IN TRANSLATION", req.body)
   // The text to translate
   const text = req.body.translationInput;
 
@@ -299,6 +301,7 @@ router.post("/changeLanguage", (req, res) => {
 
 //comment post and get requests are from catbook, many thanks to Kye for indicating we can use this!
 router.post("/comment", auth.ensureLoggedIn, (req, res) => {
+  console.log("API LOG", req.body); //log
   const newComment = new Comment({
     creator_id: req.user._id,
     creator_name: req.user.name,

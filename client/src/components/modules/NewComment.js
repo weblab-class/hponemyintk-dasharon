@@ -92,7 +92,7 @@ class NewComment extends Component {
     post("/api/translation", {
         translationInput: value,
 
-        userTranslationLanguage: this.props.photoforComment.translatedLanguage,
+        userTranslationLanguage: this.props.translateLanguage,
       }).then((translatedString) =>  //2 post request with translation and original
     // console.log("translated", translatedString.output);
     // console.log("translated0", translatedString.output[0]);
@@ -107,6 +107,16 @@ class NewComment extends Component {
         })).then((comment) => { //3 display
       // display this comment on the screen
       this.props.addNewComment(comment);
+
+      // post("/api/comment", { 
+      //   parent: this.props.photoforComment._id, 
+      //   contentTranslated: "test", //translatedString.output[0], 
+      //   contentOriginal: value,
+      //   submit_stamp_raw: submitTime,
+      //   submit_stamp: submitTimePrintable
+      //   }).then((comment) => { //3 display
+      // // display this comment on the screen
+      // this.props.addNewComment(comment);
     });
   };
 
