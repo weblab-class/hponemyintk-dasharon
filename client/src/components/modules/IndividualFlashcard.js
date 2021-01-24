@@ -116,6 +116,7 @@ class IndividualFlashcard extends Component {
       this.answerArray = this.createAnswerArray();
       return (
         <>
+          <p>What is *** in Spanish?</p>
           {this.answerArray.map((ans, k) => (
             <>
               <button
@@ -133,6 +134,7 @@ class IndividualFlashcard extends Component {
     } else {
       return (
         <>
+          <p>What is *** in Spanish?</p>
           {this.answerArray.map((ans, k) => (
             <>
               <button className="myButton" style={{ color: ans.color }} key={k} disabled>
@@ -215,12 +217,25 @@ class IndividualFlashcard extends Component {
           {/* info on submission-user nam link to profileandddate*/}
           <div className="postRight">
             {/* <div> */}
-            <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
-              {this.props.photoFacts.uname}
-            </Link>
-            <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
             {/*caption if not in quiz mode, otherwise show quiz questions */}
-            {!this.props.forQuiz ? this.showCaption() : <>{this.showQuizInfo()}</>}
+            {!this.props.forQuiz ? (
+              <>
+                <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
+                  {this.props.photoFacts.uname}
+                </Link>
+                <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
+                {this.showCaption()}
+              </>
+            ) : (
+              <>
+                <>{this.showQuizInfo()}</>
+                <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
+                  {this.props.photoFacts.uname}
+                </Link>
+                <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
+              </>
+            )}
+
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
             <p>Difficulty</p>

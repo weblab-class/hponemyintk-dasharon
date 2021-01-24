@@ -184,13 +184,13 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
   background-color: #ffffff;
   border-radius: 6px;
-  border: 1px solid #dcdcdc;
+  border: 3px solid var(--primary);
   display: inline-block;
   cursor: pointer;
   color: #666666;
-  /* font-family: Arial; */
+  font-family: Roboto;
   font-size: 1.5vw;
-  font-weight: bold;
+  /* font-weight: bold; */
   /* padding: 1% 5% 1% 5%; */
   text-decoration: none;
   text-shadow: 0px 1px 1px #ebebeb;
@@ -201,11 +201,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 }
 .myButton:active {
   position: relative;
-  top: 10px;
-}
-
-.myButton:focus {
-  background-color: yellow;
+  top: 1%;
 }
 
 /* ***************************************************************************** */
