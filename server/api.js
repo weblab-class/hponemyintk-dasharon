@@ -76,8 +76,6 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-
-
 //1/13 annotating
 router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
   // [credit: From Nikhil GCP example https://github.com/weblab-workshops/gcp-example]
@@ -165,9 +163,11 @@ router.post("/deletePhoto", auth.ensureLoggedIn, (req, res) => {
 router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
   console.log("api.js photosimpletest req is:::", req.query);
   try {
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
-      uid: req.query.userId,
-    }).sort({"submit_stamp_raw": -1}); //1 get one photo array from mongoose, sort so latest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+      .find({
+        uid: req.query.userId,
+      })
+      .sort({ submit_stamp_raw: -1 }); //1 get one photo array from mongoose, sort so latest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
     //iterate through all user's photos, note this could incorporate a map/promise all
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
@@ -186,7 +186,9 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
   // console.log("api.js photosimpletest req is:::", req.query);
   try {
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({}).limit(10); //1 get photo array from mongoose
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.aggregate([
+      { $sample: { size: 10 } },
+    ]); //1 get photo array from mongoose
     //iterate through all user's photos, note this could incorporate a map/promise all, limit to 5 photos, ref https://www.tutorialspoint.com/find-a-specified-amount-of-records-in-mongodb
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
@@ -206,9 +208,11 @@ router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
 router.get("/photosimpletestOne", auth.ensureLoggedIn, async (req, res) => {
   console.log("api.js photosimpletestOne req query:::", req.query);
   try {
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({
-      uid: req.query.userId,
-    }).sort({"submit_stamp_raw" : -1}); //1 get one photo array from mongoose and get newest, ref https://stackoverflow.com/questions/12467102/how-to-get-the-latest-and-oldest-record-in-mongoose-js-or-just-the-timespan-bet
+    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+      .findOne({
+        uid: req.query.userId,
+      })
+      .sort({ submit_stamp_raw: -1 }); //1 get one photo array from mongoose and get newest, ref https://stackoverflow.com/questions/12467102/how-to-get-the-latest-and-oldest-record-in-mongoose-js-or-just-the-timespan-bet
     const imagePromise = await downloadImagePromise(UserSchema.photo_placeholder); //2 convert to google cloud object
     UserSchema.photo_placeholder = imagePromise; //3 replace photo placeholder with the base64 DataURL from GCP
     // console.log("api.js:::","Here printing google image",imagePromise);
@@ -262,8 +266,7 @@ router.get("/singleUserFind", (req, res) => {
 //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js
 //ref https://cloud.google.com/translate/docs/basic/quickstart https://googleapis.dev/nodejs/translate/latest/
 router.post("/translation", async (req, res) => {
-
-  console.log("IN TRANSLATION", req.body)
+  console.log("IN TRANSLATION", req.body);
   // The text to translate
   const text = req.body.translationInput;
 
@@ -309,7 +312,7 @@ router.post("/comment", auth.ensureLoggedIn, (req, res) => {
     contentTranslated: req.body.contentTranslated,
     contentOriginal: req.body.contentOriginal,
     timestampRaw: req.body.timestampRaw,
-    timestampPrintable: req.body.timeStampPrintable
+    timestampPrintable: req.body.timeStampPrintable,
   });
 
   newComment.save().then((comment) => res.send(comment));
@@ -317,9 +320,11 @@ router.post("/comment", auth.ensureLoggedIn, (req, res) => {
 
 router.get("/comment", (req, res) => {
   //1 get comment array from mongoose, sort so earliest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
-  Comment.find({ parent: req.query.parent }).sort({"submit_stamp_raw": 1}).then((comments) => {
-    res.send(comments);
-  });
+  Comment.find({ parent: req.query.parent })
+    .sort({ submit_stamp_raw: 1 })
+    .then((comments) => {
+      res.send(comments);
+    });
 });
 
 // anything else falls to this "not found" case
@@ -344,7 +349,6 @@ module.exports = router;
 //photo_output.photo_placeholder = image_promise_output; //3 replace the placeholder with the actual output
 // console.log(photo_output.photo_placeholder);
 // res.send({message: "Successfully updated user."}) //send back https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-
 
 // //1/21/21 This was working, going to edit to make for other languages though
 // //run Google translate from Translate.js, this is called by ImgUpload_1716_try_no_prototype.js

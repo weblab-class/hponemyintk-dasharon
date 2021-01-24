@@ -17,7 +17,7 @@
 
 .multicolor-bar .bars .bar {
   float: left;
-  height: 20px;
+  height: 1.7vw;
 }
 
 .multicolor-bar .bars div.bar:first-of-type {
@@ -41,17 +41,20 @@
 }
 
 .multicolor-bar .legends .legend .dot {
-  font-size: 25px;
+  font-size: 1.5vw;
   vertical-align: middle;
 }
 
 .multicolor-bar .legends .legend .label {
   margin-left: 2px;
   vertical-align: middle;
+  font-size: 1.3vw;
 }
 
 .progValue {
-  float: left;
   text-align: center;
   color: white;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5vw;
 }

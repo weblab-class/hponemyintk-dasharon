@@ -51,7 +51,9 @@ class MultiColorProgressBar extends Component {
               style={{ backgroundColor: item.color, width: item.percent + "%" }}
               key={i}
             >
-              {/* <span clssName="progValue">{item.value}</span> */}
+              <div className="u-flex u-flex-justifyCenter progValue">
+                <span>{item.value}</span>
+              </div>
             </div>
           );
         }
@@ -67,7 +69,9 @@ class MultiColorProgressBar extends Component {
               <span className="dot" style={{ color: item.color }}>
                 ●
               </span>
-              <span className="label">{item.name}</span>
+              <span className="label" style={{ color: item.color }}>
+                {item.name}
+              </span>
             </div>
           );
         }

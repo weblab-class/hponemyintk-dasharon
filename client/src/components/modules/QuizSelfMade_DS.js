@@ -65,7 +65,43 @@ class QuizSelfMade_DS extends Component {
   };
 
   handleFinish = () => {
-    this.setState({ showResult: true });
+    !this.state.wasAnswerInput &&
+      this.updateProgress(
+        this.state.readings[0].value,
+        this.state.readings[1].value,
+        this.state.readings[2].value + 1,
+        this.state.readings[3].value - 1
+      );
+    this.setState({ showResult: true, onPhoto: 0 });
+  };
+
+  handleRetake = () => {
+    this.updateProgress(
+      0,
+      0,
+      0,
+      this.state.readings[0].value +
+        this.state.readings[1].value +
+        this.state.readings[2].value +
+        this.state.readings[3].value
+    );
+    console.log("In quiz Retake, this.state.readings", this.state.readings);
+    this.setState({ isDone: false, showResult: false, wasAnswerInput: false });
+  };
+
+  handleNewQuiz = () => {
+    // reset all the states before requesting another api call via imageLoad to populate the quiz data
+    this.setState({
+      dataSet: [],
+      onPhoto: 0,
+      isDone: false,
+      loaded: false,
+      showResult: false,
+      wasAnswerInput: false,
+      curAnsInfo: [],
+    });
+    this.updateProgress(0, 0, 0, 1);
+    this.imageLoad();
   };
 
   componentDidMount() {
@@ -246,6 +282,7 @@ class QuizSelfMade_DS extends Component {
             "buen trabajo",
             "buenas tardes",
           ]; //two word wrong answers, maybe pull three for each
+          correctAnswer = correctAnswer.toLowerCase();
           let corAnsLen = correctAnswer.split(" ").length;
           let tmpWrongList = [];
           if (corAnsLen == 1) {
@@ -326,23 +363,35 @@ class QuizSelfMade_DS extends Component {
   };
 
   render() {
+    //Chatbook login protection
+    if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     return (
       <>
+        {/* check whether we are at the result page already or not */}
         {this.state.showResult ? (
           <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
-            <div className="postColumn">
+            <div className="postColumn u-flex-justifyCenter u-flex-alignCenter">
               <img
                 src="https://agilites.com/images/news/news-congrads-kkluyshnik-02-04-19.jpg"
-                height="300"
-                width="auto"
+                height="auto"
+                width="70%"
               />
-              <h1 className="u-textCenter">Congrats you are done with the quiz!!!</h1>
-              <div className="u-flex u-flex-justifyCenter">
+              <h1 className="u-textCenter">Congrats, you are done with the quiz!!!</h1>
+              <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
                 <MultiColorProgressBar readings={this.state.readings} />
+              </div>
+              <div>
+                <button type="button" onClick={this.handleRetake}>
+                  Retake the quiz!
+                </button>
+                <button type="button" onClick={this.handleNewQuiz}>
+                  Try another quiz set!
+                </button>
               </div>
             </div>
           </div>
         ) : (
+          // if not, show only the progress bar
           <div>
             <div className="u-flex u-flex-justifyCenter">
               <MultiColorProgressBar readings={this.state.readings} />
