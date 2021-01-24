@@ -87,6 +87,27 @@ export default class Simple extends Component {
     );
   };
 
+  // **********************************************
+  // *** for hiding overlay when showing images ***
+  // **********************************************
+  renderOverlay = () => {
+    return (
+      <div
+        style={{
+          background: "rgba(0, 0, 0, 0.3)",
+          color: "white",
+          padding: 5,
+          pointerEvents: "none",
+          position: "absolute",
+          top: 5,
+          left: 5,
+        }}
+      >
+        ""
+      </div>
+    );
+  };
+
   // ***************************************************
   // *** for rendering text box below annotation box ***
   // ***************************************************
@@ -115,8 +136,10 @@ export default class Simple extends Component {
   render() {
     let tagText = "Tags:";
     //Decide whether should be tag or tags in text
-    console.log("LIST", this.props.annotationslst)
-    if(this.props.annotationslst.length === 1) {tagText = "Tag:"};
+    console.log("LIST", this.props.annotationslst);
+    if (this.props.annotationslst.length === 1) {
+      tagText = "Tag:";
+    }
     //if edits are allowed return with an onChange
     if (this.props.allowEdits) {
       return (
@@ -164,6 +187,7 @@ export default class Simple extends Component {
             // renderHighlight={this.renderHighlight} // for adding custom text on annotated image
             activeAnnotationComparator={this.activeAnnotationComparator} // from annotation selector comment box
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
+            renderOverlay={this.renderOverlay} // Hide overlay
             allowTouch
           />
           <h4>{tagText}</h4>

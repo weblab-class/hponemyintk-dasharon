@@ -135,7 +135,25 @@ class IndividualFlashcard extends Component {
     }
   };
 
-<<<<<<< HEAD
+  //Show caption with hover option to see in other language, and have a chance to flip languages
+  showCaption = () => {
+    if (this.props.showInNativeLanguage) {
+      return (
+        <span className="tooltip">
+          {this.props.photoFacts.captionTextOriginal}
+          <span className="tooltiptext">{this.props.photoFacts.captionTextTranslated}</span>
+        </span>
+      );
+    } else {
+      return (
+        <span className="tooltip">
+          {this.props.photoFacts.captionTextTranslated}
+          <span className="tooltiptext">{this.props.photoFacts.captionTextOriginal}</span>
+        </span>
+      );
+    }
+  };
+
   // From catbook this gets called when the user pushes "Submit", so their
   // post gets added to the screen right away
   addNewComment = (commentObj) => {
@@ -143,28 +161,6 @@ class IndividualFlashcard extends Component {
       comments: this.state.comments.concat([commentObj]),
     });
   };
-=======
-  //Show caption with hover option to see in other language, and have a chance to flip languages
-  showCaption = () => {
-    if (this.props.showInNativeLanguage) {
-      return(
-        <span className ="tooltip">{this.props.photoFacts.captionTextOriginal}
-        <span className = "tooltiptext">{this.props.photoFacts.captionTextTranslated}</span></span>
-      )} else
-      { return(
-        <span className ="tooltip">{this.props.photoFacts.captionTextTranslated}
-      <span className = "tooltiptext">{this.props.photoFacts.captionTextOriginal}</span></span>
-      )};
-  };
-
-    // From catbook this gets called when the user pushes "Submit", so their
-    // post gets added to the screen right away
-    addNewComment = (commentObj) => {
-      this.setState({
-        comments: this.state.comments.concat([commentObj]),
-      });
-    };
->>>>>>> 7be03ca7cd00114642c440016b48524eafcd18c9
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -243,12 +239,12 @@ class IndividualFlashcard extends Component {
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
             {this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz ? (
-              <button
-                type="button"
-                
-                className="button button:hover trashCan"
-              >
-                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} onClick={this.handleDelete} />
+              <button type="button" className="button button:hover trashCan">
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  style={{ color: "#0099ff" }}
+                  onClick={this.handleDelete}
+                />
               </button>
             ) : (
               <p></p>
