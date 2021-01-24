@@ -202,6 +202,10 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   font-size: var(--headingSize); /*ref https://www.w3schools.com/css/css_font_size.asp*/
 }
 
+.profiletext {
+  color: var(--primary); /*ref https://www.w3schools.com/css/css_font_size.asp*/
+}
+
 .dateText {
   /*text-align: center;*/
   color: var(--datecolor);
