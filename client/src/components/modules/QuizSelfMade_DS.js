@@ -3,6 +3,7 @@ import "./Image_aesthetics.css";
 import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
+import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
 import { get, getRandom } from "../../utilities";
 const clonedeep = require("lodash.clonedeep");
 
@@ -18,6 +19,7 @@ class QuizSelfMade_DS extends Component {
       correctCt: 0,
       incorrectCt: 0,
       wasAnswerInput: false,
+      curAnsInfo: [],
     };
     // this.handleClick = this.handleClick.bind(this);
   } // end constructor
@@ -241,13 +243,34 @@ class QuizSelfMade_DS extends Component {
   };
 
   handleClick = (ansString, corAns) => {
-    this.setState({ wasAnswerInput: true }); //Color answers by whether or not they are correct
-    if (ansString.text == corAns) {
+    this.setState({
+      wasAnswerInput: true,
+      curAnsInfo: [ansString.text === corAns, ansString.text],
+    }); //Color answers by whether or not they are correct
+    if (ansString.text === corAns) {
       this.setState({ correctCt: this.state.correctCt + 1 });
     } else {
       this.setState({ incorrectCt: this.state.incorrectCt + 1 });
     }
   };
+
+  readings = [
+    {
+      name: "Rights",
+      value: 10,
+      color: "green",
+    },
+    {
+      name: "Wrongs",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Unanswered",
+      value: 80,
+      color: "orange",
+    },
+  ];
 
   render() {
     return (
@@ -255,18 +278,23 @@ class QuizSelfMade_DS extends Component {
         {this.state.loaded ? (
           //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
           this.state.dataSet.length > 0 ? (
-            <IndividualFlashcard
-              forQuiz={true}
-              photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
-              wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
-              correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
-              handleClick={this.handleClick}
-              handleNext={this.handleNext}
-              handleClickonAnswer={this.handleClickonAnswer}
-              wasAnswerInput={this.state.wasAnswerInput}
-              correctCt={this.state.correctCt}
-              incorrectCt={this.state.incorrectCt}
-            />
+            <>
+              <div>
+                <IndividualFlashcard
+                  forQuiz={true}
+                  photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
+                  wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
+                  correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
+                  handleClick={this.handleClick}
+                  handleNext={this.handleNext}
+                  wasAnswerInput={this.state.wasAnswerInput}
+                  correctCt={this.state.correctCt}
+                  incorrectCt={this.state.incorrectCt}
+                  curAnsInfo={this.state.curAnsInfo}
+                />
+                <MultiColorProgressBar readings={this.readings} />
+              </div>
+            </>
           ) : (
             <p>No photos!</p>
           )

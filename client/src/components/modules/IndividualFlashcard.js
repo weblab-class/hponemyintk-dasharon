@@ -130,6 +130,15 @@ class IndividualFlashcard extends Component {
               {ans.text}
             </button>
           ))}
+          {this.props.curAnsInfo[0] ? (
+            <p style={{ color: "green" }}>You got the right anwer!!!</p>
+          ) : (
+            <p style={{ color: "red" }}>
+              You chose {this.props.curAnsInfo[1]}, but the right answer is
+              {this.props.correctAnswer}.
+            </p>
+          )}
+          {console.log("this.props.curAnsInfo", this.props.curAnsInfo)}
         </>
       );
     }
@@ -138,23 +147,29 @@ class IndividualFlashcard extends Component {
   //Show caption with hover option to see in other language, and have a chance to flip languages
   showCaption = () => {
     if (this.props.showInNativeLanguage) {
-      return(
-        <span className ="tooltip">{this.props.photoFacts.captionTextOriginal}
-        <span className = "tooltiptext">{this.props.photoFacts.captionTextTranslated}</span></span>
-      )} else
-      { return(
-        <span className ="tooltip">{this.props.photoFacts.captionTextTranslated}
-      <span className = "tooltiptext">{this.props.photoFacts.captionTextOriginal}</span></span>
-      )};
+      return (
+        <span className="tooltip">
+          {this.props.photoFacts.captionTextOriginal}
+          <span className="tooltiptext">{this.props.photoFacts.captionTextTranslated}</span>
+        </span>
+      );
+    } else {
+      return (
+        <span className="tooltip">
+          {this.props.photoFacts.captionTextTranslated}
+          <span className="tooltiptext">{this.props.photoFacts.captionTextOriginal}</span>
+        </span>
+      );
+    }
   };
 
-    // From catbook this gets called when the user pushes "Submit", so their
-    // post gets added to the screen right away
-    addNewComment = (commentObj) => {
-      this.setState({
-        comments: this.state.comments.concat([commentObj]),
-      });
-    };
+  // From catbook this gets called when the user pushes "Submit", so their
+  // post gets added to the screen right away
+  addNewComment = (commentObj) => {
+    this.setState({
+      comments: this.state.comments.concat([commentObj]),
+    });
+  };
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -233,12 +248,12 @@ class IndividualFlashcard extends Component {
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
             {this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz ? (
-              <button
-                type="button"
-                
-                className="button button:hover trashCan"
-              >
-                <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} onClick={this.handleDelete} />
+              <button type="button" className="button button:hover trashCan">
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  style={{ color: "#0099ff" }}
+                  onClick={this.handleDelete}
+                />
               </button>
             ) : (
               <p></p>
@@ -248,13 +263,15 @@ class IndividualFlashcard extends Component {
             if this is a quiz and an answer is not selected, no next button
             if this is not a quiz then have comments block*/}
             {this.props.forQuiz ? ( //Case 1A- in quiz and input answer- show next
-            
-            (this.props.wasAnswerInput) ? (<button type="button" onClick={this.props.handleNext}>
-            Next
-          </button>) : 
-          (<p></p>) //Case1B- in quiz and did not yet input answer- show empty tag
-         
-            ) : ( //Case 2- not in quiz and then show comments block
+              this.props.wasAnswerInput ? (
+                <button type="button" onClick={this.props.handleNext}>
+                  Next
+                </button>
+              ) : (
+                <p></p>
+              ) //Case1B- in quiz and did not yet input answer- show empty tag
+            ) : (
+              //Case 2- not in quiz and then show comments block
               /*this is from catbook*/
               <CommentsBlock
                 photo={this.props.photoFacts}
