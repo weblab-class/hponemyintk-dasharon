@@ -23,8 +23,6 @@ import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
 
@@ -33,7 +31,6 @@ class IndividualFlashcard extends Component {
     super(props);
     // Initialize Default State
     this.state = {
-      wasAnswerInput: false,
       comments: [],
     };
     this.answerArray = [];
@@ -85,18 +82,6 @@ class IndividualFlashcard extends Component {
     return newInput;
   };
 
-  //Color answers by whether or not they are correct
-  handleClickonAnswer = (event) => {
-    this.setState({ wasAnswerInput: true });
-  };
-
-  //when next is pressed, delete from array so next photo is seen
-  //using prop function from quiz component
-  handleNext = () => {
-    this.props.movetoNextPhoto();
-    this.setState({ wasAnswerInput: false });
-  };
-
   //create answer array in a randomized order
   createAnswerArray = () => {
     //set up array of answer objects- 1 text 2 color
@@ -126,12 +111,12 @@ class IndividualFlashcard extends Component {
     //make answer array if not shuffled yet
 
     // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
-    if (!this.state.wasAnswerInput) {
+    if (!this.props.wasAnswerInput) {
       this.answerArray = this.createAnswerArray();
       return (
         <>
           {this.answerArray.map((ans, k) => (
-            <button onClick={this.handleClickonAnswer} key={k}>
+            <button onClick={() => this.props.handleClick(ans, this.props.correctAnswer)} key={k}>
               {ans.text}
             </button>
           ))}
@@ -141,7 +126,7 @@ class IndividualFlashcard extends Component {
       return (
         <>
           {this.answerArray.map((ans, k) => (
-            <button style={{ color: ans.color }} key={k}>
+            <button style={{ color: ans.color }} key={k} disabled>
               {ans.text}
             </button>
           ))}
@@ -150,13 +135,13 @@ class IndividualFlashcard extends Component {
     }
   };
 
-    // From catbook this gets called when the user pushes "Submit", so their
-    // post gets added to the screen right away
-    addNewComment = (commentObj) => {
-      this.setState({
-        comments: this.state.comments.concat([commentObj]),
-      });
-    };
+  // From catbook this gets called when the user pushes "Submit", so their
+  // post gets added to the screen right away
+  addNewComment = (commentObj) => {
+    this.setState({
+      comments: this.state.comments.concat([commentObj]),
+    });
+  };
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -201,7 +186,11 @@ class IndividualFlashcard extends Component {
             {!this.props.forQuiz ? (
               <p>{this.props.photoFacts.caption_text_s}</p>
             ) : (
-              this.showQuizInfo()
+              <>
+                {this.showQuizInfo()}
+                <p> Correct: {this.props.correctCt}</p>
+                <p> Incorrect:{this.props.incorrectCt}</p>
+              </>
             )}
 
             {/*info on ratings*/}
@@ -213,15 +202,15 @@ class IndividualFlashcard extends Component {
               value={this.props.photoFacts.difficulty}
               disabled
             />
-            <p>Quality</p>
-            {/* <Typography component="legend">Quality</Typography> *{PhotoInfo.quality} */}
+            {/* <p>Quality</p>
+            <Typography component="legend">Quality</Typography> *{PhotoInfo.quality}
             <Rating
               precision={0.5}
               name="qualityRating"
               value={this.props.photoFacts.quality}
               icon={<FavoriteIcon fontSize="inherit" />}
               disabled
-            />
+            /> */}
 
             {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
             https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
@@ -244,17 +233,18 @@ class IndividualFlashcard extends Component {
 
             {/*if this is a quiz, add a next button*/}
             {this.props.forQuiz ? (
-              <button type="button" onClick={this.handleNext}>
+              <button type="button" onClick={this.props.handleNext}>
                 Next
               </button>
-            ) : ( /*this is from catbook*/
+            ) : (
+              /*this is from catbook*/
               <CommentsBlock
-              photo={this.props.photoFacts}
-              comments={this.state.comments}
-              addNewComment={this.addNewComment}
-              viewingUserId={this.props.viewingUserId}
-              showInNativeLanguage={this.props.showInNativeLanguage}
-            />
+                photo={this.props.photoFacts}
+                comments={this.state.comments}
+                addNewComment={this.addNewComment}
+                viewingUserId={this.props.viewingUserId}
+                showInNativeLanguage={this.props.showInNativeLanguage}
+              />
             )}
           </div>
         </div>
