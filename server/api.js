@@ -77,17 +77,18 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 
 //1/13 annotating
-router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
+router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) => {
   // [credit: From Nikhil GCP example https://github.com/weblab-workshops/gcp-example]
   /* Check if image is passed as a valid string or not */
+  try {
   if (typeof req.body.photo_placeholder !== "string") {
     throw new Error(
       "Can only handle images encoded as strings. Got type: " + typeof req.body.photo_placeholder
     );
   }
   /* If valid, upload image to GCP, store the imageId in the schema, and submit schemaInfo to Mongodb */
-  uploadImagePromise(req.body.photo_placeholder)
-    .then((image_upload_info) => {
+  image_upload_info = await uploadImagePromise(req.body.photo_placeholder)
+    // .then((image_upload_info) => {
       //if success then set up schema //If not error continue [ref: https://stackoverflow.com/questions/30469261/checking-for-typeof-error-in-js]
       // [credit: from OH 1/13/21 many thanks to Johan for debugging help!]
       const newPhoto_simplea = new PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose({
@@ -98,6 +99,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         difficulty: req.body.difficulty,
         difficultyRatings: req.body.difficultyRatingArray,
         usersLikingArray: req.body.usersLikingArray,
+        likeCount: req.body.likeCount,
         goodforQuiz: req.body.goodforQuiz,
         uname: req.user.name,
         uid: req.user._id,
@@ -109,23 +111,30 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
       }); //save the photo and then set the everUpdated field for the user to be true
       //https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
       //update the user schema to reflect that this user uploaded a photo- only do this after uploading the photo and finding userId
-      newPhoto_simplea.save();
+      photoSaving = await newPhoto_simplea.save();
       //User.findById(req.user._id).then(userUpdating => console.log("UPDATING", userUpdating), userUpdating.everUploaded = true, userUpdating.save()); //User.findById(req.user._id)).then(userUpdating => {console.log("UPDATING", userUpdating)})
-    })
-    .catch((err) => {
+      let userUpdating = await User.findById(req.user._id);
+      console.log("UPDATING INIT", userUpdating),
+      userUpdating.photoCount = userUpdating.photoCount + 1; //increment photo count
+      if (req.body.likeCount > 0) {userUpdating.likeList = userUpdating.likeList.concat(photoSaving._id)}; //if liked add to liked list
+      if (req.body.difficulty > 0) {userUpdating.difficultyList = userUpdating.difficultyList.concat({ //if rated difficulty add to difficulty list
+        ratingPhotoId: photoSaving._id, //add id of photo saved
+        ratingValue: req.body.difficulty, //set to rated difficulty
+    })} //if rated difficulty add to personal ratings array
+      userUpdating.save();
+      console.log("USER UPDATED AFTER 2", userUpdating);
+      res.send(userUpdating);
+    }
+    catch(err) {
       console.log("ERR: upload image: " + err);
       res.status(500).send({
         message: "error uploading",
       });
-    });
-  User.findById(req.user._id).then((userUpdating) => {
-    console.log("UPDATING AFTER 2", userUpdating),
-      (userUpdating.photoCount = userUpdating.photoCount + 1),
-      userUpdating.save(),
-      console.log("USER UPDATED AFTER 2", userUpdating);
-    res.send(userUpdating);
+    };
   });
-});
+
+//   });
+// });
 
 //Deletes a photo from the database
 //ref https://kb.objectrocket.com/mongo-db/how-to-delete-documents-with-mongoose-235
@@ -306,9 +315,11 @@ router.post("/changeLanguage", (req, res) => {
 });
 
 //comment post and get requests are from catbook, many thanks to Kye for indicating we can use this!
-router.post("/comment", auth.ensureLoggedIn, (req, res) => {
+router.post("/comment", auth.ensureLoggedIn, async (req, res) => {
   try {
     console.log("API LOG", req.body); //log
+    
+
     const newComment = new Comment({
       creator_id: req.user._id,
       creator_name: req.user.name,
@@ -319,7 +330,13 @@ router.post("/comment", auth.ensureLoggedIn, (req, res) => {
       timestampPrintable: req.body.timeStampPrintable,
     });
 
-    newComment.save().then((comment) => res.send(comment));
+    const savedComment = await newComment.save() // get comment saved
+    let userUpdating = await User.findById(req.user._id) //get user requesting
+    console.log("UPDATING", userUpdating);
+    userUpdating.commentList = userUpdating.commentList.concat(req.body.parent); //add the photo ID of the post commented on for user requesting
+    userUpdating.save()
+    console.log(userUpdating); //save for new user
+    res.send(savedComment);
   } catch (e) {
     //then is from Nikhil gcp storage code
     console.log("error in comment");
@@ -418,6 +435,77 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
   } catch (e) {
     //then is from Nikhil gcp storage code
     console.log("error in difficultyRating");
+    res.status(400).json({ message: e.message });
+  }
+});
+
+//update difficulty rating
+router.post("/likingRating", auth.ensureLoggedIn, async(req, res) => {
+  try {
+    //1 get the photo being rated
+    photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+      .findOne({
+        _id: req.body.photoId,
+      });
+     console.log("pull photo", photoSchema._id);
+      if (req.body.addLike) //if wanting to add a like- increment like count and then add new liking user name and id to schema
+      {
+        photoSchema.likeCount = photoSchema.likeCount+1;
+        newLikeInfo = {likingUserId: req.user._id,
+                       likingUserName: req.user.name}
+        photoSchema.usersLikingArray = photoSchema.usersLikingArray.concat(newLikeInfo);       
+        // console.log("adding like", newLikeInfo);
+        // console.log("new schema", photoSchema);
+        photoSchemaUpdated = await photoSchema.save();
+        res.send(photoSchemaUpdated);
+
+      //also update user
+      let userUpdating = await User.findById(req.user._id);
+      console.log("adding like");
+      console.log("UPDATING INIT", userUpdating);
+      userUpdating.likeList = userUpdating.likeList.concat(req.body.photoId); //add photo liking to liked list
+      userUpdating.save();
+      }
+      else //if wanting to unlike- decrement like count and remove new liking user name and id from schema
+      {
+        photoSchema.likeCount = photoSchema.likeCount - 1;
+
+        //iterate through array and find element to delete, will only go here if the user is in the already liking array
+        //splice ref https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+        //filter ref https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+        //only keep elements if they are not the user id we are deleting
+        photoSchema.usersLikingArray = photoSchema.usersLikingArray.filter((u) => u.likingUserId !== req.user._id)
+        // let deletionIndex = -1;
+        // for (let uu =0; uu < photoSchema.usersLikingArray.length; uu++)
+        // {
+        //   if (photoSchema.usersLikingArray[uu].likingUserId === req.user._id)
+        //   {
+        //     console.log("FOUND")
+        //     deletionIndex = uu //when found the appropriate userId, set the deletion index
+        //   }
+        // }
+
+        // //run deletion
+        // photoSchema.usersLikingArray = photoSchema.usersLikingArray.splice(deletionIndex, 1);
+        // console.log("removing like", req.user._id);
+        // console.log("new schema", photoSchema);
+        photoSchemaUpdated = await photoSchema.save();
+        res.send(photoSchemaUpdated);
+
+        //also update user
+        let userUpdating = await User.findById(req.user._id);
+        console.log("UPDATING INIT", userUpdating.likeList);
+        console.log("WANT TO DELETE", req.body.photoId);
+        let updatedLikes = await userUpdating.likeList.filter((pid) => pid !== req.body.photoId); //remove this photo from the liked list
+        console.log("UPDATING AFTER", updatedLikes);
+        userUpdating.likeList = updatedLikes;
+        userUpdating.save();
+      };
+
+
+   } catch (e) {
+    //then is from Nikhil gcp storage code
+    console.log("error in likingRating");
     res.status(400).json({ message: e.message });
   }
 });

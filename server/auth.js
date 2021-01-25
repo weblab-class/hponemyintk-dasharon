@@ -34,6 +34,9 @@ function getOrCreateUser(user) {
       learningLanguageLong: "Spanish",
       welcomeMessage: "Welcome! You are now learning Spanish (by default). If you would like to learn another language, please select a language of interest via the dropdown menu.",
       defaultChanged: false,
+      commentList: [],
+      difficultyList: [],
+      likeList: []
     });
 
     return newUser.save();
