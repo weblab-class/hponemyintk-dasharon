@@ -7,34 +7,28 @@ const mongoose = require("mongoose");
 
 //uses subdocuments https://mongoosejs.com/docs/subdocs.html
 
-const AnnotInfoSchema = new mongoose.Schema(
-  {
-   data:
-      {
-        id: Number,
-        text: String, //this is the word in the language the user learns, can get flipped on processing
-        textforBox: String, //this is the word in the native language, can get flipped on processing
-        nativeLanguageTag: String, //also store explicitly for flipping- this will always be the word in the native language
-        learningLanguageTag: String //also store explicitly for flipping- this will always be the word in the language learned
-      },
-    geometry:
-    {
-      height: Number,
-      shape_kind: String,
-      width: Number,
-      x: Number,
-      y: Number,
-    }
-  }
-);
+const AnnotInfoSchema = new mongoose.Schema({
+  data: {
+    id: Number,
+    text: String, //this is the word in the language the user learns, can get flipped on processing
+    textforBox: String, //this is the word in the native language, can get flipped on processing
+    nativeLanguageTag: String, //also store explicitly for flipping- this will always be the word in the native language
+    learningLanguageTag: String, //also store explicitly for flipping- this will always be the word in the language learned
+  },
+  geometry: {
+    height: Number,
+    shape_kind: String,
+    width: Number,
+    x: Number,
+    y: Number,
+  },
+});
 
 //this holds who rated and what that person rated
-const DifficultyRatingSchema = new mongoose.Schema(
-  {
-    ratingUserId: String,
-    ratingValue: Number
-  }
-);
+const DifficultyRatingSchema = new mongoose.Schema({
+  ratingUserId: String,
+  ratingValue: Number,
+});
 
 //define a comment schema for the database
 const PhotoSimpleAnnotSchema = new mongoose.Schema({
@@ -56,7 +50,11 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
 
 // compile model from schema
 module.exports = {
-  photo_simple_w_annotate_mongoose : mongoose.model("photo_simple_w_annotate", PhotoSimpleAnnotSchema),
-  annot_info_mongoose : mongoose.model("annot_info", AnnotInfoSchema),
-  difficulty_rating_mongoose : mongoose.model("difficulty_rating", DifficultyRatingSchema)
+  photo_simple_w_annotate_mongoose: mongoose.model(
+    "photo_simple_w_annotate",
+    PhotoSimpleAnnotSchema
+  ),
+  // I think the following two are the subschema; so, I don't think we need to export them
+  // annot_info_mongoose : mongoose.model("annot_info", AnnotInfoSchema),
+  // difficulty_rating_mongoose : mongoose.model("difficulty_rating", DifficultyRatingSchema)
 };
