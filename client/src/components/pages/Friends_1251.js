@@ -20,7 +20,14 @@ class Friends_1251 extends Component {
       allUserList: [], //set initial user list to be empty
       allPhotos: [],
       showInNativeLanguage: false,
-      haveSwitched: false
+      haveSwitched: false,
+      filters: {
+        // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
+        getOneFromAll: false,
+        mostDifficult: false,
+        leastDifficult: false,
+        mostLiked: true,
+      },
     };
   }
 
@@ -42,26 +49,68 @@ class Friends_1251 extends Component {
   }
 
   //async/await course slides were very helpful
-  getUsers = async() => {
+  getUsers = async () => {
     try {
-    const allUsers = await get("/api/all_user_find");
-    this.setState({
-        allUserList: allUsers.filter(userCheck => userCheck.photoCount > 0)
-      });
-    let allPhotoList = [];
-    for (let uu = 0; uu < this.state.allUserList.length; uu++)
-    {
-      // console.log(uu, "USER INFO", this.state.allUserList[uu]);
-      const newPhoto = await get("/api/photosimpletestOne", { userId: this.state.allUserList[uu]._id });
-      // console.log("PHOTO", newPhoto);
-      allPhotoList = allPhotoList.concat(newPhoto);
-    };
-    
-    this.setState({allPhotos : allPhotoList});
-    //this.runFlipInit();
-    // console.log("ALL PHOTOS", this.state.allPhotos)
+      let allPhotoList = []; // set allUsers to be none before any api calls
+      const photoLim = 10; // How many photo to grab per get request
+      // check which flag is set true
+      for (let filter of Object.keys(this.state.filters)) {
+        //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
+        if (filter === "getOneFromAll" && this.state.filters[filter]) {
+          const allUsers = await get("/api/all_user_find");
+          this.setState({
+            allUserList: allUsers.filter((userCheck) => userCheck.photoCount > 0),
+          });
+          for (let uu = 0; uu < this.state.allUserList.length; uu++) {
+            const newPhoto = await get("/api/photoFilter", {
+              sortString: "submit_stamp_raw",
+              sortFlag: -1,
+              lim: 1,
+              keyname: "uid",
+              keyvalue: this.state.allUserList[uu]._id,
+            });
+            allPhotoList = allPhotoList.concat(newPhoto);
+          }
+          this.setState({ allPhotos: allPhotoList });
+        }
+
+        if (filter === "mostDifficult" && this.state.filters[filter]) {
+          allPhotoList = await get("/api/photoFilter", {
+            sortString: "difficulty",
+            sortFlag: -1,
+            lim: photoLim,
+            keyname: "",
+            keyvalue: "",
+          });
+          this.setState({ allPhotos: allPhotoList });
+        }
+
+        if (filter === "leastDifficult" && this.state.filters[filter]) {
+          console.log(filter === "leastDifficult", filter);
+          allPhotoList = await get("/api/photoFilter", {
+            sortString: "difficulty",
+            sortFlag: 1,
+            lim: photoLim,
+            keyname: "",
+            keyvalue: "",
+          });
+          this.setState({ allPhotos: allPhotoList });
+        }
+
+        if (filter === "mostLiked" && this.state.filters[filter]) {
+          allPhotoList = await get("/api/photoFilter", {
+            sortString: "likeCount",
+            sortFlag: -1,
+            lim: photoLim,
+            keyname: "",
+            keyvalue: "",
+          });
+          this.setState({ allPhotos: allPhotoList });
+        }
+      }
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {console.log(e)}
   };
   //     .then((allUsers) => get()).then(allPhotos => {this.setState({})})
   //   });
@@ -76,9 +125,8 @@ class Friends_1251 extends Component {
   //   }
   // };
 
-    //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
-    switchLanguage = (event) => {
-      
+  //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
+  switchLanguage = (event) => {
     //   if (!this.state.everSwitched)
     //   {this.setState({everSwitched : true})
     // console.log("SWITCH 1")}
@@ -88,76 +136,76 @@ class Friends_1251 extends Component {
 
     //   //run flip
     //   console.log("IN SWITCH LANGUAGE", thiss.state.showInNativeLanguage);
-  
-      this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
-      // let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
-      // console.log("PHOTOS in runflip", photos)
-      // //Flip the tags and printout languages in each annotation for each photo
-      // for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
-      // {
-      //   for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
-      //   {
-          
-      //     const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-      //     const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-      //     console.log("BOOLEAN", this.state.showInNativeLanguage)
-      //     if (!this.state.showInNativeLanguage)
-      //     {
-      //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-      //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-      //     }
-      //     else
-      //     {
-      //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-      //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-      //     }
-      //   }
-      // }
-      // this.setState({allPhotos: photos})
-};
 
-// runFlipInit = () =>{
-//   let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
-//   console.log("PHOTOS in runflip", photos)
-//   //Flip the tags and printout languages in each annotation for each photo
-//   for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
-//   {
-//     for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
-//     {
-      
-//       const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-//       const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-//       console.log("BOOLEAN", this.state.showInNativeLanguage)
-//       if (!this.state.showInNativeLanguage)
-//       {
-//         photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-//         photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-//       }
+    this.setState({ showInNativeLanguage: !this.state.showInNativeLanguage });
+    // let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
+    // console.log("PHOTOS in runflip", photos)
+    // //Flip the tags and printout languages in each annotation for each photo
+    // for (let pp = 0; pp < this.state.allPhotos.length; pp++)
+    // {
+    //   for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
+    //   {
 
-//     }
-//   }
-//   this.setState({allPhotos: photos})
-// }
+    //     const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+    //     const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+    //     console.log("BOOLEAN", this.state.showInNativeLanguage)
+    //     if (!this.state.showInNativeLanguage)
+    //     {
+    //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+    //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+    //     }
+    //     else
+    //     {
+    //       photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+    //       photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+    //     }
+    //   }
+    // }
+    // this.setState({allPhotos: photos})
+  };
+
+  // runFlipInit = () =>{
+  //   let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
+  //   console.log("PHOTOS in runflip", photos)
+  //   //Flip the tags and printout languages in each annotation for each photo
+  //   for (let pp = 0; pp < this.state.allPhotos.length; pp++)
+  //   {
+  //     for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
+  //     {
+
+  //       const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+  //       const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+  //       console.log("BOOLEAN", this.state.showInNativeLanguage)
+  //       if (!this.state.showInNativeLanguage)
+  //       {
+  //         photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+  //         photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+  //       }
+
+  //     }
+  //   }
+  //   this.setState({allPhotos: photos})
+  // }
 
   //pass as prop to individual flashcard components
   //take in photoid and rating and update difficulty rating
-  updateDifficulty = (difficultyRating, phototoEdit) =>
-  {
+  updateDifficulty = (difficultyRating, phototoEdit) => {
     console.log("difficulty", difficultyRating, "for", phototoEdit._id);
-    post("/api/difficultyRating", {difficultyRating : difficultyRating, photoId: phototoEdit._id}).then((photoUpdated) => {
+    post("/api/difficultyRating", {
+      difficultyRating: difficultyRating,
+      photoId: phototoEdit._id,
+    }).then((photoUpdated) => {
       let newPhotoArray = clonedeep(this.state.allPhotos);
-      for (let pp = 0; pp < newPhotoArray.length; pp++)
-      {
-        if (newPhotoArray[pp]._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
-        {
-          newPhotoArray[pp] = photoUpdated
-          newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder //fix photo placeholder so don't repeat mongoose call
-          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
+      for (let pp = 0; pp < newPhotoArray.length; pp++) {
+        if (newPhotoArray[pp]._id === phototoEdit._id) {
+          //when find the array entry fixed, set it to be the revised entry
+          newPhotoArray[pp] = photoUpdated;
+          newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder; //fix photo placeholder so don't repeat mongoose call
+          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
         }
-      };
-      this.setState({allPhotos : newPhotoArray});
-    })
-
+      }
+      this.setState({ allPhotos: newPhotoArray });
+    });
   };
 
   render() {
@@ -171,8 +219,10 @@ class Friends_1251 extends Component {
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
     let langSwitchText = "Show comments and captions in language learning!";
-    if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
-    
+    if (this.state.showInNativeLanguage === false) {
+      langSwitchText = "Show comments and captions in English!";
+    }
+
     return (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         {/*Many thanks to Justin for Piazza link advice*/}
@@ -183,32 +233,38 @@ class Friends_1251 extends Component {
           (There are also links for showing all the photo from the users.)
         </h1>
         <button
-                type="button"
-                onClick={this.switchLanguage}
-                // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-              > {langSwitchText}
-                {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
-                {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
-              </button>
+          type="button"
+          onClick={this.switchLanguage}
+          // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
+        >
+          {" "}
+          {langSwitchText}
+        </button>
         {/* {allUploadedUserList.map((u, i) => (
           <>
             {console.log(u)}
             <p>{u._id}</p>
             {/* <View_Flashcards onlyOne={true} userId={u._id} key={i} /> */}
-            {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
-            {/* either print my or the user with a possessive */}
-            {/* <Link to={"/Flashcards/" + u._id}>
+        {/* <UserInfo userNameInfo={u.name} userId={u._id} key={i} /> */}
+        {/* either print my or the user with a possessive */}
+        {/* <Link to={"/Flashcards/" + u._id}>
               I want to see all of {this.getPossessive(u._id, this.props.userId, u.name)}{" "}
               flashcards!
             </Link> */}
-            {/* <br />
+        {/* <br />
           </>
- */} 
-        {this.state.allPhotos.map((p,i) => 
-          <IndividualFlashcard photoFacts={p} ownPhoto={false} onlyOne = {true} hasLooped={false} viewingUserId={this.props.userId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty}/>
-        )}
+ */}
+        {this.state.allPhotos.map((p, i) => (
+          <IndividualFlashcard
+            photoFacts={p}
+            ownPhoto={false}
+            onlyOne={true}
+            hasLooped={false}
+            viewingUserId={this.props.userId}
+            showInNativeLanguage={this.state.showInNativeLanguage}
+            updateDifficulty={this.updateDifficulty}
+          />
+        ))}
       </div>
     );
   }

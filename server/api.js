@@ -434,14 +434,25 @@ router.get("/comment", (req, res) => {
 /***********************************************/
 /*** get requests for filtering images/posts ***/
 /***********************************************/
-// for getting most difficult photos
-router.get("/mostDifficult", auth.ensureLoggedIn, async (req, res) => {
+// for getting photos ranked by most/least difficulty/like rating
+// will take in req.query.sortString (to filter by key name), req.query.sortFlag (to sort by descending (-1) or ascending (+1) order), req.query.lim (to limit # pics return), req.query.keyname, req.query.keyvalue
+router.get("/photoFilter", auth.ensureLoggedIn, async (req, res) => {
   try {
     //1 get specified number of most difficult images from the data base
-    const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
-      .find({})
-      .sort({ difficulty: -1 })
-      .limit(req.lim);
+
+    let UserSchema = [];
+    if (req.query.keyvalue.length !== 0) {
+      UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+        .find({ [req.query.keyname]: req.query.keyvalue })
+        .sort({ [req.query.sortString]: Number(req.query.sortFlag) })
+        .limit(Number(req.query.lim));
+    } else {
+      UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+        .find({})
+        .sort({ [req.query.sortString]: Number(req.query.sortFlag) }) //ref: https://stackoverflow.com/questions/33160536/mongoose-variable-sort
+        .limit(Number(req.query.lim));
+    }
+
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
       const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
       UserSchema[u_info].photo_placeholder = imagePromise;
