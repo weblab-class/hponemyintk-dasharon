@@ -23,7 +23,8 @@ import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
+import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
 
@@ -76,20 +77,19 @@ class IndividualFlashcard extends Component {
       let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
 
       //only have flipping if not in quiz. Otherwise do not want to flip
-      if (!this.props.forQuiz)
-      {
-      //Switch whether tag is in native language and text is learning language or vice versa
-      const nativeTag = newObj.data.nativeLanguageTag;
-      const learningTag = newObj.data.learningLanguageTag;
-      console.log("BOOLEAN", this.state.showInNativeLanguage);
-      if (!this.props.showInNativeLanguage) {
-        newObj.data.text = newObj.data.nativeLanguageTag;
-        newObj.data.textforBox = newObj.data.learningLanguageTag;
-      } else {
-        newObj.data.text = newObj.data.learningLanguageTag;
-        newObj.data.textforBox = newObj.data.nativeLanguageTag;
+      if (!this.props.forQuiz) {
+        //Switch whether tag is in native language and text is learning language or vice versa
+        const nativeTag = newObj.data.nativeLanguageTag;
+        const learningTag = newObj.data.learningLanguageTag;
+        console.log("BOOLEAN", this.state.showInNativeLanguage);
+        if (!this.props.showInNativeLanguage) {
+          newObj.data.text = newObj.data.nativeLanguageTag;
+          newObj.data.textforBox = newObj.data.learningLanguageTag;
+        } else {
+          newObj.data.text = newObj.data.learningLanguageTag;
+          newObj.data.textforBox = newObj.data.nativeLanguageTag;
+        }
       }
-    }
       console.log("NEW OBJECT, newObj");
 
       newInput.push(newObj);
@@ -134,7 +134,9 @@ class IndividualFlashcard extends Component {
       this.answerArray = this.createAnswerArray();
       return (
         <>
-          <p>What is *** in Spanish?</p>
+          <p>
+            What is "{this.props.ogTag.toLowerCase()}" in {this.props.langInterestLong}?
+          </p>
           {this.answerArray.map((ans, k) => (
             <>
               <button
@@ -144,7 +146,7 @@ class IndividualFlashcard extends Component {
               >
                 {ans.text}
               </button>
-              <div>&nbsp;</div>
+              {/* <div>&nbsp;</div> */}
             </>
           ))}
         </>
@@ -152,7 +154,9 @@ class IndividualFlashcard extends Component {
     } else {
       return (
         <>
-          <p>What is *** in Spanish?</p>
+          <p>
+            What is "{this.props.ogTag.toLowerCase()}" in {this.props.langInterestLong}?
+          </p>
           {this.answerArray.map((ans, k) => (
             <>
               {console.log(
@@ -166,40 +170,40 @@ class IndividualFlashcard extends Component {
                   {this.props.clickedAns == this.props.correctAnswer ? (
                     <>
                       <button
-                        className="quizButtonClickedCor"
+                        className="quizButton quizButtonClickedCor"
                         style={{ color: ans.color }}
                         key={k}
                         disabled
                       >
                         {ans.text}
                       </button>
-                      <div>&nbsp;</div>
+                      {/* <div>&nbsp;</div> */}
                     </>
                   ) : (
                     <>
                       <button
-                        className="quizButtonClicked"
+                        className="quizButton quizButtonClicked"
                         style={{ color: ans.color }}
                         key={k}
                         disabled
                       >
                         {ans.text}
                       </button>
-                      <div>&nbsp;</div>
+                      {/* <div>&nbsp;</div> */}
                     </>
                   )}
                 </>
               ) : (
                 <>
                   <button
-                    className="quizButtonNotClicked"
+                    className="quizButton quizButtonNotClicked"
                     style={{ color: ans.color }}
                     key={k}
                     disabled
                   >
                     {ans.text}
                   </button>
-                  <div>&nbsp;</div>
+                  {/* <div>&nbsp;</div> */}
                 </>
               )}
             </>
@@ -270,6 +274,7 @@ class IndividualFlashcard extends Component {
               border-radius="10%"
               img_using={this.props.photoFacts.photo_placeholder}
               annotationslst={annotPhotoInfo}
+              hideTagLst={this.props.forQuiz}
               height="300"
               width="300"
             />
@@ -323,7 +328,11 @@ class IndividualFlashcard extends Component {
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
             {this.props.ownPhoto && !this.props.onlyOne && !this.props.forQuiz ? (
-              <button type="button" className="button button:hover trashCan">
+              <button
+                type="button"
+                title="Delete this image"
+                className="button button:hover fontAwesomeTR"
+              >
                 <FontAwesomeIcon
                   icon={faTrashAlt}
                   style={{ color: "#0099ff" }}
@@ -339,12 +348,28 @@ class IndividualFlashcard extends Component {
             if this is not a quiz then have comments block*/}
             {this.props.forQuiz ? ( //Case 1A- in quiz and input answer- show next
               !this.props.isDone ? (
-                <button type="button" onClick={this.props.handleNext}>
-                  Next
+                <button
+                  type="button"
+                  title="Go to next question"
+                  className="button button:hover fontAwesomeBR"
+                >
+                  <FontAwesomeIcon
+                    icon={faArrowAltCircleRight}
+                    style={{ color: "#0099ff" }}
+                    onClick={this.props.handleNext}
+                  />
                 </button>
               ) : (
-                <button type="button" onClick={this.props.handleFinish}>
-                  Finish!
+                <button
+                  type="button"
+                  title="End quiz and view the score"
+                  className="button button:hover fontAwesomeBR"
+                >
+                  <FontAwesomeIcon
+                    icon={faFlagCheckered}
+                    style={{ color: "#0099ff" }}
+                    onClick={this.props.handleFinish}
+                  />
                 </button>
               ) //Case1B- in quiz and did not yet input answer- show empty tag
             ) : (

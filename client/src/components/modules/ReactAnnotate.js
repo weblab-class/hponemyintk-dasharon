@@ -161,6 +161,7 @@ export default class Simple extends Component {
 
     //if edits not allowed return without an onChange and an onSubmit
     else {
+      //if hideTagLst flag is on, only show the image without tag list
       return (
         <div>
           <Annotation
@@ -176,18 +177,24 @@ export default class Simple extends Component {
             renderOverlay={this.renderOverlay} // Hide overlay
             allowTouch
           />
-          <h4>{tagText}</h4>
-          <Comments>
-            {this.props.annotationslst.map((annotation) => (
-              <Comment
-                onMouseOver={this.onMouseOver(annotation.data.id)}
-                onMouseOut={this.onMouseOut(annotation.data.id)}
-                key={annotation.data.id}
-              >
-                {annotation.data.textforBox}
-              </Comment>
-            ))}
-          </Comments>
+          {console.log("this.props.hideTagLst", this.props.hideTagLst)}
+          {!this.props.hideTagLst && (
+            <>
+              {console.log("This is when hideTagLst is true in loop", this.props.hideTagLst)}
+              <h4>{tagText}</h4>
+              <Comments>
+                {this.props.annotationslst.map((annotation) => (
+                  <Comment
+                    onMouseOver={this.onMouseOver(annotation.data.id)}
+                    onMouseOut={this.onMouseOut(annotation.data.id)}
+                    key={annotation.data.id}
+                  >
+                    {annotation.data.textforBox}
+                  </Comment>
+                ))}
+              </Comments>
+            </>
+          )}
         </div>
       );
     }

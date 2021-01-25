@@ -25,39 +25,40 @@ class NavBar extends Component {
     return (
       <nav className="NavBar-container">
         <div className="NavBar-title u-inlineBlock">WeWorld</div>
-        <div className="NavBar-linkContainer u-inlineBlock">
-          {this.props.userId ? (
-            <>
-              <Link to="/Home_Page" className="NavBar-link">
-                Home
+
+        {this.props.userId ? (
+          <div className="NavBar-linkContainer u-inlineBlock">
+            <Link to="/Home_Page" className="NavBar-link">
+              Home
+            </Link>
+            <Link to="/Upload" className="NavBar-link">
+              Upload
+            </Link>
+            {/* From catbook linking for users */}
+            {this.props.userId && (
+              <Link to={`/Flashcards/${this.props.userId}`} className="NavBar-link">
+                Review
               </Link>
-              <Link to="/Upload" className="NavBar-link">
-                Upload
-              </Link>
-              {/* From catbook linking for users */}
-              {this.props.userId && (
-                <Link to={`/Flashcards/${this.props.userId}`} className="NavBar-link">
-                  Review
-                </Link>
-              )}
-              <Link to="/QuizSelfMade_DS" className="NavBar-link">
-                Quizzes
-              </Link>
-              <Link to="/Friends" className="NavBar-link">
-                Social
-              </Link>
-              <Link to="/Scavenger_Hunts" className="NavBar-link">
-                Scavenger Hunts
-              </Link>
-              <GoogleLogout
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText="Logout"
-                onLogoutSuccess={this.props.handleLogout}
-                onFailure={(err) => console.log(err)}
-                className="NavBar-link NavBar-login"
-              />
-            </>
-          ) : (
+            )}
+            <Link to="/QuizSelfMade_DS" className="NavBar-link">
+              Quizzes
+            </Link>
+            <Link to="/Friends" className="NavBar-link">
+              Social
+            </Link>
+            <Link to="/Scavenger_Hunts" className="NavBar-link">
+              Scavenger Hunts
+            </Link>
+            <GoogleLogout
+              clientId={GOOGLE_CLIENT_ID}
+              buttonText="Logout"
+              onLogoutSuccess={this.props.handleLogout}
+              onFailure={(err) => console.log(err)}
+              className="NavBar-link NavBar-login"
+            />
+          </div>
+        ) : (
+          <div className="NavBar-linkContainerLogout u-inlineBlock">
             <GoogleLogin
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Login"
@@ -65,8 +66,8 @@ class NavBar extends Component {
               onFailure={(err) => console.log(err)}
               className="NavBar-link NavBar-login"
             />
-          )}
-        </div>
+          </div>
+        )}
       </nav>
     );
   }

@@ -63,7 +63,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       originalCaption: "",
       raw_file: null,
       oldCaption: "",
-      neverUploaded: true
+      neverUploaded: true,
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -126,10 +126,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           (data.text = translatedString.output[0]), //set translated word to be in tag
           (data.textforBox = initString), //set original word to be in box
           //3.5 print out the translation for the user
-          data.nativeLanguageTag = initString, //also store native and learning language tags explicitly for flipping
-          data.learningLanguageTag = translatedString.output[0]
+          (data.nativeLanguageTag = initString), //also store native and learning language tags explicitly for flipping
+          (data.learningLanguageTag = translatedString.output[0]);
 
-          console.log("TRANSLATED", data.text),
+        console.log("TRANSLATED", data.text),
           //4 set state of annotations
           this.setState({
             annotations: this.state.annotations.concat({
@@ -161,7 +161,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from Medium website above*/
   handleChange = (event) => {
     this.setState({
-      neverUploaded : false,
+      neverUploaded: false,
       file: URL.createObjectURL(event.target.files[0]),
       raw_file: event.target.files[0], //raw file for the readImage function to get a data URL
       //file_as_data_url: readImage(event.target.files[0]).then((data_rep) => {return data_rep;}) //clumsy 1st attempt to handle how readImage gives back a promise
@@ -265,11 +265,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     //check if this is good for quiz
     //does any annotation have fewer than 3 words?
     let goodforQuiz = false;
-    for (let aa = 0; aa < this.state.annotations.length; aa++)
-    {
+    for (let aa = 0; aa < this.state.annotations.length; aa++) {
       //check word count ref https://stackoverflow.com/questions/18679576/counting-words-in-string/30335883
-      if (this.state.annotations[aa].data.learningLanguageTag.split(" ").length < 3) {goodforQuiz = true}
-    };
+      if (this.state.annotations[aa].data.learningLanguageTag.split(" ").length < 3) {
+        goodforQuiz = true;
+      }
+    }
 
     const submitTime = Date.now(); //set submit time
     // translation package ref https://github.com/franciscop/translate https://www.npmjs.com/package/translate
@@ -306,9 +307,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
       //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
       //Otherwise set these to be strings saying there are no tags
-      
-        test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
-        test_body.translatedLanguage = this.state.learningLanguage;
+
+      test_body.inputLanguageInfo = this.state.nativeLanguagesDetected;
+      test_body.translatedLanguage = this.state.learningLanguage;
 
       //console.log("INPUT TO POST", test_body);
       //run post request
@@ -355,7 +356,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
       // </div> */}
       <div className="u-flex u-flex-justifyCenter">
-        <div className="postColumn paddedText">
+        <div className="postColumn paddedText" style={{ position: "relative" }}>
           <p>
             Let's get the learning fun started! Please upload an image and tag it with the word(s)
             you would like to learn. You can tag by clicking and dragging on the image. You will
@@ -431,23 +432,23 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 )
               ) : (
                 //If submittedd show the translation and an edit button
-                <p>
+                <div>
                   {"'" +
                     this.state.originalCaption +
                     "' translated to '" +
                     this.state.translatedCaption +
                     "'"}
-                  <button type="button">
+                  <button type="button" className="button">
                     <FontAwesomeIcon
                       icon={faPencilAlt}
                       style={{ color: "#0099ff" }}
                       onClick={this.editCaption}
                     />
                   </button>
-                </p>
+                </div>
               )}
               {/* <Typography component="legend">Difficulty</Typography> */}
-              <p>Difficulty</p>
+              <p>Difficulty:</p>
               <Rating
                 precision={0.5}
                 name="difficultyRating"
@@ -464,17 +465,33 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               {/* <input type="submit">
                   <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} />
                 </input> */}
-                {/*only have save button if never uploaded */}
-                {this.state.neverUploaded ? (<></>) : (
-              <button type="button" className="button button:hover saveIcon">
-                <FontAwesomeIcon
-                  icon={faSave}
-                  style={{ color: "#0099ff" }}
-                  onClick={this.handleSubmit}
-                />
-              </button>)}
+              {/*only have save button if never uploaded */}
             </div>
           </div>
+          {this.state.neverUploaded ? (
+            <>
+              <button
+                type="button"
+                title="Attached a picture first to enable this upload button!"
+                className="disabledButton saveIcon"
+                disabled
+              >
+                <FontAwesomeIcon icon={faSave} style={{ color: "#0099ff" }} />
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              title="Save your image with tags in the cloud!"
+              className="button saveIcon"
+            >
+              <FontAwesomeIcon
+                icon={faSave}
+                style={{ color: "#0099ff" }}
+                onClick={this.handleSubmit}
+              />
+            </button>
+          )}
         </div>
       </div>
       // {/* </form> */}

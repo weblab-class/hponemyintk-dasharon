@@ -4,7 +4,7 @@ import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
 import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
-import { get, getRandom } from "../../utilities";
+import { get, getRandom, getKeyByValue } from "../../utilities";
 import { FlareSharp } from "@material-ui/icons";
 const clonedeep = require("lodash.clonedeep");
 
@@ -48,7 +48,117 @@ class QuizSelfMade_DS extends Component {
         },
       ],
     };
-    // this.handleClick = this.handleClick.bind(this);
+    this.langList = {
+      Afrikaans: "af",
+      Albanian: "sq",
+      Amharic: "am",
+      Arabic: "ar",
+      Armenian: "hy",
+      Azerbaijani: "az",
+      Basque: "eu",
+      Belarusian: "be",
+      Bengali: "bn",
+      Bosnian: "bs",
+      Bulgarian: "bg",
+      Burmese: "my",
+      Catalan: "ca",
+      Cebuano: "ceb",
+      Chinese_Simplified: "zh-CN",
+      Chinese_Traditional: "zh-TW",
+      Corsican: "co",
+      Croatian: "hr",
+      Czech: "cs",
+      Danish: "da",
+      Dutch: "nl",
+      English: "en",
+      Esperanto: "eo",
+      Estonian: "et",
+      Filipino: "tl",
+      Finnish: "fi",
+      French: "fr",
+      Frisian: "fy",
+      Galician: "gl",
+      Georgian: "ka",
+      German: "de",
+      Greek: "el",
+      Gujarati: "gu",
+      Haitian: "ht",
+      Hausa: "ha",
+      Hawaiian: "haw",
+      Hebrew: "he",
+      Hindi: "hi",
+      Hmong: "hmn",
+      Hungarian: "hu",
+      Icelandic: "is",
+      Igbo: "ig",
+      Indonesian: "id",
+      Irish: "ga",
+      Italian: "it",
+      Japanese: "ja",
+      Javanese: "jv",
+      Kannada: "kn",
+      Kazakh: "kk",
+      Khmer: "km",
+      Kinyarwanda: "rw",
+      Korean: "ko",
+      Kurdish: "ku",
+      Kyrgyz: "ky",
+      Lao: "lo",
+      Latin: "la",
+      Latvian: "lv",
+      Lithuanian: "lt",
+      Luxembourgish: "lb",
+      Macedonian: "mk",
+      Malagasy: "mg",
+      Malay: "ms",
+      Malayalam: "ml",
+      Maltese: "mt",
+      Maori: "mi",
+      Marathi: "mr",
+      Mongolian: "mn",
+      Nepali: "ne",
+      Norwegian: "no",
+      Nyanja: "ny",
+      Odia: "or",
+      Pashto: "ps",
+      Persian: "fa",
+      Polish: "pl",
+      Portuguese: "pt",
+      Punjabi: "pa",
+      Romanian: "ro",
+      Russian: "ru",
+      Samoan: "sm",
+      ScotsGaelic: "gd",
+      Serbian: "sr",
+      Sesotho: "st",
+      Shona: "sn",
+      Sindhi: "sd",
+      Sinhalese: "si",
+      Slovak: "sk",
+      Slovenian: "sl",
+      Somali: "so",
+      Spanish: "es",
+      Sundanese: "su",
+      Swahili: "sw",
+      Swedish: "sv",
+      Tajik: "tg",
+      Tamil: "ta",
+      Tatar: "tt",
+      Telugu: "te",
+      Thai: "th",
+      Turkish: "tr",
+      Turkmen: "tk",
+      Ukrainian: "uk",
+      Urdu: "ur",
+      Uyghur: "ug",
+      Uzbek: "uz",
+      Vietnamese: "vi",
+      Welsh: "cy",
+      Xhosa: "xh",
+      Yiddish: "yi",
+      Yoruba: "yo",
+      Zulu: "zu",
+    };
   } // end constructor
 
   //when next is pressed, delete from array so next photo is seen
@@ -202,7 +312,11 @@ class QuizSelfMade_DS extends Component {
           //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
 
           //record correct anser and change tag
-          const correctAnswer = newPhotoInfo.annotation_info_array[0].data.text; //get correct answer
+          const correctAnswer = newPhotoInfo.annotation_info_array[0].data.learningLanguageTag; //get correct answer
+          const ogTag = newPhotoInfo.annotation_info_array[0].data.nativeLanguageTag; //get original tag in user's native language
+          const langInterest = newPhotoInfo.translatedLanguage; //grab the 2 character code for the language the user is learning
+          const langInterestLong = getKeyByValue(this.langList, langInterest);
+
           newPhotoInfo.annotation_info_array[0].data.text = "Please select the correct answer!"; //change the text
 
           //maybe only go here if correctAnswer has 1-2 words?
@@ -306,6 +420,8 @@ class QuizSelfMade_DS extends Component {
             //Maybe add in a check of how many words are in the correct answer, and if there are 1 or 2, randomly select 3 choice from the appropriate array above?
 
             wrongAnswers: tmpWrongList,
+            ogTag: ogTag,
+            langInterestLong: langInterestLong,
           }; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
 
           console.log(questionObject);
@@ -414,6 +530,8 @@ class QuizSelfMade_DS extends Component {
                   photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
                   wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
                   correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
+                  ogTag={this.state.dataSet[this.state.onPhoto].ogTag}
+                  langInterestLong={this.state.dataSet[this.state.onPhoto].langInterestLong}
                   handleClick={this.handleClick}
                   handleNext={this.handleNext}
                   handleFinish={this.handleFinish}

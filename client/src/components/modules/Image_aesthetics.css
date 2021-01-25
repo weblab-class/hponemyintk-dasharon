@@ -31,7 +31,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   display: flex;
   flex-direction: column;
   width: 40%;
-  height: auto;
+  height: 100%;
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -105,17 +105,29 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   opacity: 0.7;
   border: none;
   background-color: transparent;
-  color: "#1f75ff";
+}
+
+.disabledButton {
+  transition-duration: 0s;
+  opacity: 0.7;
+  border: none;
+  background-color: transparent;
 }
 
 .button:hover {
   opacity: 1;
 }
 
-.trashCan {
+.fontAwesomeTR {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -1.8%;
+}
+
+.fontAwesomeBR {
+  position: absolute;
+  bottom: 0;
+  right: -1.8%;
 }
 
 /* Many thanks to Kye for the kind help with CSS styling of the trash can icon in hackathon */
@@ -124,14 +136,23 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   font-size: 2vw !important; /* !important; important overrides anywhere else where you set the width */
 }
 
-.saveIcon {
-  position: absolute;
-  top: 90%;
-  right: -2%;
+/* Many thanks to Kye for the kind help with CSS styling of the trash can icon in hackathon */
+.fa-arrow-alt-circle-right {
+  font-size: 3vw !important; /* !important; important overrides anywhere else where you set the width */
+}
+
+.fa-flag-checkered {
+  font-size: 3vw !important; /* !important; important overrides anywhere else where you set the width */
 }
 
 .fa-save {
   font-size: 3vw !important; /* !important; important overrides anywhere else where you set the width */
+}
+
+.saveIcon {
+  position: absolute;
+  bottom: 0.5%;
+  right: -0.2%;
 }
 
 .paddedText {
@@ -179,6 +200,7 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 /* Quiz button styling from ref: https://www.bestcssbuttongenerator.com/#/23 */
 .quizButton {
   width: 60%;
+  /* width: fit-content; */
   height: 50px;
   box-shadow: inset 0px 1px 0px 0px #ffffff;
   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
@@ -189,11 +211,12 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   cursor: pointer;
   color: #666666;
   font-family: Roboto;
-  font-size: 1.5vw;
+  font-size: 1.2vw;
   /* font-weight: bold; */
   /* padding: 1% 5% 1% 5%; */
   text-decoration: none;
   text-shadow: 0px 1px 1px #ebebeb;
+  margin-bottom: 0.9vh;
 }
 .quizButton:hover {
   background: linear-gradient(to bottom, #dbffd4 0%, #8dffa6 100%);
@@ -206,60 +229,15 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
 /* Quiz button styling from ref: https://www.bestcssbuttongenerator.com/#/23 */
 .quizButtonClicked {
-  width: 60%;
-  height: 50px;
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
   background: linear-gradient(to bottom, #ffe0e0 5%, #ffa9a9 100%);
-  background-color: #ffffff;
-  border-radius: 6px;
-  border: 3px solid var(--primary);
-  display: inline-block;
-  cursor: pointer;
-  color: #666666;
-  font-family: Roboto;
-  font-size: 1.5vw;
-  /* font-weight: bold; */
-  /* padding: 1% 5% 1% 5%; */
-  text-decoration: none;
-  text-shadow: 0px 1px 1px #ebebeb;
 }
 
 .quizButtonClickedCor {
-  width: 60%;
-  height: 50px;
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
   background: linear-gradient(to bottom, #dbffd4 0%, #8dffa6 100%);
-  background-color: #ffffff;
-  border-radius: 6px;
-  border: 3px solid var(--primary);
-  display: inline-block;
-  cursor: pointer;
-  color: #666666;
-  font-family: Roboto;
-  font-size: 1.5vw;
-  /* font-weight: bold; */
-  /* padding: 1% 5% 1% 5%; */
-  text-decoration: none;
-  text-shadow: 0px 1px 1px #ebebeb;
 }
 
 .quizButtonNotClicked {
-  width: 60%;
-  height: 50px;
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-  background-color: #ffffff;
-  border-radius: 6px;
-  border: 3px solid var(--primary);
-  display: inline-block;
-  cursor: pointer;
-  color: #666666;
-  font-family: Roboto;
-  font-size: 1.5vw;
-  /* font-weight: bold; */
-  /* padding: 1% 5% 1% 5%; */
-  text-decoration: none;
-  text-shadow: 0px 1px 1px #ebebeb;
 }
 
 .quizEndButton {

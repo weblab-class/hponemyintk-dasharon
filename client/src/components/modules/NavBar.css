@@ -21,6 +21,14 @@
   align-items: center;
 }
 
+.NavBar-linkContainerLogout {
+  display: flex;
+  justify-content: flex-end;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .NavBar-link,
 .NavBar-logout,
 .NavBar-link:visited {

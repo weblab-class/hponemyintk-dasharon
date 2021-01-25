@@ -88,3 +88,9 @@ export function getRandom(arr, n) {
   }
   return result;
 }
+
+//given the key value, will return key name
+// ref: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
+export function getKeyByValue(object, value) {
+  return Object.keys(object).find((key) => object[key] === value);
+}
