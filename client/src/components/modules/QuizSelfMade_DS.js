@@ -280,10 +280,36 @@ class QuizSelfMade_DS extends Component {
       {
         if (newDataset[pp].photoData._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
         {
-          newDataset[pp].photoData = photoUpdated //update the photo field of the dataset
+          newDataset[pp].photoData.difficulty = photoUpdated.difficulty, //update the photo field of the dataset
           newDataset[pp].photoData.photo_placeholder = this.state.dataSet[pp].photoData.photo_placeholder //fix photo placeholder so don't repeat mongoose call
-          newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
+          newDataset[pp].photoData.difficultyRatings = photoUpdated.difficultyRatings //fix annotations so only one per photo
           console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp)
+        }
+      };
+      this.setState({dataSet : newDataset});
+    })
+
+  };
+
+    //pass as prop to individual flashcard components
+  //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
+  updateLikes = (phototoEdit, liking) => 
+  {
+    const annotArrayOld = clonedeep(phototoEdit.annotation_info_array) //store old annotation array
+    console.log("NEED TO LIKE?", liking);
+    console.log("NEED TO UNLIKE?", !liking);
+    post("/api/likingRating", {photoId: phototoEdit, addLike: liking}).then((photoUpdated) => {
+      let newDataset = clonedeep(this.state.dataSet);
+      for (let pp = 0; pp < newDataset.length; pp++) //go through each dataset entry
+      {
+        if (newDataset[pp].photoData._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
+        {
+          newDataset[pp].photoData.likeCount = photoUpdated.likeCount, //update the photo field of the dataset
+          newDataset[pp].photoData.photo_placeholder = this.state.dataSet[pp].photoData.photo_placeholder, //fix photo 
+          //placeholder so don't repeat mongoose call/more gcp calls
+          newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray,
+          //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
+          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp, "GEOM", newDataset[pp].photoData.annotation_info_array[0].geometry, "LEARNING LANGUAGE tag", newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag, "CORRECT", newDataset[pp].correctAnswer)
         }
       };
       this.setState({dataSet : newDataset});
@@ -564,6 +590,7 @@ class QuizSelfMade_DS extends Component {
                   clickedAns={this.state.clickedAns}
                   updateDifficulty={this.updateDifficulty}
                   viewingUserId={this.props.userId}
+                  updateLikes={this.updateLikes}
                 />
               )
             ) : (

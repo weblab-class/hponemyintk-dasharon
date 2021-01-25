@@ -66,7 +66,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       neverUploaded: true, //if a user never uplaoded a file
       likedPhoto: false, //if photo was liked
       usersLiking: [], //list with creator who liked photo
-      likeCount: 0 //count of likes
+      likeCount: 0, //count of likes
+      userName: "", //username
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -99,6 +100,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       this.setState({
         nativeLanguage: userLanguageInfo.nativeLanguage,
         learningLanguage: userLanguageInfo.learningLanguage,
+        userName: userLanguageInfo.name
       });
       //console.log("Loading language info");
       //console.log("User native language", this.state.nativeLanguage);

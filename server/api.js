@@ -423,6 +423,57 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
   }
 });
 
+//update difficulty rating
+router.post("/likingRating", auth.ensureLoggedIn, (req, res) => {
+  try {
+    //1 get the photo being rated
+    PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+      .findOne({
+        _id: req.body.photoId,
+      })
+      .then((photoSchema) => {console.log("pull photo", photoSchema._id);
+      if (req.body.addLike) //if wanting to add a like- increment like count and then add new liking user name and id to schema
+      {
+        photoSchema.likeCount = photoSchema.likeCount+1;
+        newLikeInfo = {likingUserId: req.user._id,
+                       likingUserName: req.user.name}
+        photoSchema.usersLikingArray = photoSchema.usersLikingArray.concat(newLikeInfo);       
+        console.log("adding like", newLikeInfo);
+        console.log("new schema", photoSchema);
+        photoSchema.save().then((savedSchema) => res.send(savedSchema));
+      }
+      else //if wanting to unlike- decrement like count and remove new liking user name and id from schema
+      {
+        photoSchema.likeCount = photoSchema.likeCount - 1;
+
+        //iterate through array and find element to delete, will only go here if the user is in the already liking array
+        //splice ref https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+        //filter ref https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array
+        //only keep elements if they are not the user id we are deleting
+        photoSchema.usersLikingArray = photoSchema.usersLikingArray.filter((u) => u.likingUserId !== req.user._id)
+        // let deletionIndex = -1;
+        // for (let uu =0; uu < photoSchema.usersLikingArray.length; uu++)
+        // {
+        //   if (photoSchema.usersLikingArray[uu].likingUserId === req.user._id)
+        //   {
+        //     console.log("FOUND")
+        //     deletionIndex = uu //when found the appropriate userId, set the deletion index
+        //   }
+        // }
+
+        // //run deletion
+        // photoSchema.usersLikingArray = photoSchema.usersLikingArray.splice(deletionIndex, 1);
+        console.log("removing like", req.user._id);
+        console.log("new schema", photoSchema);
+        photoSchema.save().then((savedSchema) => res.send(savedSchema));
+      };
+  }) } catch (e) {
+    //then is from Nikhil gcp storage code
+    console.log("error in likingRating");
+    res.status(400).json({ message: e.message });
+  }
+});
+
 router.get("/comment", (req, res) => {
   //1 get comment array from mongoose, sort so earliest are first ref https://medium.com/@jeanjacquesbagui/in-mongoose-sort-by-date-node-js-4dfcba254110 https://stackoverflow.com/questions/4299991/how-to-sort-in-mongoose https://mongoosejs.com/docs/api/query.html
   Comment.find({ parent: req.query.parent })
