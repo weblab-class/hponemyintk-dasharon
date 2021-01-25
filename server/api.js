@@ -333,57 +333,30 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
     console.log("difficulty api", req.body);
 
     //1 get the photo being rated
-    PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
-      .findOne({
-        _id: req.body.photoId,
-      })
-      .then((photoSchema) => {
-        console.log("difficulty in api", photoSchema.difficulty);
-        console.log("entire schema in api", photoSchema);
-        //let oldDifficulty = PhotoSchema.difficulty,
+  PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({
+    _id: req.body.photoId,
+  }).then((photoSchema) => {
+  console.log("difficulty in api" ,photoSchema.difficulty);
+  console.log("entire schema in api", photoSchema);
+  //let oldDifficulty = PhotoSchema.difficulty,
 
-        //2 who already rated it?
-        let allAlreadyRated = photoSchema.difficultyRatings.map((rating) => rating.ratingUserId);
-        console.log("who already rated?", allAlreadyRated);
+  //2 who already rated it? get the array ref https://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
+  let allAlreadyRated = photoSchema.difficultyRatings.map((rating) => rating.ratingUserId);
+  console.log("who already rated?", allAlreadyRated)
 
-        //3 add or edit user rating ref https://www.w3schools.com/jsref/jsref_includes_array.asp
-        if (allAlreadyRated.includes(req.user._id)) {
-          //3a if already in array get the relevant entry and edit ref https://stackoverflow.com/questions/12462318/find-a-value-in-an-array-of-objects-in-javascript https://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
-          console.log(
-            "API update entry",
-            photoSchema.difficultyRatings.find(
-              (ratingInfo) => ratingInfo.ratingUserId === req.user._id
-            )
-          );
-
-          //revise ratings array- go through and change the element
-          for (let rr = 0; rr < photoSchema.difficultyRatings.length; rr++) {
-            if (photoSchema.difficultyRatings[rr].ratingUserId === req.user._id) {
-              photoSchema.difficultyRatings[rr] = {
-                ratingUserId: req.user._id,
-                ratingValue: req.body.difficultyRating,
-              };
-            }
-          }
-          console.log("updated array", photoSchema.difficultyRatings);
-          // let revisedRatings = photoSchema.difficultyRatings.find((ratingInfo, indexVal) =>
-          // {if (ratingInfo.ratingUserId === req.user._id)
-          //   photoSchema.difficultyRatings[indexVal].ratingValue = req.body.difficultyRating;
-          // }
-
-          // //update ratings array and the difficulty
-
-          // )
-
-          let difficultyEntriesAverage =
-            photoSchema.difficultyRatings.reduce(
-              (a, difficultyEntry) => a + difficultyEntry.ratingValue,
-              0
-            ) / photoSchema.difficultyRatings.length;
-          photoSchema.difficulty = difficultyEntriesAverage;
-          console.log("average difficulty", difficultyEntriesAverage);
-          photoSchema.save();
-          console.log("after saving", photoSchema);
+  //3 add or edit user rating ref https://www.w3schools.com/jsref/jsref_includes_array.asp
+  if (allAlreadyRated.includes(req.user._id)) //3a if already in array get the relevant entry and edit ref https://stackoverflow.com/questions/12462318/find-a-value-in-an-array-of-objects-in-javascript https://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
+  {
+    console.log("API update entry", photoSchema.difficultyRatings.find((ratingInfo) => ratingInfo.ratingUserId === req.user._id));
+    
+    //revise ratings array- go through and change the element
+    for (let rr = 0; rr < photoSchema.difficultyRatings.length; rr++)
+    {
+      if (photoSchema.difficultyRatings[rr].ratingUserId === req.user._id)
+      {
+        photoSchema.difficultyRatings[rr] = {
+          ratingUserId : req.user._id,
+          ratingValue : req.body.difficultyRating
         }
 
         //3b if not in array already addd new entry

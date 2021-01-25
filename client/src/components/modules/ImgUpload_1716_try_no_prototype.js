@@ -239,7 +239,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   handleLike = (event) => {
     this.setState({
       likedPhoto: true,
-      usersLiking: [this.props.userId]
+      usersLiking: [{likingUserId: this.props.userId, likingUserName: this.props.userName}]
     });
   };
 

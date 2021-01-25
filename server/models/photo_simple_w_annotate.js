@@ -30,6 +30,12 @@ const DifficultyRatingSchema = new mongoose.Schema({
   ratingValue: Number,
 });
 
+//this holds who liked
+const LikingRatingSchema = new mongoose.Schema({
+  likingUserId: String,
+  likingUserName: String,
+});
+
 //define a comment schema for the database
 const PhotoSimpleAnnotSchema = new mongoose.Schema({
   captionTextOriginal: String, //This holds the thoughts on the photo that are not tags- in native language
@@ -38,7 +44,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   goodforQuiz: Boolean, //Boolean whether this should be used on the quiz- has tags, at least one of which has fewer than 3 words
   difficulty: Number, //currrent average difficulty rating
   difficultyRatings: [DifficultyRatingSchema], //who rated what difficulty array
-  usersLikingArray: [String], //array of user IDs who liked this photo
+  usersLikingArray: [LikingRatingSchema], //array of user IDs who liked this photo
   uname: String, //username of individual posting
   uid: String, //user id of individual posting
   submit_stamp: String, //submission timestamp readable
@@ -54,7 +60,8 @@ module.exports = {
     "photo_simple_w_annotate",
     PhotoSimpleAnnotSchema
   ),
-  // I think the following two are the subschema; so, I don't think we need to export them
+  // I think the following three are the subschema; so, I don't think we need to export them
   // annot_info_mongoose : mongoose.model("annot_info", AnnotInfoSchema),
-  // difficulty_rating_mongoose : mongoose.model("difficulty_rating", DifficultyRatingSchema)
+  // difficulty_rating_mongoose : mongoose.model("difficulty_rating", DifficultyRatingSchema),
+  // liking_rating_mongoose : mongoose.model("liking_rating", LikingRatingSchema)
 };
