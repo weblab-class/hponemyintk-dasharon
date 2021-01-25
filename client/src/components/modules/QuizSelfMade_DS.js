@@ -381,14 +381,18 @@ class QuizSelfMade_DS extends Component {
               <h1 className="u-textCenter">Congrats, you are done with the quiz!!!</h1>
               <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
                 <MultiColorProgressBar readings={this.state.readings} />
+                <p></p>
               </div>
-              <div>
-                <button type="button" onClick={this.handleRetake}>
+              <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+                <button type="button" className="quizEndButton" onClick={this.handleRetake}>
                   Retake the quiz!
                 </button>
-                <button type="button" onClick={this.handleNewQuiz}>
+                <button type="button" className="quizEndButton" onClick={this.handleNewQuiz}>
                   Try another quiz set!
                 </button>
+                <p></p>
+                <p></p>
+                <p></p>
               </div>
             </div>
           </div>
