@@ -75,6 +75,10 @@ class IndividualFlashcard extends Component {
     initAnnotInput.forEach((obj) => {
       let newObj = { ...obj, geometry: { ...obj.geometry, type: obj.geometry.shape_kind } };
 
+      //only have flipping if not in quiz. Otherwise do not want to flip
+      if (!this.props.forQuiz)
+      {
+      //Switch whether tag is in native language and text is learning language or vice versa
       const nativeTag = newObj.data.nativeLanguageTag;
       const learningTag = newObj.data.learningLanguageTag;
       console.log("BOOLEAN", this.state.showInNativeLanguage);
@@ -85,7 +89,7 @@ class IndividualFlashcard extends Component {
         newObj.data.text = newObj.data.learningLanguageTag;
         newObj.data.textforBox = newObj.data.nativeLanguageTag;
       }
-
+    }
       console.log("NEW OBJECT, newObj");
 
       newInput.push(newObj);

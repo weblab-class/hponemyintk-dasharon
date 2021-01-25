@@ -116,28 +116,28 @@ class Friends_1251 extends Component {
       // this.setState({allPhotos: photos})
 };
 
-runFlipInit = () =>{
-  let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
-  console.log("PHOTOS in runflip", photos)
-  //Flip the tags and printout languages in each annotation for each photo
-  for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
-  {
-    for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
-    {
+// runFlipInit = () =>{
+//   let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
+//   console.log("PHOTOS in runflip", photos)
+//   //Flip the tags and printout languages in each annotation for each photo
+//   for (let pp = 0; pp < this.state.allPhotos.length; pp++) 
+//   {
+//     for (let aa = 0; aa < this.state.allPhotos[pp].annotation_info_array.length; aa++)
+//     {
       
-      const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-      const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-      console.log("BOOLEAN", this.state.showInNativeLanguage)
-      if (!this.state.showInNativeLanguage)
-      {
-        photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
-        photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
-      }
+//       const nativeTag = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+//       const learningTag = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+//       console.log("BOOLEAN", this.state.showInNativeLanguage)
+//       if (!this.state.showInNativeLanguage)
+//       {
+//         photos[pp].annotation_info_array[aa].data.text = photos[pp].annotation_info_array[aa].data.nativeLanguageTag;
+//         photos[pp].annotation_info_array[aa].data.textforBox = photos[pp].annotation_info_array[aa].data.learningLanguageTag;
+//       }
 
-    }
-  }
-  this.setState({allPhotos: photos})
-}
+//     }
+//   }
+//   this.setState({allPhotos: photos})
+// }
 
   render() {
     //Chatbook login protection
