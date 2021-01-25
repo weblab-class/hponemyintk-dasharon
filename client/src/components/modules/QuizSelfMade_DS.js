@@ -563,6 +563,7 @@ class QuizSelfMade_DS extends Component {
                   isDone={this.state.isDone}
                   clickedAns={this.state.clickedAns}
                   updateDifficulty={this.updateDifficulty}
+                  viewingUserId={this.props.userId}
                 />
               )
             ) : (

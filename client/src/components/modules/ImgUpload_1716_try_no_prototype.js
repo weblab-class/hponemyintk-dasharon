@@ -58,12 +58,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       nativeLanguage: "", //what is the user's native language/language in which they want to learn?
       learningLanguage: "", //what language is the user learning?
       nativeLanguagesDetected: [],
-      submittedCaption: false,
-      translatedCaption: "",
-      originalCaption: "",
+      submittedCaption: false, //if a caption has been translated on this upload page
+      translatedCaption: "", //translation of caption
+      originalCaption: "", //original caption
       raw_file: null,
-      oldCaption: "",
-      neverUploaded: true,
+      oldCaption: "", //old caption for editing
+      neverUploaded: true, //if a user never uplaoded a file
+      likedPhoto: false, //if photo was liked
+      usersLiking: [], //list with creator who liked photo
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -233,6 +235,20 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     });
   };
 
+  //reflect if liked photo
+  handleLike = (event) => {
+    this.setState({
+      likedPhoto: true,
+      usersLiking: [this.props.userId]
+    });
+  };
+
+  handleUnLike = (event) => {
+    this.setState({
+      likedPhoto: false,
+      usersLiking: []
+    });
+  }
   handleSubmit = (event) => {
     event.preventDefault();
     //submit caption if haven't yet, and it will get translated and then submit
@@ -299,9 +315,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         caption_text_original: this.state.originalCaption,
         caption_text_translated: this.state.translatedCaption,
         //tag_text: this.curTag.current.value,
-        photo_placeholder: image_as_url,
-        difficulty: this.state.difficulty,
-        difficultyRatingArray: difficultyRatingArray,
+        photo_placeholder: image_as_url, //image
+        difficulty: this.state.difficulty, //average difficulty
+        difficultyRatingArray: difficultyRatingArray, //difficulty ratings and who rated
+        usersLikingArray: this.state.usersLiking, //which users like this?
         goodforQuiz: goodforQuiz, //checks if good for quiz
         timestampRaw: submitTime, //this is not easily readable but is sortable
         timestamp: new Date(Date.now()).toLocaleString([], {
@@ -340,7 +357,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             submittedCaption: false,
             originalCaption: "",
             translatedCaption: "",
-            difficulty: 0
+            difficulty: 0, //reset difficulty to 0
+            likedPhoto: false, //if photo was liked
+            usersLiking: [], //list with creator who liked photo
           }),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = ""),
@@ -472,7 +491,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 onChange={(event, newvalue) => {
                   this.setState({ difficulty: newvalue });
                 }}
+                
               />
+              {/*Handle likes with a button click */}
+              {this.state.likedPhoto? (<><p>You like the photo</p><button onClick={this.handleUnLike}>Unlike</button></>) : (<button onClick={this.handleLike}>Like</button>)}
               {/* <Typography component="legend">Quality</Typography> */}
               <div>
                 <p></p>
@@ -484,6 +506,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               {/*only have save button if never uploaded */}
             </div>
           </div>
+          
           {this.state.neverUploaded ? (
             <>
               <button
