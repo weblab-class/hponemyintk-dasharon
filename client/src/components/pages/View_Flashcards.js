@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+const clonedeep = require("lodash.clonedeep");
 
 class View_Flashcards extends Component {
   constructor(props) {
@@ -189,6 +190,27 @@ class View_Flashcards extends Component {
     })
   };
 
+  //pass as prop to individual flashcard components
+  //take in photoid and rating and update difficulty rating
+  updateDifficulty = (difficultyRating, phototoEdit) =>
+  {
+    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    post("/api/difficultyRating", {difficultyRating : difficultyRating, photoId: phototoEdit._id}).then((photoUpdated) => {
+      let newPhotoArray = clonedeep(this.state.photo_info_array);
+      for (let pp = 0; pp < newPhotoArray.length; pp++)
+      {
+        if (newPhotoArray[pp]._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
+        {
+          newPhotoArray[pp] = photoUpdated
+          newPhotoArray[pp].photo_placeholder = this.state.photo_info_array[pp].photo_placeholder //fix photo placeholder so don't repeat mongoose call
+          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
+        }
+      };
+      this.setState({photo_info_array : newPhotoArray});
+    })
+
+  };
+
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
@@ -255,7 +277,7 @@ class View_Flashcards extends Component {
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage}/>
+                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty}/>
               )}
             </div>
           </>

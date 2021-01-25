@@ -262,6 +262,19 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   runSubmit = () => {
     console.log("STATE IN SUBMIT", this.state);
 
+    //get count of difficulty ratings- did the user rate or not?
+    let difficultyRatingArray = [];
+    if (this.state.difficulty > 0) {
+      let difficultyRatingObject = {
+        ratingUserId : this.props.userId,
+        ratingValue : this.state.difficulty
+      }
+      difficultyRatingArray = difficultyRatingArray.concat(difficultyRatingObject) //stores ratings and who rated
+    }
+    else {
+      difficultyRatingArray = []
+    }
+
     //check if this is good for quiz
     //does any annotation have fewer than 3 words?
     let goodforQuiz = false;
@@ -279,13 +292,14 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //prep post request
       //removed the type which cause mongoose errors, many thanks to Johan for 1/13 OH help with this!
       //now set up info for post with the image as data url
-      // console.log("PostCaption!!!!", this.postCaption.current.value);
+      // console.log("PostCaption!!!!", this.postCaption.current.value);s
       let test_body = {
         caption_text_original: this.state.originalCaption,
         caption_text_translated: this.state.translatedCaption,
         //tag_text: this.curTag.current.value,
         photo_placeholder: image_as_url,
         difficulty: this.state.difficulty,
+        difficultyRatingArray: difficultyRatingArray,
         goodforQuiz: goodforQuiz, //checks if good for quiz
         timestampRaw: submitTime, //this is not easily readable but is sortable
         timestamp: new Date(Date.now()).toLocaleString([], {
@@ -324,6 +338,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             submittedCaption: false,
             originalCaption: "",
             translatedCaption: "",
+            difficulty: 0
           }),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = ""),
