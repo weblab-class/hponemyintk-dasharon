@@ -66,6 +66,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       neverUploaded: true, //if a user never uplaoded a file
       likedPhoto: false, //if photo was liked
       usersLiking: [], //list with creator who liked photo
+      likeCount: 0 //count of likes
     };
     this.fileInput = React.createRef();
     this.postCaption = React.createRef(); /*for 2nd inputs*/
@@ -239,14 +240,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   handleLike = (event) => {
     this.setState({
       likedPhoto: true,
-      usersLiking: [{likingUserId: this.props.userId, likingUserName: this.props.userName}]
+      usersLiking: [{likingUserId: this.props.userId, likingUserName: this.props.userName}],
+      likeCount: 1
     });
   };
 
   handleUnLike = (event) => {
     this.setState({
       likedPhoto: false,
-      usersLiking: []
+      usersLiking: [],
+      likeCount: 0
     });
   }
   handleSubmit = (event) => {
@@ -319,6 +322,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         difficulty: this.state.difficulty, //average difficulty
         difficultyRatingArray: difficultyRatingArray, //difficulty ratings and who rated
         usersLikingArray: this.state.usersLiking, //which users like this?
+        likeCount: this.state.likeCount,
         goodforQuiz: goodforQuiz, //checks if good for quiz
         timestampRaw: submitTime, //this is not easily readable but is sortable
         timestamp: new Date(Date.now()).toLocaleString([], {
@@ -360,6 +364,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             difficulty: 0, //reset difficulty to 0
             likedPhoto: false, //if photo was liked
             usersLiking: [], //list with creator who liked photo
+            likeCount: 0, //reset likes to 0
           }),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = ""),

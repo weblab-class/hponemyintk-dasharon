@@ -45,6 +45,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   difficulty: Number, //currrent average difficulty rating
   difficultyRatings: [DifficultyRatingSchema], //who rated what difficulty array
   usersLikingArray: [LikingRatingSchema], //array of user IDs who liked this photo
+  likeCount: Number, //count of users likings
   uname: String, //username of individual posting
   uid: String, //user id of individual posting
   submit_stamp: String, //submission timestamp readable

@@ -98,6 +98,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, (req, res) => {
         difficulty: req.body.difficulty,
         difficultyRatings: req.body.difficultyRatingArray,
         usersLikingArray: req.body.usersLikingArray,
+        likeCount: req.body.likeCount,
         goodforQuiz: req.body.goodforQuiz,
         uname: req.user.name,
         uid: req.user._id,
