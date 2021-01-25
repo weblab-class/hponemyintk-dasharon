@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "../../utilities.css";
 import "./Skeleton.css";
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 // import UserInfo from "../modules/UserInfo.js";
 import { Link } from "@reach/router";
 import View_Flashcards from "../pages/View_Flashcards.js";
@@ -139,6 +139,27 @@ class Friends_1251 extends Component {
 //   this.setState({allPhotos: photos})
 // }
 
+  //pass as prop to individual flashcard components
+  //take in photoid and rating and update difficulty rating
+  updateDifficulty = (difficultyRating, phototoEdit) =>
+  {
+    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    post("/api/difficultyRating", {difficultyRating : difficultyRating, photoId: phototoEdit._id}).then((photoUpdated) => {
+      let newPhotoArray = clonedeep(this.state.allPhotos);
+      for (let pp = 0; pp < newPhotoArray.length; pp++)
+      {
+        if (newPhotoArray[pp]._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
+        {
+          newPhotoArray[pp] = photoUpdated
+          newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder //fix photo placeholder so don't repeat mongoose call
+          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
+        }
+      };
+      this.setState({allPhotos : newPhotoArray});
+    })
+
+  };
+
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
@@ -186,7 +207,7 @@ class Friends_1251 extends Component {
           </>
  */} 
         {this.state.allPhotos.map((p,i) => 
-          <IndividualFlashcard photoFacts={p} ownPhoto={false} onlyOne = {true} hasLooped={false} viewingUserId={this.props.userId} showInNativeLanguage={this.state.showInNativeLanguage}/>
+          <IndividualFlashcard photoFacts={p} ownPhoto={false} onlyOne = {true} hasLooped={false} viewingUserId={this.props.userId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty}/>
         )}
       </div>
     );

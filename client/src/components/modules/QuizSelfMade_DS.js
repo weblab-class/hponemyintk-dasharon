@@ -4,7 +4,7 @@ import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
 import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
-import { get, getRandom, getKeyByValue } from "../../utilities";
+import { get, getRandom, getKeyByValue, post } from "../../utilities";
 import { FlareSharp } from "@material-ui/icons";
 const clonedeep = require("lodash.clonedeep");
 
@@ -266,6 +266,29 @@ class QuizSelfMade_DS extends Component {
       this.setState({ isDone: true });
     }
     console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
+  };
+
+    //pass as prop to individual flashcard components
+  //take in photoid and rating and update difficulty rating
+  //update the dataset with the new rating
+  updateDifficulty = (difficultyRating, phototoEdit) =>
+  {
+    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    post("/api/difficultyRating", {difficultyRating : difficultyRating, photoId: phototoEdit._id}).then((photoUpdated) => {
+      let newDataset = clonedeep(this.state.dataSet);
+      for (let pp = 0; pp < newDataset.length; pp++) //go through each dataset entry
+      {
+        if (newDataset[pp].photoData._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
+        {
+          newDataset[pp].photoData = photoUpdated //update the photo field of the dataset
+          newDataset[pp].photoData.photo_placeholder = this.state.dataSet[pp].photoData.photo_placeholder //fix photo placeholder so don't repeat mongoose call
+          newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
+          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp)
+        }
+      };
+      this.setState({dataSet : newDataset});
+    })
+
   };
 
   //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
@@ -539,6 +562,7 @@ class QuizSelfMade_DS extends Component {
                   curAnsInfo={this.state.curAnsInfo}
                   isDone={this.state.isDone}
                   clickedAns={this.state.clickedAns}
+                  updateDifficulty={this.updateDifficulty}
                 />
               )
             ) : (

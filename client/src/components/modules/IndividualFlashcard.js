@@ -105,6 +105,7 @@ class IndividualFlashcard extends Component {
   //option to vote on difficulty
   editDifficulty = (event) => {
     this.setState({enableDifficultyEdit : true})
+    console.log("DIFFICULTY FLIP")
   }
 
   //create answer array in a randomized order
@@ -331,13 +332,13 @@ class IndividualFlashcard extends Component {
                 this.props.updateDifficulty(newvalue, this.props.photoFacts);
               }}
             />) :
-            (
-            <Rating
-              precision={0.5}
-              name="difficultyRating"
-              value={this.props.photoFacts.difficulty}
-              disabled
-            />
+            (<p></p>
+            // <Rating
+            //   precision={0.5}
+            //   name="difficultyRating"
+            //   value={this.props.photoFacts.difficulty}
+            //   disabled
+            // />
             )
           }
           <button onClick = {this.editDifficulty}>Edit difficulty</button>
