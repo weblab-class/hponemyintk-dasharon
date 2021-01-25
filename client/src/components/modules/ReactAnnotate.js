@@ -122,7 +122,7 @@ export default class Simple extends Component {
   render() {
     let tagText = "Tags:";
     //Decide whether should be tag or tags in text
-    console.log("LIST", this.props.annotationslst);
+    // console.log("LIST", this.props.annotationslst);
     if (this.props.annotationslst.length === 1) {
       tagText = "Tag:";
     }

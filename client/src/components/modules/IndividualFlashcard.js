@@ -34,6 +34,7 @@ class IndividualFlashcard extends Component {
     // Initialize Default State
     this.state = {
       comments: [],
+      enableDifficultyEdit : false
     };
     this.answerArray = [];
   }
@@ -100,6 +101,11 @@ class IndividualFlashcard extends Component {
     });
     return newInput;
   };
+
+  //option to vote on difficulty
+  editDifficulty = (event) => {
+    this.setState({enableDifficultyEdit : true})
+  }
 
   //create answer array in a randomized order
   createAnswerArray = () => {
@@ -259,6 +265,15 @@ class IndividualFlashcard extends Component {
       return null;
     }
 
+    //if you already rated this, show your rating
+    let ownRating = "";
+    for (let rr = 0; rr < this.props.photoFacts.difficultyRatings.length; rr++)
+    {
+      if (this.props.photoFacts.difficultyRatings[rr].ratingUserId === this.props.viewingUserId)
+      {
+        ownRating = "You rated this" + this.props.photoFacts.difficultyRatings[rr].ratingValue
+      }
+    }
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
       <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
@@ -304,13 +319,28 @@ class IndividualFlashcard extends Component {
 
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
-            <p>Difficulty</p>
+            
+            <p>Difficulty {this.props.photoFacts.difficulty} #ratings {this.props.photoFacts.difficultyRatings.length} {ownRating}</p>
+            {
+            this.state.enableDifficultyEdit ? (<Rating
+              precision={0.5}
+              name="difficultyRating"
+              onChange={(event, newvalue) => {
+                alert(newvalue);
+                this.setState({enableDifficultyEdit : false});
+                this.props.updateDifficulty(newvalue, this.props.photoFacts);
+              }}
+            />) :
+            (
             <Rating
               precision={0.5}
               name="difficultyRating"
               value={this.props.photoFacts.difficulty}
               disabled
             />
+            )
+          }
+          <button onClick = {this.editDifficulty}>Edit difficulty</button>
             {/* <p>Quality</p>
             <Typography component="legend">Quality</Typography> *{PhotoInfo.quality}
             <Rating
