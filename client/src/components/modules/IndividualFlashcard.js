@@ -344,7 +344,7 @@ class IndividualFlashcard extends Component {
           <button onClick = {this.editDifficulty}>Edit difficulty</button>
 
           {/*see if you liked and count of likes*/}
-          <p>{this.props.photoFacts.usersLikingArray.length} Likes</p>
+          <p>{this.props.photoFacts.likeCount} Likes</p>
           {(this.props.photoFacts.usersLikingArray.map((userData) => userData.likingUserId).includes(this.props.viewingUserId)) ? 
           (<><p>You liked</p><button onClick = {(event) => this.props.updateLikes(this.props.photoFacts, false)}>Unlike</button></>): 
           (<><p>Not liked</p><button onClick = {(event) => this.props.updateLikes(this.props.photoFacts, true)}>Like</button></>)}
