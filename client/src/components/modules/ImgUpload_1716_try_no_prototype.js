@@ -161,6 +161,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from Medium website above*/
   handleChange = (event) => {
     this.setState({
+      annotations: [],
       neverUploaded: false,
       file: URL.createObjectURL(event.target.files[0]),
       raw_file: event.target.files[0], //raw file for the readImage function to get a data URL
