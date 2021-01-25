@@ -341,7 +341,7 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
   console.log("entire schema in api", photoSchema);
   //let oldDifficulty = PhotoSchema.difficulty,
 
-  //2 who already rated it?
+  //2 who already rated it? ref https://stackoverflow.com/questions/19590865/from-an-array-of-objects-extract-value-of-a-property-as-array
   let allAlreadyRated = photoSchema.difficultyRatings.map((rating) => rating.ratingUserId);
   console.log("who already rated?", allAlreadyRated)
 
