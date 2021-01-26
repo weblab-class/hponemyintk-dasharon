@@ -72,13 +72,15 @@ class IndividualFlashcard extends Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (this.props.photoFacts._id && prevProps.photoFacts._id !== this.props.photoFacts._id) {
     get("/api/comment", { parent: this.props.photoFacts._id }).then((comments) => {
       this.setState({
         comments: comments,
       });
     });
   }
+}
 
   //cleans up annotations many thanks to Justin in Office Hours for forEach and push and editing
   cleanAnnotInput = (initAnnotInput) => {

@@ -143,8 +143,12 @@ export default class Simple extends Component {
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
             allowTouch
           />
-          <h4>{tagText}</h4>
-          <Comments>
+          
+          {(this.props.annotationslst.length === 0) ? (<h4>No tags yet! Please tag away!</h4>) : //only show tags if there are tage to show
+          
+          (<>
+            <h4>{tagText}</h4>
+            <Comments>
             {this.props.annotationslst.map((annotation) => (
               <Comment
                 onMouseOver={this.onMouseOver(annotation.data.id)}
@@ -154,7 +158,8 @@ export default class Simple extends Component {
                 {annotation.data.textforBox}
               </Comment>
             ))}
-          </Comments>
+          </Comments></>)
+    }
         </div>
       );
     }
@@ -177,10 +182,11 @@ export default class Simple extends Component {
             renderOverlay={this.renderOverlay} // Hide overlay
             allowTouch
           />
-          {console.log("this.props.hideTagLst", this.props.hideTagLst)}
-          {!this.props.hideTagLst && (
+          {/* {console.log("this.props.hideTagLst", this.props.hideTagLst)} */}
+          {((!this.props.hideTagLst) && (this.props.annotationslst.length !== 0)) && (
+
             <>
-              {console.log("This is when hideTagLst is true in loop", this.props.hideTagLst)}
+              {/* {console.log("This is when hideTagLst is true in loop", this.props.hideTagLst)} */}
               <h4>{tagText}</h4>
               <Comments>
                 {this.props.annotationslst.map((annotation) => (
@@ -195,6 +201,7 @@ export default class Simple extends Component {
               </Comments>
             </>
           )}
+          {((!this.props.hideTagLst) && (this.props.annotationslst.length === 0)) && (<h4>No tags</h4>)}
         </div>
       );
     }
