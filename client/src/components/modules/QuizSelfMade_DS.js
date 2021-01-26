@@ -6,6 +6,7 @@ import IndividualFlashcard from "./IndividualFlashcard.js";
 import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
 import { get, getRandom, getKeyByValue, post } from "../../utilities";
 import { FlareSharp } from "@material-ui/icons";
+import Loading from "./Loading.js";
 const clonedeep = require("lodash.clonedeep");
 
 class QuizSelfMade_DS extends Component {
@@ -991,7 +992,7 @@ class QuizSelfMade_DS extends Component {
     //set the state to be this list of question objects
     //would be great to get each annotation as a separate object
     let ImageInfo = []; // set allUsers to be none before any api calls
-    const photoLim = 5; // How many photo to grab per get request
+    const photoLim = 20; // How many photo to grab per get request
     const startInd = 0; // skip all the initial items in the list until we get to Ind
     // check which flag is set true
     for (let filter of Object.keys(this.state.filters)) {
@@ -1122,7 +1123,7 @@ class QuizSelfMade_DS extends Component {
               <p>No photos!</p>
             )
           ) : (
-            <p>Loading!</p>
+            <Loading />
           )}
         </div>
       </>
