@@ -11,11 +11,12 @@
 .NavBar-title {
   color: var(--white);
   font-size: 25px;
+  margin-right: 5%;
 }
 
 .NavBar-linkContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-basis: 100%;
   flex-wrap: wrap;
   align-items: center;
