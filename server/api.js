@@ -345,16 +345,16 @@ router.post("/comment", auth.ensureLoggedIn, async (req, res) => {
 });
 
 //update difficulty rating
-router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
+router.post("/difficultyRating", auth.ensureLoggedIn, async(req, res) => {
   try {
     console.log("difficulty api", req.body);
 
     //1 get the photo being rated
-    PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+    let photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
       .findOne({
         _id: req.body.photoId,
-      })
-      .then((photoSchema) => {
+      });
+      
         console.log("difficulty in api", photoSchema.difficulty);
         console.log("entire schema in api", photoSchema);
         //let oldDifficulty = PhotoSchema.difficulty,
@@ -399,8 +399,42 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
             ) / photoSchema.difficultyRatings.length;
           photoSchema.difficulty = difficultyEntriesAverage;
           console.log("average difficulty", difficultyEntriesAverage);
-          photoSchema.save();
+          photoSchematoReturn = await photoSchema.save();
           console.log("after saving", photoSchema);
+
+                          // //also update user difficulty rating list
+                          // let userUpdating = await User.findById(req.user._id);
+                          // console.log("adding difficulty");
+                          // console.log("UPDATING INIT", userUpdating);
+                          // userUpdating.difficultyList = userUpdating.difficultyList.concat({
+                          //   ratingPhotoId: photoSchematoReturn._id,
+                          //   ratingValue: req.body.difficultyRating,
+                          // }); //add photo liking to liked list
+                          // userUpdating.save();
+
+                                                    //also update user difficulty rating list
+      let userUpdating = await User.findById(req.user._id);
+      console.log("adding difficulty");
+      console.log("UPDATING INIT", userUpdating);
+      let updatedUser = await userUpdating.difficultyList.filter((pid) => pid !== req.body.photoId); //remove this photo from the lst and replace with new rating
+      updatedUser.difficultyList = updatedUser.difficultyList.concat(
+        {
+         ratingPhotoId: req.body.photoId,
+       ratingValue: req.body.difficultyRating,
+      }
+      )
+      
+      // for (let uu = 0; uu < userUpdating.difficultyList.length; uu++) {
+      //   if (userUpdating.difficultyList[uu].ratingPhotoId === photoSchematoReturn._id) { //find the photo being updated
+      //     userUpdating.difficultyList[uu] = {
+      //       ratingPhotoId: photoSchematoReturn._id,
+      //       ratingValue: req.body.difficultyRating,
+      //     };
+      //   }
+      // }
+      console.log("UPDATED")
+
+      updatedUser.save();
         }
 
         //3b if not in array already addd new entry
@@ -417,7 +451,7 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
           //add new entry
           photoSchema.difficultyRatings = photoSchema.difficultyRatings.concat(newRatingEntry);
 
-          //average difficulty ref https://stackoverflow.com/questions/52513123/how-to-get-the-average-from-array-of-objects https://www.tutorialspoint.com/how-to-calculate-the-average-in-javascript-of-the-given-properties-in-the-array-of-objects https://stackoverflow.com/questions/53106132/find-average-of-an-array-of-objects
+          //average difficulty reference https://stackoverflow.com/questions/52513123/how-to-get-the-average-from-array-of-objects https://www.tutorialspoint.com/how-to-calculate-the-average-in-javascript-of-the-given-properties-in-the-array-of-objects https://stackoverflow.com/questions/53106132/find-average-of-an-array-of-objects
           let difficultyEntriesAverage =
             photoSchema.difficultyRatings.reduce(
               (a, difficultyEntry) => a + difficultyEntry.ratingValue,
@@ -425,13 +459,23 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
             ) / photoSchema.difficultyRatings.length;
           photoSchema.difficulty = difficultyEntriesAverage;
           console.log("average difficulty", difficultyEntriesAverage);
-          photoSchema.save();
+          photoSchematoReturn = await photoSchema.save();
           console.log("after saving", photoSchema);
+
+                          //also update user difficulty rating list
+      let userUpdating = await User.findById(req.user._id);
+      console.log("adding difficulty");
+      console.log("UPDATING INIT", userUpdating);
+      userUpdating.difficultyList = userUpdating.difficultyList.concat({
+        ratingPhotoId: photoSchematoReturn._id,
+        ratingValue: req.body.difficultyRating,
+      }); //add photo liking to liked list
+      userUpdating.save();
         }
 
         // photoSchema.save();
-        res.send(photoSchema);
-      });
+        res.send(photoSchematoReturn);
+      
   } catch (e) {
     //then is from Nikhil gcp storage code
     console.log("error in difficultyRating");
@@ -443,7 +487,7 @@ router.post("/difficultyRating", auth.ensureLoggedIn, (req, res) => {
 router.post("/likingRating", auth.ensureLoggedIn, async(req, res) => {
   try {
     //1 get the photo being rated
-    photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+    let photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
       .findOne({
         _id: req.body.photoId,
       });
