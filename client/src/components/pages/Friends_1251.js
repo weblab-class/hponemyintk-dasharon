@@ -53,6 +53,7 @@ class Friends_1251 extends Component {
     try {
       let allPhotoList = []; // set allUsers to be none before any api calls
       const photoLim = 10; // How many photo to grab per get request
+      const startInd = 0; // skip all the initial items in the list until we get to Ind
       // check which flag is set true
       for (let filter of Object.keys(this.state.filters)) {
         //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
@@ -65,6 +66,7 @@ class Friends_1251 extends Component {
             const newPhoto = await get("/api/photoFilter", {
               sortString: "submit_stamp_raw",
               sortFlag: -1,
+              startInd: startInd,
               lim: 1,
               keyname: "uid",
               keyvalue: this.state.allUserList[uu]._id,
@@ -78,6 +80,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "difficulty",
             sortFlag: -1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
@@ -90,6 +93,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "difficulty",
             sortFlag: 1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
@@ -101,6 +105,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "likeCount",
             sortFlag: -1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
