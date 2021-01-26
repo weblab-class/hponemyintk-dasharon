@@ -23,10 +23,10 @@ class Friends_1251 extends Component {
       haveSwitched: false,
       filters: {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
-        getOneFromAll: false,
+        getOneFromAll: true,
         mostDifficult: false,
         leastDifficult: false,
-        mostLiked: true,
+        mostLiked: false,
       },
     };
     this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked"];
@@ -87,7 +87,7 @@ class Friends_1251 extends Component {
             });
             allPhotoList = allPhotoList.concat(newPhoto);
           }
-          this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList });
         }
 
         if (filter === "mostDifficult" && this.state.filters[filter]) {
@@ -99,7 +99,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList });
         }
 
         if (filter === "leastDifficult" && this.state.filters[filter]) {
@@ -112,7 +112,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList });
         }
 
         if (filter === "mostLiked" && this.state.filters[filter]) {
@@ -124,7 +124,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList });
         }
       }
     } catch (e) {

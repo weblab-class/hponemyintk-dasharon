@@ -47,7 +47,20 @@ class QuizSelfMade_DS extends Component {
           color: "#b9c0c9",
         },
       ],
+      filters: {
+        // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
+        getTenRandom: true,
+        mostDifficult: false,
+        leastDifficult: false,
+        mostLiked: false,
+      },
     };
+    this.filterLabels = [
+      "Get Ten Random Flashcards",
+      "Most Difficult",
+      "Least Difficult",
+      "Most Liked",
+    ];
     this.langList = {
       Afrikaans: "af",
       Albanian: "sq",
@@ -161,6 +174,31 @@ class QuizSelfMade_DS extends Component {
     };
   } // end constructor
 
+  //change filter values
+  handleFilters = (event) => {
+    event.preventDefault();
+    // make a deep copy of the object list, and set all values to false
+    let tmpFilters = clonedeep(this.state.filters);
+    for (const [key, value] of Object.entries(tmpFilters)) {
+      tmpFilters[key] = false;
+    }
+    tmpFilters[event.target.value] = true;
+
+    this.setState(
+      {
+        filters: tmpFilters,
+        dataSet: [],
+        onPhoto: 0,
+        isDone: false,
+        loaded: false,
+        showResult: false,
+        wasAnswerInput: false,
+        curAnsInfo: [],
+      },
+      this.imageLoad
+    );
+  };
+
   //when next is pressed, delete from array so next photo is seen
   //using prop function from quiz component
   handleNext = () => {
@@ -215,21 +253,35 @@ class QuizSelfMade_DS extends Component {
     this.imageLoad();
   };
 
+  handleClick = (ansString, corAns) => {
+    this.setState({
+      wasAnswerInput: true,
+      curAnsInfo: [ansString.text === corAns, ansString.text],
+      clickedAns: ansString.text,
+    }); //Color answers by whether or not they are correct
+    if (ansString.text === corAns) {
+      this.updateProgress(
+        this.state.readings[0].value + 1,
+        this.state.readings[1].value,
+        this.state.readings[2].value,
+        this.state.readings[3].value - 1
+      );
+    } else {
+      this.updateProgress(
+        this.state.readings[0].value,
+        this.state.readings[1].value + 1,
+        this.state.readings[2].value,
+        this.state.readings[3].value - 1
+      );
+    }
+  };
+
   componentDidMount() {
     // remember -- api calls go here!, get call adapted from catbook
     //run get request to get first image of the user, will build up to getting images one by
     //one or all on one page
     //onyl make req if logged in
     if (this.props.userId) {
-      this.imageLoad();
-    } else {
-      console.log("SHOULD LOG OUT");
-    }
-  }
-
-  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
-  componentDidUpdate(prevProps) {
-    if (this.props.userId && prevProps.userId !== this.props.userId) {
       this.imageLoad();
     } else {
       console.log("SHOULD LOG OUT");
@@ -251,6 +303,15 @@ class QuizSelfMade_DS extends Component {
     this.setState({ readings: tmpReadings });
   };
 
+  //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
+  componentDidUpdate(prevProps) {
+    if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.imageLoad();
+    } else {
+      console.log("SHOULD LOG OUT");
+    }
+  }
+
   //pass as prop to individual flashcard components
   //take in photo id
   //many thanks to Jess, this should delete 1 photo then another should show up
@@ -268,264 +329,713 @@ class QuizSelfMade_DS extends Component {
     console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
   };
 
-    //pass as prop to individual flashcard components
+  //pass as prop to individual flashcard components
   //take in photoid and rating and update difficulty rating
   //update the dataset with the new rating
-  updateDifficulty = (difficultyRating, phototoEdit) =>
-  {
+  updateDifficulty = (difficultyRating, phototoEdit) => {
     console.log("difficulty", difficultyRating, "for", phototoEdit._id);
-    post("/api/difficultyRating", {difficultyRating : difficultyRating, photoId: phototoEdit._id}).then((photoUpdated) => {
+    post("/api/difficultyRating", {
+      difficultyRating: difficultyRating,
+      photoId: phototoEdit._id,
+    }).then((photoUpdated) => {
       let newDataset = clonedeep(this.state.dataSet);
-      for (let pp = 0; pp < newDataset.length; pp++) //go through each dataset entry
-      {
-        if (newDataset[pp].photoData._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
-        {
-          newDataset[pp].photoData.difficulty = photoUpdated.difficulty, //update the photo field of the dataset
-          newDataset[pp].photoData.photo_placeholder = this.state.dataSet[pp].photoData.photo_placeholder //fix photo placeholder so don't repeat mongoose call
-          newDataset[pp].photoData.difficultyRatings = photoUpdated.difficultyRatings //fix annotations so only one per photo
-          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp)
+      for (
+        let pp = 0;
+        pp < newDataset.length;
+        pp++ //go through each dataset entry
+      ) {
+        if (newDataset[pp].photoData._id === phototoEdit._id) {
+          //when find the array entry fixed, set it to be the revised entry
+          (newDataset[pp].photoData.difficulty = photoUpdated.difficulty), //update the photo field of the dataset
+            (newDataset[pp].photoData.photo_placeholder = this.state.dataSet[
+              pp
+            ].photoData.photo_placeholder); //fix photo placeholder so don't repeat mongoose call
+          newDataset[pp].photoData.difficultyRatings = photoUpdated.difficultyRatings; //fix annotations so only one per photo
+          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp);
         }
-      };
-      this.setState({dataSet : newDataset});
-    })
-
+      }
+      this.setState({ dataSet: newDataset });
+    });
   };
 
-    //pass as prop to individual flashcard components
+  //pass as prop to individual flashcard components
   //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
-  updateLikes = (phototoEdit, liking) => 
-  {
-    const annotArrayOld = clonedeep(phototoEdit.annotation_info_array) //store old annotation array
+  updateLikes = (phototoEdit, liking) => {
+    const annotArrayOld = clonedeep(phototoEdit.annotation_info_array); //store old annotation array
     console.log("NEED TO LIKE?", liking);
     console.log("NEED TO UNLIKE?", !liking);
-    post("/api/likingRating", {photoId: phototoEdit._id, addLike: liking}).then((photoUpdated) => {
-      let newDataset = clonedeep(this.state.dataSet);
-      for (let pp = 0; pp < newDataset.length; pp++) //go through each dataset entry
-      {
-        if (newDataset[pp].photoData._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
-        {
-          newDataset[pp].photoData.likeCount = photoUpdated.likeCount, //update the photo field of the dataset
-          newDataset[pp].photoData.photo_placeholder = this.state.dataSet[pp].photoData.photo_placeholder, //fix photo 
-          //placeholder so don't repeat mongoose call/more gcp calls
-          newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray,
-          //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
-          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp, "GEOM", newDataset[pp].photoData.annotation_info_array[0].geometry, "LEARNING LANGUAGE tag", newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag, "CORRECT", newDataset[pp].correctAnswer)
+    post("/api/likingRating", { photoId: phototoEdit._id, addLike: liking }).then(
+      (photoUpdated) => {
+        let newDataset = clonedeep(this.state.dataSet);
+        for (
+          let pp = 0;
+          pp < newDataset.length;
+          pp++ //go through each dataset entry
+        ) {
+          if (newDataset[pp].photoData._id === phototoEdit._id) {
+            //when find the array entry fixed, set it to be the revised entry
+            (newDataset[pp].photoData.likeCount = photoUpdated.likeCount), //update the photo field of the dataset
+              (newDataset[pp].photoData.photo_placeholder = this.state.dataSet[
+                pp
+              ].photoData.photo_placeholder), //fix photo
+              //placeholder so don't repeat mongoose call/more gcp calls
+              (newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray),
+              //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
+              console.log(
+                "UPDATED",
+                newDataset[pp].photoData._id,
+                "ENTRY",
+                pp,
+                "GEOM",
+                newDataset[pp].photoData.annotation_info_array[0].geometry,
+                "LEARNING LANGUAGE tag",
+                newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag,
+                "CORRECT",
+                newDataset[pp].correctAnswer
+              );
+          }
         }
-      };
-      this.setState({dataSet : newDataset});
-    })
-
+        this.setState({ dataSet: newDataset });
+      }
+    );
   };
 
-  //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
-  imageLoad = () => {
-    console.log("calling image load*****");
-    //see if logged in
-    // get("/api/whoami").then((user) => {
-    //   if (user._id) {
-    //     // they are registed in the database, and currently logged in.
-    //     this.setState({ stillLoggedIn: true });
-    //   } else {
-    //     this.setState({ stillLoggedIn: false });
-    //   }
-    // });
-    //Find user whose photos we are seeing
+  prepQuizSet = (ImageInfo) => {
+    let questionArray = [];
 
-    //get photo array and add in some wrong answers
-    //set the state to be this list of question objects
-    //would be great to get each annotation as a separate object
-    get("/api/photosforquiz").then((ImageInfo) => {
-      console.log("IMAGE INFO");
-      console.log(ImageInfo);
-      console.log("first elemt", ImageInfo[0]);
-      console.log("first photo?", ImageInfo.infoOnPhotos[0]);
-      let questionArray = [];
+    //loop through each photo
+    for (let ii = 0; ii < ImageInfo.length; ii++) {
+      //get the entire array set up, and then will edit each photoData object so only 1 annotation is recorded in each entry
+      let allAnnotArray = ImageInfo[ii].annotation_info_array;
+      //loop through each annotation
 
-      //loop through each photo
-      for (let ii = 0; ii < ImageInfo.infoOnPhotos.length; ii++) {
-        //get the entire array set up, and then will edit each photoData object so only 1 annotation is recorded in each entry
-        let allAnnotArray = ImageInfo.infoOnPhotos[ii].annotation_info_array;
-        //loop through each annotation
+      for (let annot = 0; annot < ImageInfo[ii].annotation_info_array.length; annot++) {
+        //nested spread operator, will this copy everything?
+        // let newPhotoInfo = {...ImageInfo[ii], annotation_info_array: {...ImageInfo[ii].annotation_info_array, geometry : {...ImageInfo[ii].annotation_info_array.geometry}, data : {...ImageInfo[ii].annotation_info_array.data}} }; //make a copy of object
+        //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
+        //let newPhotoInfo = Object.assign(ImageInfo[ii]);
+        const newPhotoInfo = clonedeep(ImageInfo[ii]); //ref https://flaviocopes.com/how-to-clone-javascript-object/
+        newPhotoInfo.annotation_info_array = [allAnnotArray[annot]]; //replace the copy's annotation with just 1 annotation
+        //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
 
-        for (
-          let annot = 0;
-          annot < ImageInfo.infoOnPhotos[ii].annotation_info_array.length;
-          annot++
-        ) {
-          //nested spread operator, will this copy everything?
-          // let newPhotoInfo = {...ImageInfo.infoOnPhotos[ii], annotation_info_array: {...ImageInfo.infoOnPhotos[ii].annotation_info_array, geometry : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.geometry}, data : {...ImageInfo.infoOnPhotos[ii].annotation_info_array.data}} }; //make a copy of object
-          //ref https://stackoverflow.com/questions/39968366/how-to-deep-copy-a-custom-object-in-javascript
-          //let newPhotoInfo = Object.assign(ImageInfo.infoOnPhotos[ii]);
-          const newPhotoInfo = clonedeep(ImageInfo.infoOnPhotos[ii]); //ref https://flaviocopes.com/how-to-clone-javascript-object/
-          newPhotoInfo.annotation_info_array = [allAnnotArray[annot]]; //replace the copy's annotation with just 1 annotation
-          //for each annotation/photo pair, recond. make this an array to work with the IndividualFlashcard.js function
+        //record correct anser and change tag
+        const correctAnswer = newPhotoInfo.annotation_info_array[0].data.learningLanguageTag; //get correct answer
+        const ogTag = newPhotoInfo.annotation_info_array[0].data.nativeLanguageTag; //get original tag in user's native language
+        const langInterest = newPhotoInfo.translatedLanguage; //grab the 2 character code for the language the user is learning
+        const langInterestLong = getKeyByValue(this.langList, langInterest);
 
-          //record correct anser and change tag
-          const correctAnswer = newPhotoInfo.annotation_info_array[0].data.learningLanguageTag; //get correct answer
-          const ogTag = newPhotoInfo.annotation_info_array[0].data.nativeLanguageTag; //get original tag in user's native language
-          const langInterest = newPhotoInfo.translatedLanguage; //grab the 2 character code for the language the user is learning
-          const langInterestLong = getKeyByValue(this.langList, langInterest);
+        newPhotoInfo.annotation_info_array[0].data.text = "Please select the correct answer!"; //change the text
 
-          newPhotoInfo.annotation_info_array[0].data.text = "Please select the correct answer!"; //change the text
+        //maybe only go here if correctAnswer has 1-2 words?
+        // https://www.sketchengine.eu/spanish-word-list/
+        const onewordwrongAnswers = [
+          "que",
+          "los",
+          "del",
+          "las",
+          "por",
+          "con",
+          "para",
+          "una",
+          "como",
+          "más",
+          "este",
+          "pero",
+          "sus",
+          "esta",
+          "son",
+          "sobre",
+          "entre",
+          "ser",
+          "fue",
+          "sin",
+          "todo",
+          "también",
+          "desde",
+          "cuando",
+          "muy",
+          "años",
+          "está",
+          "todos",
+          "hay",
+          "tiene",
+          "nos",
+          "porque",
+          "dos",
+          "hasta",
+          "donde",
+          "parte",
+          "así",
+          "han",
+          "puede",
+          "año",
+          "cada",
+          "uno",
+          "vez",
+          "bien",
+          "hace",
+          "trabajo",
+          "nacional",
+          "estado",
+          "otros",
+          "gobierno",
+          "eso",
+          "tiempo",
+          "además",
+          "mismo",
+          "ese",
+          "hacer",
+          "país",
+          "durante",
+          "día",
+          "tanto",
+          "vida",
+          "esto",
+          "forma",
+          "estos",
+          "sólo",
+          "personas",
+          "otro",
+          "ahora",
+          "hoy",
+          "era",
+          "caso",
+          "están",
+          "les",
+          "mejor",
+          "lugar",
+          "qué",
+          "quien",
+          "cual",
+          "esa",
+          "ciudad",
+          "general",
+          "mundo",
+          "siempre",
+          "menos",
+          "desarrollo",
+          "contra",
+          "cuenta",
+          "tres",
+          "ver",
+          "más",
+          "mayor",
+          "otra",
+          "mucho",
+          "dijo",
+          "tienen",
+          "sido",
+          "presidente",
+          "ante",
+          "según",
+          "tener",
+          "primera",
+          "sea",
+          "debe",
+          "después",
+          "aunque",
+          "ley",
+          "sistema",
+          "manera",
+          "solo",
+          "poder",
+          "nuevo",
+          "ellos",
+          "todas",
+          "social",
+          "información",
+          "momento",
+          "sino",
+          "nuestro",
+          "otras",
+          "antes",
+          "luego",
+          "estas",
+          "algo",
+          "había",
+          "días",
+          "nuestra",
+          "primer",
+          "nada",
+          "hecho",
+          "poco",
+          "pueden",
+          "proyecto",
+          "será",
+          "grupo",
+          "fueron",
+          "través",
+          "algunos",
+          "tan",
+          "tipo",
+          "medio",
+          "gente",
+          "decir",
+          "equipo",
+          "nueva",
+          "importante",
+          "san",
+          "toda",
+          "mientras",
+          "pues",
+          "centro",
+          "acuerdo",
+          "programa",
+          "salud",
+          "pasado",
+          "empresa",
+          "muchos",
+          "fin",
+          "dentro",
+          "nivel",
+          "partido",
+          "servicios",
+          "casa",
+          "educación",
+          "servicio",
+          "seguridad",
+          "proceso",
+          "horas",
+          "él",
+          "política",
+          "tal",
+          "artículo",
+          "universidad",
+          "historia",
+          "cosas",
+          "cualquier",
+          "sí",
+          "unos",
+          "hacia",
+          "misma",
+          "estar",
+          "ello",
+          "tema",
+          "cómo",
+          "empresas",
+          "gracias",
+          "calidad",
+          "quienes",
+          "embargo",
+          "público",
+          "frente",
+          "agua",
+          "situación",
+          "ella",
+          "sociedad",
+          "creo",
+          "nosotros",
+          "final",
+          "muchas",
+          "méxico",
+          "derecho",
+          "zona",
+          "argentina",
+          "bajo",
+          "estamos",
+          "respecto",
+          "entonces",
+          "sector",
+          "ejemplo",
+          "estaba",
+          "tras",
+          "semana",
+          "personal",
+          "casi",
+          "tenemos",
+          "recursos",
+          "diferentes",
+          "dice",
+          "veces",
+          "punto",
+          "estados",
+          "uso",
+          "actividades",
+          "partir",
+          "haber",
+          "dar",
+          "relación",
+          "internacional",
+          "número",
+          "meses",
+          "niños",
+          "parece",
+          "aún",
+          "derechos",
+          "datos",
+          "aquí",
+          "grandes",
+          "nunca",
+          "problemas",
+          "mercado",
+          "países",
+          "cambio",
+          "nombre",
+          "persona",
+          "nuestros",
+          "segundo",
+          "hizo",
+          "sentido",
+          "cuatro",
+          "fecha",
+          "posible",
+          "comunidad",
+          "mujeres",
+          "lado",
+          "obra",
+          "familia",
+          "junto",
+          "director",
+          "problema",
+          "condiciones",
+          "total",
+          "actividad",
+          "falta",
+          "buena",
+          "tengo",
+          "investigación",
+          "algunas",
+          "bueno",
+          "españa",
+          "productos",
+          "producción",
+          "último",
+          "presente",
+          "casos",
+          "comisión",
+          "pública",
+          "fuera",
+          "igual",
+          "atención",
+          "van",
+          "realidad",
+          "objetivo",
+          "estudio",
+          "mediante",
+          "control",
+          "verdad",
+          "provincia",
+          "puntos",
+          "pueblo",
+          "buenos",
+          "sociales",
+          "hemos",
+          "experiencia",
+          "apoyo",
+          "hombre",
+          "varios",
+          "medios",
+          "resultados",
+          "obras",
+          "local",
+          "chile",
+          "dirección",
+          "realizar",
+          "deben",
+          "base",
+          "mes",
+          "cuanto",
+          "gestión",
+          "trata",
+          "buen",
+          "municipal",
+          "siendo",
+          "julio",
+          "alguna",
+          "unidos",
+          "trabajadores",
+          "ayer",
+          "proyectos",
+          "incluso",
+          "cultura",
+          "esos",
+          "mañana",
+          "llegar",
+          "dicho",
+          "región",
+          "segunda",
+          "población",
+          "plan",
+          "paso",
+          "mundial",
+          "conocer",
+          "participación",
+          "estoy",
+          "jóvenes",
+          "mujer",
+          "cargo",
+          "primero",
+          "administración",
+          "nuevos",
+          "hora",
+          "cuales",
+          "ciento",
+          "comunicación",
+          "especial",
+          "claro",
+          "pesos",
+          "espacio",
+          "estudios",
+          "dios",
+          "nuevas",
+          "juego",
+          "mal",
+          "encuentra",
+          "cinco",
+          "mis",
+          "capital",
+          "valor",
+          "seguir",
+          "autoridades",
+          "podría",
+          "justicia",
+          "escuela",
+          "tuvo",
+          "mayoría",
+          "área",
+          "saber",
+          "luis",
+          "organización",
+          "cuerpo",
+          "ministerio",
+          "acción",
+          "diciembre",
+          "largo",
+          "nadie",
+          "formación",
+          "encuentro",
+          "consejo",
+          "actual",
+          "construcción",
+          "vamos",
+          "necesario",
+          "capacidad",
+          "acciones",
+          "noche",
+          "hacen",
+          "cabo",
+          "estudiantes",
+          "idea",
+          "minutos",
+          "debido",
+          "mayo",
+          "orden",
+          "campo",
+          "octubre",
+          "haya",
+          "presencia",
+          "tarde",
+          "modo",
+          "permite",
+          "podemos",
+          "red",
+          "temas",
+          "edad",
+          "tenía",
+          "últimos",
+          "federal",
+          "anterior",
+          "respuesta",
+          "internet",
+          "ahí",
+          "puesto",
+          "cantidad",
+          "usted",
+          "real",
+          "serie",
+          "existe",
+          "próximo",
+          "dinero",
+          "dio",
+          "principal",
+          "sería",
+          "materia",
+          "libro",
+          "acceso",
+          "marco",
+          "maría",
+          "alto",
+          "noviembre",
+          "calle",
+          "siguiente",
+          "central",
+          "alumnos",
+          "web",
+          "algún",
+          "posibilidad",
+          "modelo",
+          "grupos",
+          "medida",
+          "soy",
+          "quiere",
+          "cierto",
+          "futuro",
+          "análisis",
+          "mano",
+          "humanos",
+          "instituto",
+          "superior",
+          "propio",
+          "señor",
+          "santa",
+          "favor",
+          "municipio",
+          "cerca",
+          "tierra",
+          "políticas",
+          "programas",
+          "ambiente",
+          "oportunidad",
+          "domingo",
+          "economía",
+          "crisis",
+          "marzo",
+          "mejores",
+          "interés",
+          "conocimiento",
+          "sigue",
+          "necesidad",
+          "haciendo",
+          "cosa",
+          "unas",
+          "serán",
+        ]; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
+        const twowordwrongAnswers = [
+          "dos libros",
+          "mi amigo",
+          "feliz cumpleaños",
+          "yo sonrío",
+          "Buenos días",
+          "hermoso dia",
+          "perro impresionante",
+          "vida pacifica",
+          "deliciosa manzana",
+          "increíble cascada",
+          "agua refrescante",
+          "mango dulce",
+          "teléfono inteligente",
+          "buen día",
+          "buen trabajo",
+          "buenas tardes",
+        ]; //two word wrong answers, maybe pull three for each
+        correctAnswer = correctAnswer.toLowerCase();
+        let corAnsLen = correctAnswer.split(" ").length;
+        let tmpWrongList = [];
+        let uniqueFlag = false;
 
-          //maybe only go here if correctAnswer has 1-2 words?
-          // https://www.ef.com/wwen/english-resources/english-vocabulary/top-50-nouns/
-          const onewordwrongAnswers = [
-            "perro",
-            "libro",
-            "mariposa",
-            "semana",
-            "reloj",
-            "domingo",
-            "zona",
-            "libro",
-            "negocio",
-            "caja",
-            "niño",
-            "empresa",
-            "país",
-            "día",
-            "ojo",
-            "hecho",
-            "familia",
-            "gobierno",
-            "grupo",
-            "mano",
-            "casa",
-            "trabajo",
-            "vida",
-            "lote",
-            "hombre",
-            "dinero",
-            "mes",
-            "madre",
-            "Señor",
-            "noche",
-            "número",
-            "Vamos",
-            "personas",
-            "cuadrado",
-            "punto",
-            "problema",
-            "programa",
-            "pregunta",
-            "derecho",
-            "habitación",
-            "colegio",
-            "estado",
-            "historia",
-            "estudiante",
-            "estudiar",
-            "sistema",
-            "cosa",
-            "hora",
-            "agua",
-            "camino",
-            "semana",
-            "mujer",
-            "palabra",
-            "trabajo",
-            "mundo",
-            "año",
-          ]; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
-          const twowordwrongAnswers = [
-            "dos libros",
-            "mi amigo",
-            "feliz cumpleaños",
-            "yo sonrío",
-            "Buenos días",
-            "hermoso dia",
-            "perro impresionante",
-            "vida pacifica",
-            "deliciosa manzana",
-            "increíble cascada",
-            "agua refrescante",
-            "mango dulce",
-            "teléfono inteligente",
-            "buen día",
-            "buen trabajo",
-            "buenas tardes",
-          ]; //two word wrong answers, maybe pull three for each
-          correctAnswer = correctAnswer.toLowerCase();
-          let corAnsLen = correctAnswer.split(" ").length;
-          let tmpWrongList = [];
+        // check to make sure the wrong answers we generated does not contains the correctAnswer for the question
+        while (!uniqueFlag) {
           if (corAnsLen == 1) {
             tmpWrongList = getRandom(onewordwrongAnswers, 3);
           } else {
             tmpWrongList = getRandom(twowordwrongAnswers, 3);
           }
-          console.log(
-            "tmpWrongList,corAnsLen,correctAnser",
-            tmpWrongList,
-            corAnsLen,
-            correctAnswer
-          );
-
-          let questionObject = {
-            photoData: newPhotoInfo, //record this photo with only the new 1 annotation- not all
-            //annotationtoDisplay: ImageInfo.infoOnPhotos[ii].annotation_info_array[annot], //record this annotation
-            correctAnswer: correctAnswer,
-
-            //Maybe add in a check of how many words are in the correct answer, and if there are 1 or 2, randomly select 3 choice from the appropriate array above?
-
-            wrongAnswers: tmpWrongList,
-            ogTag: ogTag,
-            langInterestLong: langInterestLong,
-          }; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
-
-          console.log(questionObject);
-
-          //run concatentation once in each inner for loop
-          questionArray = questionArray.concat(questionObject);
+          if (tmpWrongList.indexOf(correctAnswer) >= 0) {
+            uniqueFlag = false;
+          } else {
+            uniqueFlag = true;
+          }
         }
-        console.log("questionArray", questionArray);
-      }
 
-      // Initialize the total unanswered questions stat in readings array for the progress bar
-      this.updateProgress(
-        this.state.readings[0].value,
-        this.state.readings[1].value,
-        this.state.readings[2].value,
-        questionArray.length
-      );
-      console.log("this.state.readings", this.state.readings);
+        let questionObject = {
+          photoData: newPhotoInfo, //record this photo with only the new 1 annotation- not all
+          //annotationtoDisplay: ImageInfo[ii].annotation_info_array[annot], //record this annotation
+          correctAnswer: correctAnswer,
 
-      //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
-      //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
-      for (let iii = questionArray.length - 1; iii > 0; iii--) {
-        const jjj = Math.floor(Math.random() * iii);
-        const temp = questionArray[iii];
-        questionArray[iii] = questionArray[jjj];
-        questionArray[jjj] = temp;
+          //Maybe add in a check of how many words are in the correct answer, and if there are 1 or 2, randomly select 3 choice from the appropriate array above?
+
+          wrongAnswers: tmpWrongList,
+          ogTag: ogTag,
+          langInterestLong: langInterestLong,
+        }; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
+
+        console.log(questionObject);
+
+        //run concatentation once in each inner for loop
+        questionArray = questionArray.concat(questionObject);
       }
-      console.log("question array", questionArray);
-      this.setState({
-        dataSet: questionArray,
-        loaded: true,
-      });
+      console.log("questionArray", questionArray);
+    }
+
+    // Initialize the total unanswered questions stat in readings array for the progress bar
+    this.updateProgress(
+      this.state.readings[0].value,
+      this.state.readings[1].value,
+      this.state.readings[2].value,
+      questionArray.length
+    );
+    console.log("this.state.readings", this.state.readings);
+
+    //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
+    //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
+    for (let iii = questionArray.length - 1; iii > 0; iii--) {
+      const jjj = Math.floor(Math.random() * iii);
+      const temp = questionArray[iii];
+      questionArray[iii] = questionArray[jjj];
+      questionArray[jjj] = temp;
+    }
+    console.log("question array", questionArray);
+    this.setState({
+      dataSet: questionArray,
+      loaded: true,
     });
   };
 
-  handleClick = (ansString, corAns) => {
-    this.setState({
-      wasAnswerInput: true,
-      curAnsInfo: [ansString.text === corAns, ansString.text],
-      clickedAns: ansString.text,
-    }); //Color answers by whether or not they are correct
-    if (ansString.text === corAns) {
-      this.updateProgress(
-        this.state.readings[0].value + 1,
-        this.state.readings[1].value,
-        this.state.readings[2].value,
-        this.state.readings[3].value - 1
-      );
-    } else {
-      this.updateProgress(
-        this.state.readings[0].value,
-        this.state.readings[1].value + 1,
-        this.state.readings[2].value,
-        this.state.readings[3].value - 1
-      );
+  //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
+  imageLoad = async () => {
+    console.log("calling image load*****");
+    //Find user whose photos we are seeing
+
+    //get photo array and add in some wrong answers
+    //set the state to be this list of question objects
+    //would be great to get each annotation as a separate object
+    let ImageInfo = []; // set allUsers to be none before any api calls
+    const photoLim = 5; // How many photo to grab per get request
+    const startInd = 0; // skip all the initial items in the list until we get to Ind
+    // check which flag is set true
+    for (let filter of Object.keys(this.state.filters)) {
+      //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
+      if (filter === "getTenRandom" && this.state.filters[filter]) {
+        const ImageInfo = await get("/api/photosforquiz");
+        return this.prepQuizSet(ImageInfo);
+      }
+
+      if (filter === "mostDifficult" && this.state.filters[filter]) {
+        ImageInfo = await get("/api/photoFilter", {
+          sortString: "difficulty",
+          sortFlag: -1,
+          startInd: startInd,
+          lim: photoLim,
+          keyname: "",
+          keyvalue: "",
+        });
+        return this.prepQuizSet(ImageInfo);
+      }
+
+      if (filter === "leastDifficult" && this.state.filters[filter]) {
+        console.log(filter === "leastDifficult", filter);
+        ImageInfo = await get("/api/photoFilter", {
+          sortString: "difficulty",
+          sortFlag: 1,
+          startInd: startInd,
+          lim: photoLim,
+          keyname: "",
+          keyvalue: "",
+        });
+        return this.prepQuizSet(ImageInfo);
+      }
+
+      if (filter === "mostLiked" && this.state.filters[filter]) {
+        ImageInfo = await get("/api/photoFilter", {
+          sortString: "likeCount",
+          sortFlag: -1,
+          startInd: startInd,
+          lim: photoLim,
+          keyname: "",
+          keyvalue: "",
+        });
+        return this.prepQuizSet(ImageInfo);
+      }
     }
   };
 
@@ -564,8 +1074,22 @@ class QuizSelfMade_DS extends Component {
         ) : (
           // if not, show only the progress bar
           <div>
-            <div className="u-flex u-flex-justifyCenter">
+            <div className="u-flexColumn u-flex-alignCenter">
               <MultiColorProgressBar readings={this.state.readings} />
+              <form>
+                <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+                  <label for="imgFilter">Which image filters do you want?</label>
+                  <br />
+                  <select onChange={this.handleFilters} id="imgFilter">
+                    {console.log(Object.keys(this.state.filters))}
+                    {Object.keys(this.state.filters).map((ff, ii) => (
+                      <option value={ff} key={ii + ff}>
+                        {this.filterLabels[ii]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </form>
             </div>
           </div>
         )}
