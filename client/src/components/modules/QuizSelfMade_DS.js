@@ -298,7 +298,7 @@ class QuizSelfMade_DS extends Component {
     const annotArrayOld = clonedeep(phototoEdit.annotation_info_array) //store old annotation array
     console.log("NEED TO LIKE?", liking);
     console.log("NEED TO UNLIKE?", !liking);
-    post("/api/likingRating", {photoId: phototoEdit, addLike: liking}).then((photoUpdated) => {
+    post("/api/likingRating", {photoId: phototoEdit._id, addLike: liking}).then((photoUpdated) => {
       let newDataset = clonedeep(this.state.dataSet);
       for (let pp = 0; pp < newDataset.length; pp++) //go through each dataset entry
       {

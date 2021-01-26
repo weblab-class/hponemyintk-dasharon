@@ -419,14 +419,16 @@ router.post("/difficultyRating", auth.ensureLoggedIn, async(req, res) => {
       let userUpdating = await User.findById(req.user._id);
       console.log("adding difficulty");
       console.log("UPDATING INIT", userUpdating);
-      let updatedUser = await userUpdating.difficultyList.filter((pid) => pid !== req.body.photoId); //remove this photo from the lst and replace with new rating
-      updatedUser.difficultyList = updatedUser.difficultyList.concat(
+      let updatedUserDifficulty = await userUpdating.difficultyList.filter((pid) => pid.ratingPhotoId !== req.body.photoId); //remove this photo from the lst and replace with new rating
+      console.log("AFTER FILTER", updatedUserDifficulty)
+      console.log("NEW ID", req.body.photoId)
+      let updatedUserDifficultyFinal = await updatedUserDifficulty.concat(
         {
          ratingPhotoId: req.body.photoId,
        ratingValue: req.body.difficultyRating,
       }
       )
-      
+      userUpdating.difficultyList = updatedUserDifficultyFinal,
       // for (let uu = 0; uu < userUpdating.difficultyList.length; uu++) {
       //   if (userUpdating.difficultyList[uu].ratingPhotoId === photoSchematoReturn._id) { //find the photo being updated
       //     userUpdating.difficultyList[uu] = {
@@ -435,9 +437,10 @@ router.post("/difficultyRating", auth.ensureLoggedIn, async(req, res) => {
       //     };
       //   }
       // }
-      console.log("UPDATED")
+      
+      console.log("UPDATED", userUpdating)
 
-      updatedUser.save();
+      userUpdating.save();
         }
 
         //3b if not in array already addd new entry
@@ -490,7 +493,6 @@ router.post("/difficultyRating", auth.ensureLoggedIn, async(req, res) => {
 router.post("/likingRating", auth.ensureLoggedIn, async (req, res) => {
   try {
     //1 get the photo being rated
-<<<<<<< HEAD
     let photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
       .findOne({
         _id: req.body.photoId,
@@ -506,21 +508,6 @@ router.post("/likingRating", auth.ensureLoggedIn, async (req, res) => {
         // console.log("new schema", photoSchema);
         photoSchemaUpdated = await photoSchema.save();
         res.send(photoSchemaUpdated);
-=======
-    photoSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.findOne({
-      _id: req.body.photoId,
-    });
-    console.log("pull photo", photoSchema._id);
-    if (req.body.addLike) {
-      //if wanting to add a like- increment like count and then add new liking user name and id to schema
-      photoSchema.likeCount = photoSchema.likeCount + 1;
-      newLikeInfo = { likingUserId: req.user._id, likingUserName: req.user.name };
-      photoSchema.usersLikingArray = photoSchema.usersLikingArray.concat(newLikeInfo);
-      // console.log("adding like", newLikeInfo);
-      // console.log("new schema", photoSchema);
-      photoSchemaUpdated = await photoSchema.save();
-      res.send(photoSchemaUpdated);
->>>>>>> 3a3a16fcacd2ef10e07899d6b64f77b5f978b138
 
       //also update user
       let userUpdating = await User.findById(req.user._id);
@@ -626,7 +613,7 @@ router.all("*", (req, res) => {
 module.exports = router;
 
 /***************************** *******************************************/
-/*** Old comments from Dian for router.get("/photo_simple_w_annotate" ***/
+/*** Old comments from Dsian for router.get("/photo_simple_w_annotate" ***/
 /***************************** *******************************************/
 // console.log(imagePromise);
 //   /, then convert from Google Cloud object, and then return resulting schema and photo info

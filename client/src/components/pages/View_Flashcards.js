@@ -37,6 +37,14 @@ class View_Flashcards extends Component {
       requestingUserName: "UserName_Requesting",
       showInNativeLanguage: false,
       //nameForPrint: "SomeoneName",
+      filters: {
+        // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
+        allOwn: true,
+        mymostDifficult: false,
+        myleastDifficult: false,
+        myLiked: false,
+        myComments: false
+      },
     };
   }
 
@@ -79,6 +87,9 @@ class View_Flashcards extends Component {
       console.log(userInfo);
       this.setState({
         userName: userInfo.name, //assume 1 name
+        userLiked: userInfo.likeList,
+        userCommented: userInfo.commentList, 
+        userDifficultyRated: userInfo.difficultyList
       });
       //console.log("USER INFO IS", userInfo);
       //console.log("USER INFO IS", userInfo[0]);
@@ -130,28 +141,6 @@ class View_Flashcards extends Component {
   //       }
   // };
 
-  //post request to delete the relevant photo
-  handleDelete = (event) => {
-    event.preventDefault();
-    //let photoId = photoToDelete._id;
-    console.log("DELETE CLICKED");
-    console.log(event.target);
-    console.log(event.target.value);
-    let photoDeleteBody = { deletionId: event.target.value }; //set the request to be for this photo ID
-    post("/api/deletePhoto", photoDeleteBody); //run the delete request
-    alert("Adios photo! Au revoir! Your photo has been deleted");
-
-    //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
-    // const pageLocation = this.props.location;
-    // console.log(pageLocation);
-    // console.log(pageLocation.pathname);
-    // navigate(pageLocation.pathname);
-    window.location.reload(true); //https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
-    //what we do not want to do
-    //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
-    //alert("Delete" + photoToDelete.caption_text_s);
-    //event.preventDefault();
-  };
 
   //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
   switchLanguage = (event) => {
@@ -217,7 +206,7 @@ class View_Flashcards extends Component {
   {
     console.log("NEED TO LIKE?", liking);
     console.log("NEED TO UNLIKE?", !liking);
-    post("/api/likingRating", {photoId: phototoEdit, addLike: liking}).then((photoUpdated) => {
+    post("/api/likingRating", {photoId: phototoEdit._id, addLike: liking}).then((photoUpdated) => {
       let newPhotoArray = clonedeep(this.state.photo_info_array); //copy of array
       for (let pp = 0; pp < newPhotoArray.length; pp++)
       {
@@ -299,7 +288,7 @@ class View_Flashcards extends Component {
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
+                <IndividualFlashcard key = {p._id} deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
               )}
             </div>
           </>

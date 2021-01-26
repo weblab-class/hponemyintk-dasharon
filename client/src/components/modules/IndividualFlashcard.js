@@ -104,7 +104,7 @@ class IndividualFlashcard extends Component {
 
   //option to vote on difficulty
   editDifficulty = (event) => {
-    this.setState({enableDifficultyEdit : true})
+    this.setState((prevState) => ({...prevState, enableDifficultyEdit : true}));
     console.log("DIFFICULTY FLIP")
   }
 
@@ -328,10 +328,11 @@ class IndividualFlashcard extends Component {
               name="difficultyRating"
               onChange={(event, newvalue) => {
                 alert(newvalue);
-                this.setState({enableDifficultyEdit : false});
+                this.setState((prevState) => ({...prevState, enableDifficultyEdit : false}));
                 this.props.updateDifficulty(newvalue, this.props.photoFacts);
               }}
             />) :
+            // (<p></p>
             (<p></p>
             // <Rating
             //   precision={0.5}
