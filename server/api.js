@@ -568,6 +568,66 @@ router.get("/comment", (req, res) => {
     });
 });
 
+/**********************************************/
+/*** get requests for images from user lists***/
+/**********************************************/
+router.get("/photoswithIdsWithTime", auth.ensureLoggedIn, async (req, res) => {
+  try{
+    console.log("photoswithIds initial id list",req.query.idstoGet);
+    console.log("photoswithIds initial id list",typeof req.query.idstoGet);
+    console.log("photoswithIds initial id list",req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
+    const querySplitStrings = req.query.idstoGet.split(",");
+    console.log("photoswithIds split strings", querySplitStrings);
+    let UserSchema = [];
+
+        console.log("SORTING BY TIME");
+      UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+        .find({ "_id" : { $in : querySplitStrings}}).sort({ submit_stamp_raw: -1 });
+      
+        console.log(UserSchema);
+        for (let u_info = 0; u_info < UserSchema.length; u_info++) {
+          const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
+          UserSchema[u_info].photo_placeholder = imagePromise;
+        } //3 replace photo placeholder with the base64 DataURL from GCP
+        res.send(UserSchema);
+  } catch (e) {
+    console.log("ERR getImages this shouldn't happen");
+    res.status(400).json({ message: e.message });
+  }
+ 
+});
+
+router.get("/photoswithIdsWithoutTime", auth.ensureLoggedIn, async (req, res) => {
+  try{
+    console.log("photoswithIds initial id list",req.query.idstoGet);
+    console.log("photoswithIds initial id list",typeof req.query.idstoGet);
+    console.log("photoswithIds initial id list",req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
+    const querySplitStrings = req.query.idstoGet.split(",");
+    console.log("photoswithIds split strings", querySplitStrings);
+    let UserSchema = [];
+   //if no order specified go through the strings in order ref where learned need this: https://stackoverflow.com/questions/54872701/set-sort-order-for-mongoose-document
+        UserSchema = []
+        for (let pid = 0; pid < querySplitStrings.length; pid++)
+        {
+        UserSchemaToAdd = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+        .find({ "_id" : { $in : querySplitStrings[pid]}})
+        UserSchema = UserSchema.concat(UserSchemaToAdd)
+          console.log("added", pid)
+        }
+      
+        console.log(UserSchema);
+        for (let u_info = 0; u_info < UserSchema.length; u_info++) {
+          const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
+          UserSchema[u_info].photo_placeholder = imagePromise;
+        } //3 replace photo placeholder with the base64 DataURL from GCP
+        res.send(UserSchema);
+  } catch (e) {
+    console.log("ERR getImages this shouldn't happen");
+    res.status(400).json({ message: e.message });
+  }
+ 
+});
+
 /***********************************************/
 /*** get requests for filtering images/posts ***/
 /***********************************************/
