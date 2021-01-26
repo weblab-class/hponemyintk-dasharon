@@ -4,7 +4,7 @@ import "../../utilities.css";
 // https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 import IndividualFlashcard from "./IndividualFlashcard.js";
 import MultiColorProgressBar from "../modules/MultiColorProgressBar.js";
-import { get, getRandom, getKeyByValue, post } from "../../utilities";
+import { get, getRandom, getKeyByValue, post, shuffle } from "../../utilities";
 import { FlareSharp } from "@material-ui/icons";
 import Loading from "./Loading.js";
 const clonedeep = require("lodash.clonedeep");
@@ -403,14 +403,19 @@ class QuizSelfMade_DS extends Component {
   };
 
   prepQuizSet = (ImageInfo) => {
+    let photoLimforQuiz = 10;
     let questionArray = [];
 
+    let goodTagCount = 0; //tracks questions added to quiz
     //loop through each photo
     for (let ii = 0; ii < ImageInfo.length; ii++) {
       //get the entire array set up, and then will edit each photoData object so only 1 annotation is recorded in each entry
-      let allAnnotArray = ImageInfo[ii].annotation_info_array;
+      //and shuffle
+      let allAnnotArray = shuffle(ImageInfo[ii].annotation_info_array);
       //loop through each annotation
 
+      //counter of annotations for this photo already added
+      let annotationsforPhoto = 0;
       for (let annot = 0; annot < ImageInfo[ii].annotation_info_array.length; annot++) {
         //nested spread operator, will this copy everything?
         // let newPhotoInfo = {...ImageInfo[ii], annotation_info_array: {...ImageInfo[ii].annotation_info_array, geometry : {...ImageInfo[ii].annotation_info_array.geometry}, data : {...ImageInfo[ii].annotation_info_array.data}} }; //make a copy of object
@@ -925,6 +930,7 @@ class QuizSelfMade_DS extends Component {
         let tmpWrongList = [];
         let uniqueFlag = false;
 
+        if (corAnsLen > 2) {continue} //if this is longer than 2 words do not show in quiz ref https://www.w3schools.com/java/tryjava.asp?filename=demo_continue
         // check to make sure the wrong answers we generated does not contains the correctAnswer for the question
         while (!uniqueFlag) {
           if (corAnsLen == 1) {
@@ -955,8 +961,13 @@ class QuizSelfMade_DS extends Component {
 
         //run concatentation once in each inner for loop
         questionArray = questionArray.concat(questionObject);
+        goodTagCount = goodTagCount + 1; //how many tags added?
+        annotationsforPhoto = annotationsforPhoto + 1; //how many annotations added?
+        if (goodTagCount > (photoLimforQuiz - 1)) {break}
+        if (annotationsforPhoto > 2) {break}
       }
       console.log("questionArray", questionArray);
+      if (goodTagCount > (photoLimforQuiz - 1)) {break}
     }
 
     // Initialize the total unanswered questions stat in readings array for the progress bar
@@ -992,7 +1003,7 @@ class QuizSelfMade_DS extends Component {
     //set the state to be this list of question objects
     //would be great to get each annotation as a separate object
     let ImageInfo = []; // set allUsers to be none before any api calls
-    const photoLim = 20; // How many photo to grab per get request
+    const photoLim = 10; // How many photo to grab per get request
     const startInd = 0; // skip all the initial items in the list until we get to Ind
     // check which flag is set true
     for (let filter of Object.keys(this.state.filters)) {
@@ -1008,8 +1019,8 @@ class QuizSelfMade_DS extends Component {
           sortFlag: -1,
           startInd: startInd,
           lim: photoLim,
-          keyname: "",
-          keyvalue: "",
+          keyname: "goodforQuiz",
+          keyvalue: "true",
         });
         return this.prepQuizSet(ImageInfo);
       }
@@ -1021,8 +1032,8 @@ class QuizSelfMade_DS extends Component {
           sortFlag: 1,
           startInd: startInd,
           lim: photoLim,
-          keyname: "",
-          keyvalue: "",
+          keyname: "goodforQuiz",
+          keyvalue: "true",
         });
         return this.prepQuizSet(ImageInfo);
       }
@@ -1033,8 +1044,8 @@ class QuizSelfMade_DS extends Component {
           sortFlag: -1,
           startInd: startInd,
           lim: photoLim,
-          keyname: "",
-          keyvalue: "",
+          keyname: "goodforQuiz",
+          keyvalue: "true",
         });
         return this.prepQuizSet(ImageInfo);
       }
@@ -1044,7 +1055,7 @@ class QuizSelfMade_DS extends Component {
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
-    return (
+    return ( (this.state.loaded) ? (
       <>
         {/* check whether we are at the result page already or not */}
         {this.state.showResult ? (
@@ -1096,7 +1107,7 @@ class QuizSelfMade_DS extends Component {
           </div>
         )}
         <div className="u-flex u-flex-justifyCenter">
-          {this.state.loaded ? (
+          {
             //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
             this.state.dataSet.length > 0 ? (
               !this.state.showResult && (
@@ -1122,11 +1133,10 @@ class QuizSelfMade_DS extends Component {
             ) : (
               <p>No photos!</p>
             )
-          ) : (
-            <Loading />
-          )}
+          }
         </div>
       </>
+    ) : (<Loading/>)
     );
   }
 }

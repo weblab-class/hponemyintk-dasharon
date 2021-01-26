@@ -202,9 +202,10 @@ router.get("/photosimpletest", auth.ensureLoggedIn, async (req, res) => {
 // Get all photos
 router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
   // console.log("api.js photosimpletest req is:::", req.query);
+  //ref for aggregate https://stackoverflow.com/questions/42394902/mongoose-how-to-use-aggregate-and-find-together
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.aggregate([
-      { $sample: { size: 10 } },
+      {$match: {goodforQuiz: true}}, { $sample: { size: 10 } },
     ]); //1 get photo array from mongoose
     //iterate through all user's photos, note this could incorporate a map/promise all, limit to 5 photos, ref https://www.tutorialspoint.com/find-a-specified-amount-of-records-in-mongodb
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {

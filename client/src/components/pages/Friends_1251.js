@@ -7,6 +7,7 @@ import { get, post } from "../../utilities";
 import { Link } from "@reach/router";
 import View_Flashcards from "../pages/View_Flashcards.js";
 import IndividualFlashcard from "../modules/IndividualFlashcard.js";
+import Loading from "../modules/Loading.js";
 const clonedeep = require("lodash.clonedeep");
 
 //This is an initial attempt at the friend page, to print users, hopefully leading to
@@ -279,7 +280,7 @@ class Friends_1251 extends Component {
     }
 
     return (
-      (this.state.loading) ? (<p>Un momento per favore! This page is loading</p>) : (
+      (this.state.loading) ? (<Loading/>) : (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         <form>
           <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>

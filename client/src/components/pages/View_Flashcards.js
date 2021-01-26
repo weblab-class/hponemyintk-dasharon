@@ -6,6 +6,7 @@ import { get, post } from "../../utilities";
 import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
 import IndividualFlashcard from "../modules/IndividualFlashcard.js";
+import Loading from "../modules/Loading.js";
 
 
 /*
@@ -359,7 +360,7 @@ class View_Flashcards extends Component {
     let langSwitchText = "Show comments and captions in language learning!";
     if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
     
-    return ( (this.state.loading) ? (<p>Un momento per favor! This page is loading</p>) : (
+    return ( (this.state.loading) ? (<Loading/>) : (
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter" style={{ width: "100%" }}>
         {/* <p className="u-bold">Flashcards!</p> */}
