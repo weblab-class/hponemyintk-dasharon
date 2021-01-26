@@ -67,6 +67,10 @@ form {
   align-items: center;
 }
 
+.u-flex-alignBottom {
+  align-items: flex-end;
+}
+
 .u-inlineBlock {
   display: inline-block;
 }

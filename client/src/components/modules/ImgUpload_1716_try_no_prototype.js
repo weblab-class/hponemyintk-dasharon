@@ -16,13 +16,18 @@ https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-materia
 import React from "react";
 //
 import Rating from "@material-ui/lab/Rating";
+import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
 //import post as in catbook
 import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import HelpIcon from '@material-ui/icons/Help';
+import Demo from "./Demo.js";
 import "./Image_aesthetics.css";
+
+//ref https://material-ui.com/components/dialogs/ https://material-ui.com/api/dialog/
+import Dialog from '@material-ui/core/Dialog'
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -51,6 +56,16 @@ import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
 // const { Translate } = require("@google-cloud/translate").v2;
 // // Creates a client
 // const translate = new Translate();
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: "#0099ff",
+  },
+  iconHover: {
+    color: "#0099ff",
+  },
+})(Rating);
+
 class ImgUpload_1716_try_no_prototype extends React.Component {
   /*from React and Medium websites above many thanks to Toommy in OH explained removing bind*/
   constructor(props) {
@@ -362,6 +377,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           // + '\nDifficulty is : "'  + this.state.difficulty +'"'
           // + '\nQuality is : "'  + this.state.quality +'"'
         ),
+        // (<Demo/>)
           this.setState({
             file: null,
             submittedCaption: false,
@@ -495,7 +511,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               )}
               {/* <Typography component="legend">Difficulty</Typography> */}
               <p>Difficulty:</p>
-              <Rating
+              <StyledRating
                 precision={1.0}
                 name="difficultyRating"
                 value={this.state.difficulty}

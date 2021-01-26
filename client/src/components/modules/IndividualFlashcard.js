@@ -15,18 +15,19 @@ https://material-ui.com/api/rating/
 https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-material-ui-f6e18652f602
 */
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import HelpIcon from '@material-ui/icons/Help';
 import Rating from "@material-ui/lab/Rating";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
-import HelpIcon from "@material-ui/icons/Help";
+// import HelpIcon from "@material-ui/icons/Help";
 import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/router/api/useLocation
 import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
-import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
+import { faFlagCheckered, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
 const StyledRating = withStyles({
@@ -294,10 +295,10 @@ class IndividualFlashcard extends Component {
     }
 
     //if you already rated this, show your rating
-    let ownRating = "";
+    let ownRating = "n/a";
     for (let rr = 0; rr < this.props.photoFacts.difficultyRatings.length; rr++) {
       if (this.props.photoFacts.difficultyRatings[rr].ratingUserId === this.props.viewingUserId) {
-        ownRating = "You rated this" + this.props.photoFacts.difficultyRatings[rr].ratingValue;
+        ownRating = this.props.photoFacts.difficultyRatings[rr].ratingValue;
       }
     }
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
@@ -347,9 +348,16 @@ class IndividualFlashcard extends Component {
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
 
             <p>
-              Difficulty {this.props.photoFacts.difficulty} #ratings{" "}
-              {this.props.photoFacts.difficultyRatings.length} {ownRating}
+              Difficulty (all users)</p> 
+              <HelpIcon style={{color:"#0099ff"}}/> {/*ref*/}
+              <p>{this.props.photoFacts.difficulty} (
+              {this.props.photoFacts.difficultyRatings.length} {" "} Ratings)</p> 
+                <p>Difficulty (own)</p>
+              <p>{ownRating}
             </p>
+            <button onClick={this.editDifficulty}><HelpIcon style={{color:"#0099ff"}}/></button>
+            
+            
             {this.state.enableDifficultyEdit ? (
               <StyledRating
                 precision={1.0}
@@ -371,10 +379,14 @@ class IndividualFlashcard extends Component {
               //   disabled
               // />
             )}
-            <button onClick={this.editDifficulty}>Edit difficulty</button>
+            
 
             {/*see if you liked and count of likes*/}
-            <p>{this.props.photoFacts.likeCount} Likes</p>
+            <div className = "u-flex u-flex-justifyCenter u-flex-alignCenter">
+            <p style = {{padding: "10%", fontSize: "1.1vw"}}>{this.props.photoFacts.likeCount} 
+            
+            </p> <FontAwesomeIcon icon={faThumbsUp}
+                  style={{ color: "#0099ff"}}/> </div>
             {this.props.photoFacts.usersLikingArray
               .map((userData) => userData.likingUserId)
               .includes(this.props.viewingUserId) ? (
