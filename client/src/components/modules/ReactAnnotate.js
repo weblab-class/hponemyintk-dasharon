@@ -141,25 +141,28 @@ export default class Simple extends Component {
             onSubmit={this.onTmpSubmit}
             activeAnnotationComparator={this.activeAnnotationComparator} // from annotation selector comment box
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
+            selectors={RectangleSelector}
             allowTouch
           />
-          
-          {(this.props.annotationslst.length === 0) ? (<h4>No tags yet! Please tag away!</h4>) : //only show tags if there are tage to show
-          
-          (<>
-            <h4>{tagText}</h4>
-            <Comments>
-            {this.props.annotationslst.map((annotation) => (
-              <Comment
-                onMouseOver={this.onMouseOver(annotation.data.id)}
-                onMouseOut={this.onMouseOut(annotation.data.id)}
-                key={annotation.data.id}
-              >
-                {annotation.data.textforBox}
-              </Comment>
-            ))}
-          </Comments></>)
-    }
+
+          {this.props.annotationslst.length === 0 ? (
+            <h4>No tags yet! Please tag away!</h4> //only show tags if there are tage to show
+          ) : (
+            <>
+              <h4>{tagText}</h4>
+              <Comments>
+                {this.props.annotationslst.map((annotation) => (
+                  <Comment
+                    onMouseOver={this.onMouseOver(annotation.data.id)}
+                    onMouseOut={this.onMouseOut(annotation.data.id)}
+                    key={annotation.data.id}
+                  >
+                    {annotation.data.textforBox}
+                  </Comment>
+                ))}
+              </Comments>
+            </>
+          )}
         </div>
       );
     }
@@ -180,11 +183,12 @@ export default class Simple extends Component {
             activeAnnotationComparator={this.activeAnnotationComparator} // from annotation selector comment box
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
             renderOverlay={this.renderOverlay} // Hide overlay
+            selectors={RectangleSelector}
             allowTouch
+            style={{ color: "#0099ff", font: "Roboto", fontFamily: "Roboto" }}
           />
           {/* {console.log("this.props.hideTagLst", this.props.hideTagLst)} */}
-          {((!this.props.hideTagLst) && (this.props.annotationslst.length !== 0)) && (
-
+          {!this.props.hideTagLst && this.props.annotationslst.length !== 0 && (
             <>
               {/* {console.log("This is when hideTagLst is true in loop", this.props.hideTagLst)} */}
               <h4>{tagText}</h4>
@@ -201,7 +205,7 @@ export default class Simple extends Component {
               </Comments>
             </>
           )}
-          {((!this.props.hideTagLst) && (this.props.annotationslst.length === 0)) && (<h4>No tags</h4>)}
+          {!this.props.hideTagLst && this.props.annotationslst.length === 0 && <h4>No tags</h4>}
         </div>
       );
     }
