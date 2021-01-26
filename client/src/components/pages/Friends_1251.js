@@ -248,10 +248,10 @@ class Friends_1251 extends Component {
           <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
             <label for="imgFilter">Which image filters do you want?</label>
             <br />
-            <select id="imgFilter">
+            <select onChange={this.handleFilters} id="imgFilter">
               {console.log(Object.keys(this.state.filters))}
               {Object.keys(this.state.filters).map((ff, ii) => (
-                <option onClick={this.handleFilters} value={ff} key={ii + ff}>
+                <option value={ff} key={ii + ff}>
                   {this.filterLabels[ii]}
                 </option>
               ))}
