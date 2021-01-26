@@ -34,21 +34,19 @@ class NavBar extends Component {
             <Link to="/Upload" className="NavBar-link">
               Upload
             </Link>
-            {/* From catbook linking for users */}
-            {this.props.userId && (
-              <Link to={`/Flashcards/${this.props.userId}`} className="NavBar-link">
-                Review
-              </Link>
-            )}
+
             <Link to="/QuizSelfMade_DS" className="NavBar-link">
               Quizzes
             </Link>
             <Link to="/Friends" className="NavBar-link">
               Social
             </Link>
-            <Link to="/Scavenger_Hunts" className="NavBar-link">
-              Scavenger Hunts
-            </Link>
+            {/* From catbook linking for users */}
+            {this.props.userId && (
+              <Link to={`/Flashcards/${this.props.userId}`} className="NavBar-link">
+                Review
+              </Link>
+            )}
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"

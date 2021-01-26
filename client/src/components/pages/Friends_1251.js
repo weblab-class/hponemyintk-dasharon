@@ -29,6 +29,7 @@ class Friends_1251 extends Component {
         mostLiked: false,
         mostCommented: false
       },
+      loading: true
     };
     this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked", "Most commented"];
   }
@@ -88,7 +89,7 @@ class Friends_1251 extends Component {
             });
             allPhotoList = allPhotoList.concat(newPhoto);
           }
-          return this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList, loading: false });
         }
 
         if (filter === "mostDifficult" && this.state.filters[filter]) {
@@ -100,7 +101,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          return this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList, loading: false });
         }
 
         if (filter === "leastDifficult" && this.state.filters[filter]) {
@@ -113,7 +114,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          return this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList, loading: false });
         }
 
         if (filter === "mostLiked" && this.state.filters[filter]) {
@@ -125,7 +126,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          return this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList, loading: false });
         }
 
         if (filter === "mostCommented" && this.state.filters[filter]) {
@@ -137,7 +138,7 @@ class Friends_1251 extends Component {
             keyname: "",
             keyvalue: "",
           });
-          return this.setState({ allPhotos: allPhotoList });
+          return this.setState({ allPhotos: allPhotoList, loading: false });
         }
       }
     } catch (e) {
@@ -278,6 +279,7 @@ class Friends_1251 extends Component {
     }
 
     return (
+      (this.state.loading) ? (<p>Un momento per favore! This page is loading</p>) : (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         <form>
           <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
@@ -337,7 +339,7 @@ class Friends_1251 extends Component {
           />
         ))}
       </div>
-    );
+    ));
   }
 }
 

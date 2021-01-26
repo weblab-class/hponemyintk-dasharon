@@ -7,6 +7,7 @@ import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
 import IndividualFlashcard from "../modules/IndividualFlashcard.js";
 
+
 /*
 code for rating bar
 https://material-ui.com/components/rating/
@@ -48,8 +49,10 @@ class View_Flashcards extends Component {
         myLiked: false,
         myComments: false
       },
+      loading: true,
+      filterLabels : ["All user's photos", "User rated most difficult", "User rated least difficult", "User personal favorites", "Photos user commented on"]
     };
-   this.filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
+   //this.filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
   }
 
   componentDidMount() {
@@ -60,7 +63,9 @@ class View_Flashcards extends Component {
     if (this.props.userId) {
       this.userInfoLoad();
       this.imageLoad();
-      // this.filterLabels = this.setFilters(); //update filters
+      //this.setFilters();
+      //this.filterLabels = this.setFilters(); //update filters
+      //this.setFilters();
     } else {
       console.log("SHOULD LOG OUT");
     }
@@ -72,6 +77,7 @@ class View_Flashcards extends Component {
       this.userInfoLoad();
       this.imageLoad();
       //this.filterLabels = this.setFilters(); //update filters
+      //this.setFilters();
     } else {
       console.log("SHOULD LOG OUT");
     }
@@ -114,7 +120,7 @@ class View_Flashcards extends Component {
       if (user._id) {
         // if they are registed in the database then set
         this.setState({ requestingUserId: user._id, requestingUserName: user.name });
-        
+        //this.setFilters();
       }
     });
   };
@@ -130,6 +136,7 @@ class View_Flashcards extends Component {
         console.log(ImageInfo);
         return this.setState({
           photo_info_array: ImageInfo,
+          loading: false
         });
         // this.runFlip(); //flip to start with the language you are learning
       });
@@ -143,6 +150,7 @@ class View_Flashcards extends Component {
             console.log(ImageInfo);
             return this.setState({
               photo_info_array: ImageInfo,
+              loading: false
             });
             // this.runFlip(); //flip to start with the language you are learning
           });
@@ -157,6 +165,7 @@ class View_Flashcards extends Component {
             console.log(ImageInfo);
             return this.setState({
               photo_info_array: ImageInfo,
+              loading: false
             });
             // this.runFlip(); //flip to start with the language you are learning
           });
@@ -179,6 +188,7 @@ class View_Flashcards extends Component {
             console.log(ImageInfo);
             return this.setState({
               photo_info_array: ImageInfo,
+              loading: false
             });
 
             
@@ -202,6 +212,7 @@ class View_Flashcards extends Component {
                 console.log(ImageInfo);
                 return this.setState({
                   photo_info_array: ImageInfo,
+                  loading: false
                 });
     
                 
@@ -310,15 +321,16 @@ class View_Flashcards extends Component {
   };
 
   //update filters
-  // setFilters = () => {
-  //   if (this.state.requestingUserId === this.props.userId) {
-  //     let filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
-  //     console.log("SETTING FILTERS");
-  //   } else {
-  //     let filterLabels = ["All " + this.state.userName +"'s photos", this.state.userName +"'s rated most difficult", this.state.userName +"'s rated least difficult", this.state.userName +"'s personal favorites", "Photos " + this.state.userName + " commented on"];
-  //   }
-  //   return filterLabels;
-  // };
+  setFilters = () => {
+    let filterLabels = [];
+    if (this.state.requestingUserId === this.props.userId) {
+      filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
+      console.log("SETTING FILTERS");
+    } else {
+      filterLabels = ["All " + this.state.userName +"'s photos", this.state.userName +"'s rated most difficult", this.state.userName +"'s rated least difficult", this.state.userName +"'s personal favorites", "Photos " + this.state.userName + " commented on"];
+    }
+    this.setState({filterLabels : filterLabels})
+  };
 
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
@@ -331,6 +343,15 @@ class View_Flashcards extends Component {
         ? (userNameToShow = this.state.userName + " (Me)")
         : (userNameToShow = this.state.userName);
     }
+
+    // let filterLabels = [];
+    // if (this.state.requestingUserId === this.props.userId) {
+    //   filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
+    //   console.log("SETTING FILTERS");
+    // } else {
+    //   filterLabels = ["All " + this.state.userName +"'s photos", this.state.userName +"'s rated most difficult", this.state.userName +"'s rated least difficult", this.state.userName +"'s personal favorites", "Photos " + this.state.userName + " commented on"];
+    // }
+    // this.setState({filterLabels : filterLabels})
     
     
     //If you are the requesting user, show "Me" instead of your name
@@ -338,7 +359,7 @@ class View_Flashcards extends Component {
     let langSwitchText = "Show comments and captions in language learning!";
     if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
     
-    return (
+    return ( (this.state.loading) ? (<p>Un momento per favor! This page is loading</p>) : (
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
       <div className="u-textCenter" style={{ width: "100%" }}>
         {/* <p className="u-bold">Flashcards!</p> */}
@@ -351,7 +372,7 @@ class View_Flashcards extends Component {
               {console.log(Object.keys(this.state.filters))}
               {Object.keys(this.state.filters).map((ff, ii) => (
                 <option value={ff} key={ii + ff}>
-                  {this.filterLabels[ii]}
+                  {this.state.filterLabels[ii]}
                 </option>
               ))}
             </select>
@@ -406,7 +427,7 @@ class View_Flashcards extends Component {
           <p>Nothing to return. Please upload!</p>
         )}
       </div>
-    );
+    ));
   }
 }
 export default View_Flashcards;

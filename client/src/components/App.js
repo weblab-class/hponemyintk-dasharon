@@ -113,7 +113,6 @@ class App extends Component {
           <View_Flashcards path="/Flashcards/:userId" />
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
-          <Scavenger_Hunts path="/Scavenger_Hunts" userId={this.state.userId} />
           <Skeleton path="/" />
           <QuizSelfMade_DS path="/QuizSelfMade_DS" userId={this.state.userId} />
           <NotFound default />
