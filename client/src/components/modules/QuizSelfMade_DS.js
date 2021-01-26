@@ -197,6 +197,7 @@ class QuizSelfMade_DS extends Component {
       },
       this.imageLoad
     );
+    this.updateProgress(0, 0, 0, 1);
   };
 
   //when next is pressed, delete from array so next photo is seen
