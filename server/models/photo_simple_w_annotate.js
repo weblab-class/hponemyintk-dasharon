@@ -52,6 +52,7 @@ const PhotoSimpleAnnotSchema = new mongoose.Schema({
   submit_stamp_raw: String, //submission timestamp sortable
   inputLanguages: [String], //list of detected input languages
   translatedLanguage: String, //translated language, set to be language the user is learning
+  commentCount: Number, //count of comments
   annotation_info_array: [AnnotInfoSchema], //array of annotation data [annot_info], //[annot_info], //https://mongoosejs.com/docs/schematypes.html mixed is flexible
 });
 

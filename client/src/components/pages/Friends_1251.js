@@ -27,9 +27,10 @@ class Friends_1251 extends Component {
         mostDifficult: false,
         leastDifficult: false,
         mostLiked: false,
+        mostCommented: false
       },
     };
-    this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked"];
+    this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked", "Most commented"];
   }
 
   // remember -- api calls go here!, get call adapted from catbook
@@ -118,6 +119,18 @@ class Friends_1251 extends Component {
         if (filter === "mostLiked" && this.state.filters[filter]) {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "likeCount",
+            sortFlag: -1,
+            startInd: startInd,
+            lim: photoLim,
+            keyname: "",
+            keyvalue: "",
+          });
+          return this.setState({ allPhotos: allPhotoList });
+        }
+
+        if (filter === "mostCommented" && this.state.filters[filter]) {
+          allPhotoList = await get("/api/photoFilter", {
+            sortString: "commentCount",
             sortFlag: -1,
             startInd: startInd,
             lim: photoLim,
@@ -227,6 +240,28 @@ class Friends_1251 extends Component {
     });
   };
 
+  //pass as prop to individual flashcard components
+  //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
+  updateLikes = (phototoEdit, liking) => 
+  {
+    console.log("NEED TO LIKE?", liking);
+    console.log("NEED TO UNLIKE?", !liking);
+    post("/api/likingRating", {photoId: phototoEdit._id, addLike: liking}).then((photoUpdated) => {
+      let newPhotoArray = clonedeep(this.state.allPhotos); //copy of array
+      for (let pp = 0; pp < newPhotoArray.length; pp++)
+      {
+        if (newPhotoArray[pp]._id === phototoEdit._id) //when find the array entry fixed, set it to be the revised entry
+        {
+          newPhotoArray[pp] = photoUpdated
+          newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder //fix photo placeholder so don't repeat mongoose call
+          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
+        }
+      };
+      this.setState({allPhotos : newPhotoArray});
+    })
+
+  };
+
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
@@ -298,6 +333,7 @@ class Friends_1251 extends Component {
             viewingUserId={this.props.userId}
             showInNativeLanguage={this.state.showInNativeLanguage}
             updateDifficulty={this.updateDifficulty}
+            updateLikes={this.updateLikes}
           />
         ))}
       </div>

@@ -107,6 +107,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) =>
       submit_stamp: req.body.timestamp,
       inputLanguages: req.body.inputLanguageInfo,
       translatedLanguage: req.body.translatedLanguage,
+      commentCount : 0, //initialize comment count to 0
       annotation_info_array: req.body.annotate_test, //req.body.annotate_test, OH Johan 20:08
     }); //save the photo and then set the everUpdated field for the user to be true
     //https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
@@ -334,6 +335,14 @@ router.post("/comment", auth.ensureLoggedIn, async (req, res) => {
     });
 
     const savedComment = await newComment.save(); // get comment saved
+    
+    let photoUpdated = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose //find the parent and add 1 to its comments count
+    .findOne({
+      _id : req.body.parent,
+    });
+    photoUpdated.commentCount = photoUpdated.commentCount + 1; //add 1 comment
+    photoUpdated.save();
+
     let userUpdating = await User.findById(req.user._id); //get user requesting
     console.log("UPDATING", userUpdating);
     userUpdating.commentList = userUpdating.commentList.concat(req.body.parent); //add the photo ID of the post commented on for user requesting

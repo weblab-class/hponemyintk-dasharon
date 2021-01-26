@@ -16,8 +16,10 @@ https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-materia
 */
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Rating from "@material-ui/lab/Rating";
+import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
+import HelpIcon from '@material-ui/icons/Help';
 import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/router/api/useLocation
 import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 
@@ -27,6 +29,14 @@ import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg
 import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#0099ff',
+  },
+  iconHover: {
+    color: '#0099ff',
+  },
+})(Rating);
 
 class IndividualFlashcard extends Component {
   constructor(props) {
@@ -323,9 +333,10 @@ class IndividualFlashcard extends Component {
             
             <p>Difficulty {this.props.photoFacts.difficulty} #ratings {this.props.photoFacts.difficultyRatings.length} {ownRating}</p>
             {
-            this.state.enableDifficultyEdit ? (<Rating
-              precision={0.5}
+            this.state.enableDifficultyEdit ? (<StyledRating
+              precision={1.0}
               name="difficultyRating"
+              icon={<HelpIcon fontSize="inherit" />}
               onChange={(event, newvalue) => {
                 alert(newvalue);
                 this.setState((prevState) => ({...prevState, enableDifficultyEdit : false}));
