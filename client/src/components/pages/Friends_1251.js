@@ -20,7 +20,7 @@ class Friends_1251 extends Component {
     this.state = {
       allUserList: [], //set initial user list to be empty
       allPhotos: [],
-      showInNativeLanguage: false,
+      // showInNativeLanguage: false,
       haveSwitched: false,
       filters: {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
@@ -160,7 +160,7 @@ class Friends_1251 extends Component {
   // };
 
   //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
-  switchLanguage = (event) => {
+  // switchLanguage = (event) => {
     //   if (!this.state.everSwitched)
     //   {this.setState({everSwitched : true})
     // console.log("SWITCH 1")}
@@ -171,7 +171,7 @@ class Friends_1251 extends Component {
     //   //run flip
     //   console.log("IN SWITCH LANGUAGE", thiss.state.showInNativeLanguage);
 
-    this.setState({ showInNativeLanguage: !this.state.showInNativeLanguage });
+    // this.setState({ showInNativeLanguage: !this.state.showInNativeLanguage });
     // let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
     // console.log("PHOTOS in runflip", photos)
     // //Flip the tags and printout languages in each annotation for each photo
@@ -196,7 +196,7 @@ class Friends_1251 extends Component {
     //   }
     // }
     // this.setState({allPhotos: photos})
-  };
+  // };
 
   // runFlipInit = () =>{
   //   let photos = clonedeep(this.state.allPhotos); // copy of photos ref https://www.geeksforgeeks.org/lodash-_-clonedeep-method/
@@ -274,10 +274,10 @@ class Friends_1251 extends Component {
 
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
-    let langSwitchText = "Show comments and captions in language learning!";
-    if (this.state.showInNativeLanguage === false) {
-      langSwitchText = "Show comments and captions in English!";
-    }
+    // let langSwitchText = "Show comments and captions in language learning!";
+    // if (this.state.showInNativeLanguage === false) {
+    //   langSwitchText = "Show comments and captions in English!";
+    // }
 
     return (
       (this.state.loading) ? (<Loading/>) : (
@@ -302,17 +302,16 @@ class Friends_1251 extends Component {
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
         <h1 className="u-textCenter">
-          Showing one photo from each user in the database! <br />
-          (There are also links for showing all the photo from the users.)
+          Learn from the WeWorld community's photos! <br />
         </h1>
-        <button
+        {/* <button
           type="button"
           onClick={this.switchLanguage}
           // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
         >
           {" "}
           {langSwitchText}
-        </button>
+        </button> */}
         {/* {allUploadedUserList.map((u, i) => (
           <>
             {console.log(u)}
@@ -334,7 +333,7 @@ class Friends_1251 extends Component {
             onlyOne={true}
             hasLooped={false}
             viewingUserId={this.props.userId}
-            showInNativeLanguage={this.state.showInNativeLanguage}
+            // showInNativeLanguage={this.state.showInNativeLanguage}
             updateDifficulty={this.updateDifficulty}
             updateLikes={this.updateLikes}
           />

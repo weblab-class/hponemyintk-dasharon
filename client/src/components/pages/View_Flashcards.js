@@ -37,7 +37,7 @@ class View_Flashcards extends Component {
       userName: "Someone",
       requestingUserId: "User_Requesting",
       requestingUserName: "UserName_Requesting",
-      showInNativeLanguage: false,
+      // showInNativeLanguage: false,
       userLiked: [],
       userCommented: [], 
       userDifficultyRated: [],
@@ -357,8 +357,8 @@ class View_Flashcards extends Component {
     
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
-    let langSwitchText = "Show comments and captions in language learning!";
-    if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
+    // let langSwitchText = "Show comments and captions in language learning!";
+    // if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
     
     return ( (this.state.loading) ? (<Loading/>) : (
       //***Very very important! Try className=center and edit styles in above code for row and column Kyaw had a great find that we could use container to get things a lot cleaner. This isn't yet working but would be a really great thing to get implemented, will commit and try further */
@@ -378,7 +378,7 @@ class View_Flashcards extends Component {
               ))}
             </select>
           </div>
-        <button
+        {/*<button
                 type="button"
                 onClick={this.switchLanguage}
                 // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
@@ -387,7 +387,7 @@ class View_Flashcards extends Component {
                 {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
                 {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
-              </button>
+              {/*</button>*/}
 
         {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
 
@@ -420,7 +420,7 @@ class View_Flashcards extends Component {
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard key = {p._id} deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === p.uid} onlyOne = {false} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
+                <IndividualFlashcard key = {p._id} deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === p.uid} onlyOne = {false} hasLooped={false} viewingUserId={this.state.requestingUserId} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
               )}
             </div>
           </>
