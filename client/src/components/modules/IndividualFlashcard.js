@@ -47,7 +47,7 @@ class IndividualFlashcard extends Component {
       enableDifficultyEdit: false,
     };
     this.answerArray = [];
-    this.createAnswerArrayFlag = false; //check whether you have created an answer array already
+    this.createAnswerArrayFlag = true; //check whether you have created an answer array already
   }
   //post request to delete the relevant photo
   //many thanks to Jess for help revising to exclude target.value which is not ideal in hackathon
@@ -151,9 +151,14 @@ class IndividualFlashcard extends Component {
 
     // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
     if (!this.props.wasAnswerInput) {
-      if (!this.createAnswerArrayFlag) {
+      if (this.createAnswerArrayFlag) {
+        console.log(
+          "this.props.wasAnswerInput,this.createAnswerArrayFlag",
+          this.props.wasAnswerInput,
+          this.createAnswerArrayFlag
+        );
         this.answerArray = this.createAnswerArray();
-        this.createAnswerArrayFlag = true;
+        this.createAnswerArrayFlag = false;
       }
       return (
         <>
@@ -175,6 +180,12 @@ class IndividualFlashcard extends Component {
         </>
       );
     } else {
+      console.log(
+        "123this.props.wasAnswerInput,this.createAnswerArrayFlag",
+        this.props.wasAnswerInput,
+        this.createAnswerArrayFlag
+      );
+      this.createAnswerArrayFlag = true;
       return (
         <>
           <p>

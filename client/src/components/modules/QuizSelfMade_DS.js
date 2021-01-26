@@ -930,7 +930,9 @@ class QuizSelfMade_DS extends Component {
         let tmpWrongList = [];
         let uniqueFlag = false;
 
-        if (corAnsLen > 2) {continue} //if this is longer than 2 words do not show in quiz ref https://www.w3schools.com/java/tryjava.asp?filename=demo_continue
+        if (corAnsLen > 2) {
+          continue;
+        } //if this is longer than 2 words do not show in quiz ref https://www.w3schools.com/java/tryjava.asp?filename=demo_continue
         // check to make sure the wrong answers we generated does not contains the correctAnswer for the question
         while (!uniqueFlag) {
           if (corAnsLen == 1) {
@@ -963,11 +965,17 @@ class QuizSelfMade_DS extends Component {
         questionArray = questionArray.concat(questionObject);
         goodTagCount = goodTagCount + 1; //how many tags added?
         annotationsforPhoto = annotationsforPhoto + 1; //how many annotations added?
-        if (goodTagCount > (photoLimforQuiz - 1)) {break}
-        if (annotationsforPhoto > 2) {break}
+        if (goodTagCount > photoLimforQuiz - 1) {
+          break;
+        }
+        if (annotationsforPhoto > 2) {
+          break;
+        }
       }
       console.log("questionArray", questionArray);
-      if (goodTagCount > (photoLimforQuiz - 1)) {break}
+      if (goodTagCount > photoLimforQuiz - 1) {
+        break;
+      }
     }
 
     // Initialize the total unanswered questions stat in readings array for the progress bar
@@ -1055,7 +1063,7 @@ class QuizSelfMade_DS extends Component {
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
-    return ( (this.state.loaded) ? (
+    return this.state.loaded ? (
       <>
         {/* check whether we are at the result page already or not */}
         {this.state.showResult ? (
@@ -1107,36 +1115,35 @@ class QuizSelfMade_DS extends Component {
           </div>
         )}
         <div className="u-flex u-flex-justifyCenter">
-          {
-            //pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
-            this.state.dataSet.length > 0 ? (
-              !this.state.showResult && (
-                <IndividualFlashcard
-                  forQuiz={true}
-                  photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
-                  wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
-                  correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
-                  ogTag={this.state.dataSet[this.state.onPhoto].ogTag}
-                  langInterestLong={this.state.dataSet[this.state.onPhoto].langInterestLong}
-                  handleClick={this.handleClick}
-                  handleNext={this.handleNext}
-                  handleFinish={this.handleFinish}
-                  wasAnswerInput={this.state.wasAnswerInput}
-                  curAnsInfo={this.state.curAnsInfo}
-                  isDone={this.state.isDone}
-                  clickedAns={this.state.clickedAns}
-                  updateDifficulty={this.updateDifficulty}
-                  viewingUserId={this.props.userId}
-                  updateLikes={this.updateLikes}
-                />
-              )
-            ) : (
-              <p>No photos!</p>
+          {//pass into flashcard (1) the fact this is a quiz (2) photo info (3) wwrong answers (5) go to next photo function
+          this.state.dataSet.length > 0 ? (
+            !this.state.showResult && (
+              <IndividualFlashcard
+                forQuiz={true}
+                photoFacts={this.state.dataSet[this.state.onPhoto].photoData}
+                wrongAnswers={this.state.dataSet[this.state.onPhoto].wrongAnswers}
+                correctAnswer={this.state.dataSet[this.state.onPhoto].correctAnswer}
+                ogTag={this.state.dataSet[this.state.onPhoto].ogTag}
+                langInterestLong={this.state.dataSet[this.state.onPhoto].langInterestLong}
+                handleClick={this.handleClick}
+                handleNext={this.handleNext}
+                handleFinish={this.handleFinish}
+                wasAnswerInput={this.state.wasAnswerInput}
+                curAnsInfo={this.state.curAnsInfo}
+                isDone={this.state.isDone}
+                clickedAns={this.state.clickedAns}
+                updateDifficulty={this.updateDifficulty}
+                viewingUserId={this.props.userId}
+                updateLikes={this.updateLikes}
+              />
             )
-          }
+          ) : (
+            <p>No photos!</p>
+          )}
         </div>
       </>
-    ) : (<Loading/>)
+    ) : (
+      <Loading />
     );
   }
 }
