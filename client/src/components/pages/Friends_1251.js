@@ -47,9 +47,6 @@ class Friends_1251 extends Component {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
       this.getUsers();
     }
-    if (this.state.filters && prevProps.filters !== this.state.filters) {
-      this.getUsers();
-    }
   }
 
   //change filter values
@@ -62,7 +59,7 @@ class Friends_1251 extends Component {
     }
     tmpFilters[event.target.value] = true;
 
-    this.setState({ filters: tmpFilters });
+    this.setState({ filters: tmpFilters }, this.getUsers);
   };
 
   //async/await course slides were very helpful
@@ -248,15 +245,18 @@ class Friends_1251 extends Component {
     return (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
         <form>
-          <label for="imgFilter">Which image sets do you want?</label>
-          <select id="imgFilter">
-            {console.log(Object.keys(this.state.filters))}
-            {Object.keys(this.state.filters).map((ff, ii) => (
-              <option onClick={this.handleFilters} value={ff}>
-                {this.filterLabels[ii]}
-              </option>
-            ))}
-          </select>
+          <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+            <label for="imgFilter">Which image filters do you want?</label>
+            <br />
+            <select id="imgFilter">
+              {console.log(Object.keys(this.state.filters))}
+              {Object.keys(this.state.filters).map((ff, ii) => (
+                <option onClick={this.handleFilters} value={ff} key={ii + ff}>
+                  {this.filterLabels[ii]}
+                </option>
+              ))}
+            </select>
+          </div>
         </form>
         {console.log("08:09 this.state.filters", this.state.filters)}
 
