@@ -344,20 +344,16 @@ class Home_Page extends Component {
               </Link>
             )}{" "}
             you can scroll through all of your photos and review words- as well as your memories.
-            Please note: because we are at an early stage of testing, we may be switching databases
-            as we further develop our website. Thus, you may not be able to access content you
-            upload now at a later point.
           </p>
           <p className="questiontext">
             I'm excited to review, but I want a challenge and to really learn. Can I test myself?
           </p>
           <p className="answertext">
-            We are considering adding this! Our{" "}
+            Our{" "}
             <Link to="/Quiz" className="linktext">
               Quizzes page{" "}
             </Link>
-            shows a quiz module (right now with a sample history lesson) which we are thinking of
-            maybe implementing, where you will have to pick the word corresponding to a tag in a
+            has questions to test your knowledge, where you will have to pick the word corresponding to a tag in a
             photo.
           </p>
           <p className="questiontext">
@@ -370,7 +366,7 @@ class Home_Page extends Component {
               {" "}
               Social page{" "}
             </Link>{" "}
-            shows a photo for each WeWorld user and has a link for you to see all of their photos.
+            has other WeWorld users' photos. There are several different viewing settings, and you can also see all of a user's photos by navigating to their review pagge.
           </p>
           <p className="questiontext">
             What if I see troubling or inappropriate content uploaded by another user?
@@ -378,18 +374,6 @@ class Home_Page extends Component {
           <p className="answertext">
             WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at
             weblab2021@gmail.com, so we can look into and address your concern.
-          </p>
-          <p className="questiontext">
-            I want inspiration, though! The idea of using my photos as a tool to help teach me a
-            language is really new to me. How do I know which kinds of photos to upload?
-          </p>
-          <p className="answertext">
-            We are thinking of adding a{" "}
-            <Link to="/Scavenger_Hunts" className="linktext">
-              {" "}
-              Scavenger Hunts page
-            </Link>
-            , which would provide photo prompts to get the learning and fun started!
           </p>
           <p className="questiontext">How did WeWorld come about?</p>
           {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
