@@ -29,6 +29,7 @@ class Friends_1251 extends Component {
         mostLiked: true,
       },
     };
+    this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked"];
   }
 
   // remember -- api calls go here!, get call adapted from catbook
@@ -46,7 +47,23 @@ class Friends_1251 extends Component {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
       this.getUsers();
     }
+    if (this.state.filters && prevProps.filters !== this.state.filters) {
+      this.getUsers();
+    }
   }
+
+  //change filter values
+  handleFilters = (event) => {
+    event.preventDefault();
+    // make a deep copy of the object list, and set all values to false
+    let tmpFilters = clonedeep(this.state.filters);
+    for (const [key, value] of Object.entries(tmpFilters)) {
+      tmpFilters[key] = false;
+    }
+    tmpFilters[event.target.value] = true;
+
+    this.setState({ filters: tmpFilters });
+  };
 
   //async/await course slides were very helpful
   getUsers = async () => {
@@ -230,6 +247,19 @@ class Friends_1251 extends Component {
 
     return (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+        <form>
+          <label for="imgFilter">Which image sets do you want?</label>
+          <select id="imgFilter">
+            {console.log(Object.keys(this.state.filters))}
+            {Object.keys(this.state.filters).map((ff, ii) => (
+              <option onClick={this.handleFilters} value={ff}>
+                {this.filterLabels[ii]}
+              </option>
+            ))}
+          </select>
+        </form>
+        {console.log("08:09 this.state.filters", this.state.filters)}
+
         {/*Many thanks to Justin for Piazza link advice*/}
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}

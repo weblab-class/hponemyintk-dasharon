@@ -12,7 +12,117 @@ class Home_Page extends Component {
     // Initialize Default State
     this.state = {
       photo_info_array: [], //this is a photo info array};
-      langList: {Afrikaans: "af", Albanian: "sq", Amharic: "am", Arabic: "ar", Armenian: "hy", Azerbaijani: "az", Basque: "eu", Belarusian: "be", Bengali: "bn", Bosnian: "bs", Bulgarian: "bg", Burmese: "my", Catalan: "ca", Cebuano: "ceb", Chinese_Simplified: "zh-CN", Chinese_Traditional: "zh-TW", Corsican: "co", Croatian: "hr", Czech: "cs", Danish: "da", Dutch: "nl", English: "en", Esperanto: "eo", Estonian: "et", Filipino: "tl", Finnish: "fi", French: "fr", Frisian: "fy", Galician: "gl", Georgian: "ka", German: "de", Greek: "el", Gujarati: "gu", Haitian: "ht", Hausa: "ha", Hawaiian: "haw", Hebrew: "he", Hindi: "hi", Hmong: "hmn", Hungarian: "hu", Icelandic: "is", Igbo: "ig", Indonesian: "id", Irish: "ga", Italian: "it", Japanese: "ja", Javanese: "jv", Kannada: "kn", Kazakh: "kk", Khmer: "km", Kinyarwanda: "rw", Korean: "ko", Kurdish: "ku", Kyrgyz: "ky", Lao: "lo", Latin: "la", Latvian: "lv", Lithuanian: "lt", Luxembourgish: "lb", Macedonian: "mk", Malagasy: "mg", Malay: "ms", Malayalam: "ml", Maltese: "mt", Maori: "mi", Marathi: "mr", Mongolian: "mn", Nepali: "ne", Norwegian: "no", Nyanja: "ny", Odia: "or", Pashto: "ps", Persian: "fa", Polish: "pl", Portuguese: "pt", Punjabi: "pa", Romanian: "ro", Russian: "ru", Samoan: "sm", ScotsGaelic: "gd", Serbian: "sr", Sesotho: "st", Shona: "sn", Sindhi: "sd", Sinhalese: "si", Slovak: "sk", Slovenian: "sl", Somali: "so", Spanish: "es", Sundanese: "su", Swahili: "sw", Swedish: "sv", Tajik: "tg", Tamil: "ta", Tatar: "tt", Telugu: "te", Thai: "th", Turkish: "tr", Turkmen: "tk", Ukrainian: "uk", Urdu: "ur", Uyghur: "ug", Uzbek: "uz", Vietnamese: "vi", Welsh: "cy", Xhosa: "xh", Yiddish: "yi", Yoruba: "yo", Zulu: "zu"},
+      langList: {
+        Afrikaans: "af",
+        Albanian: "sq",
+        Amharic: "am",
+        Arabic: "ar",
+        Armenian: "hy",
+        Azerbaijani: "az",
+        Basque: "eu",
+        Belarusian: "be",
+        Bengali: "bn",
+        Bosnian: "bs",
+        Bulgarian: "bg",
+        Burmese: "my",
+        Catalan: "ca",
+        Cebuano: "ceb",
+        Chinese_Simplified: "zh-CN",
+        Chinese_Traditional: "zh-TW",
+        Corsican: "co",
+        Croatian: "hr",
+        Czech: "cs",
+        Danish: "da",
+        Dutch: "nl",
+        English: "en",
+        Esperanto: "eo",
+        Estonian: "et",
+        Filipino: "tl",
+        Finnish: "fi",
+        French: "fr",
+        Frisian: "fy",
+        Galician: "gl",
+        Georgian: "ka",
+        German: "de",
+        Greek: "el",
+        Gujarati: "gu",
+        Haitian: "ht",
+        Hausa: "ha",
+        Hawaiian: "haw",
+        Hebrew: "he",
+        Hindi: "hi",
+        Hmong: "hmn",
+        Hungarian: "hu",
+        Icelandic: "is",
+        Igbo: "ig",
+        Indonesian: "id",
+        Irish: "ga",
+        Italian: "it",
+        Japanese: "ja",
+        Javanese: "jv",
+        Kannada: "kn",
+        Kazakh: "kk",
+        Khmer: "km",
+        Kinyarwanda: "rw",
+        Korean: "ko",
+        Kurdish: "ku",
+        Kyrgyz: "ky",
+        Lao: "lo",
+        Latin: "la",
+        Latvian: "lv",
+        Lithuanian: "lt",
+        Luxembourgish: "lb",
+        Macedonian: "mk",
+        Malagasy: "mg",
+        Malay: "ms",
+        Malayalam: "ml",
+        Maltese: "mt",
+        Maori: "mi",
+        Marathi: "mr",
+        Mongolian: "mn",
+        Nepali: "ne",
+        Norwegian: "no",
+        Nyanja: "ny",
+        Odia: "or",
+        Pashto: "ps",
+        Persian: "fa",
+        Polish: "pl",
+        Portuguese: "pt",
+        Punjabi: "pa",
+        Romanian: "ro",
+        Russian: "ru",
+        Samoan: "sm",
+        ScotsGaelic: "gd",
+        Serbian: "sr",
+        Sesotho: "st",
+        Shona: "sn",
+        Sindhi: "sd",
+        Sinhalese: "si",
+        Slovak: "sk",
+        Slovenian: "sl",
+        Somali: "so",
+        Spanish: "es",
+        Sundanese: "su",
+        Swahili: "sw",
+        Swedish: "sv",
+        Tajik: "tg",
+        Tamil: "ta",
+        Tatar: "tt",
+        Telugu: "te",
+        Thai: "th",
+        Turkish: "tr",
+        Turkmen: "tk",
+        Ukrainian: "uk",
+        Urdu: "ur",
+        Uyghur: "ug",
+        Uzbek: "uz",
+        Vietnamese: "vi",
+        Welsh: "cy",
+        Xhosa: "xh",
+        Yiddish: "yi",
+        Yoruba: "yo",
+        Zulu: "zu",
+      },
       languageSelected: "",
       welcomeText: "",
       name: "",
@@ -64,13 +174,11 @@ class Home_Page extends Component {
     );
 
     //get welcome message and language user is currently learning
-    get("/api/singleUserFind", {checkUserId : this.props.userId}).then(userData =>
-      {
-        this.setState({welcomeText : userData.welcomeMessage});
-        this.setState({languageSelected : userData.learningLanguageLong});
-        this.setState({name: userData.name});
-      }
-      );
+    get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userData) => {
+      this.setState({ welcomeText: userData.welcomeMessage });
+      this.setState({ languageSelected: userData.learningLanguageLong });
+      this.setState({ name: userData.name });
+    });
   };
 
   //cleans up annotations
@@ -108,57 +216,60 @@ class Home_Page extends Component {
     );
   }
 
-    //post request to update user language
-    handleLanguage = (event) => {
-      event.preventDefault();
-      event.persist(); //added because got error if didn't
-      //let photoId = photoToDelete._id;
-      console.log("CHANGE CLICKED with", event.target.value);
-      alert("Language changed to " + event.target.value);
-      // console.log("event.target", event.target);
-      // console.log("event.target.value", event.target.value);
-      let langString = event.target.value;
-      console.log("this.state.langList[event.target.value]",this.state.langList[event.target.value]);
-      // console.log("this.state.langList[langString]",this.state.langList[langString]);      
+  //post request to update user language
+  handleLanguage = (event) => {
+    event.preventDefault();
+    event.persist(); //added because got error if didn't
+    //let photoId = photoToDelete._id;
+    console.log("CHANGE CLICKED with", event.target.value);
+    alert("Language changed to " + event.target.value);
+    // console.log("event.target", event.target);
+    // console.log("event.target.value", event.target.value);
+    let langString = event.target.value;
+    console.log("this.state.langList[event.target.value]", this.state.langList[event.target.value]);
+    // console.log("this.state.langList[langString]",this.state.langList[langString]);
 
-      //Get a welcome message, update user language, and change the state to reflect new welcome
-      post("/api/translation", {translationInput : "Hello! You are learning" + event.target.value, userTranslationLanguage: this.state.langList[event.target.value]}).then((translatedString) => {
-        let languageUpdateBody = {newLanguage: this.state.langList[event.target.value], 
-                                  newLanguageLong:event.target.value,
-                                  welcomeMessageText: translatedString.output[0]} //set request- new language, its long version, and the welcome message in this language
-          post("/api/changeLanguage", languageUpdateBody); //run the request to change the language
-          this.setState({welcomeText: translatedString.output[0],
-                        languageSelected: event.target.value}) //set state w/new welcome message and new learning language
-        }
-        ); //change welcome text 
-      };
+    //Get a welcome message, update user language, and change the state to reflect new welcome
+    post("/api/translation", {
+      translationInput: "Hello! You are learning" + event.target.value,
+      userTranslationLanguage: this.state.langList[event.target.value],
+    }).then((translatedString) => {
+      let languageUpdateBody = {
+        newLanguage: this.state.langList[event.target.value],
+        newLanguageLong: event.target.value,
+        welcomeMessageText: translatedString.output[0],
+      }; //set request- new language, its long version, and the welcome message in this language
+      post("/api/changeLanguage", languageUpdateBody); //run the request to change the language
+      this.setState({
+        welcomeText: translatedString.output[0],
+        languageSelected: event.target.value,
+      }); //set state w/new welcome message and new learning language
+    }); //change welcome text
+  };
 
-        
+  //change the
+  //this.setState({ languageSelected:  event.target.value});
+  // console.log();
+  // let photoDeleteBody = { deletionId: event.target.value }; //set the request to be for this photo ID
+  // post("/api/deletePhoto", photoDeleteBody); //run the delete request
+  // alert("Adios photo! Au revoir! Your photo has been deleted");
 
-      //change the 
-      //this.setState({ languageSelected:  event.target.value});
-      // console.log();
-      // let photoDeleteBody = { deletionId: event.target.value }; //set the request to be for this photo ID
-      // post("/api/deletePhoto", photoDeleteBody); //run the delete request
-      // alert("Adios photo! Au revoir! Your photo has been deleted");
-  
-      //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
-      // const pageLocation = this.props.location;
-      // console.log(pageLocation);
-      // console.log(pageLocation.pathname);
-      // navigate(pageLocation.pathname);
-      //window.location.reload(false); //https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
-      //what we do not want to do
-      //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
-      //alert("Delete" + photoToDelete.caption_text_s);
-      //event.preventDefault();
-    //};
+  //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
+  // const pageLocation = this.props.location;
+  // console.log(pageLocation);
+  // console.log(pageLocation.pathname);
+  // navigate(pageLocation.pathname);
+  //window.location.reload(false); //https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
+  //what we do not want to do
+  //(this.props.onlyOne) ? (navigate("/Flashcards/"+this.state.requestingUserId)) : (navigate("/Friends"));
+  //alert("Delete" + photoToDelete.caption_text_s);
+  //event.preventDefault();
+  //};
 
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you so much for using Weworld.</div>; //login protect
     //tried https://www.w3schools.com/html/html_lists.asp for list but then decided not
     return (
-      
       <div className="u-flex u-flex-justifyCenter">
         <div className="postColumn paddedText">
           {this.state.photo_info_array ? (
@@ -177,24 +288,29 @@ class Home_Page extends Component {
           {console.log(this.state.welcomeText)}
           {/*initial form attempt https://www.w3schools.com/html/html_form_elements.asp
           https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys get keys only*/}
-           {/*Option to change language
+          {/*Option to change language
             https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
             https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
             https://www.w3schools.com/howto/howto_js_popup_form.asp 
             https://www.w3schools.com/tags/tag_button.asp
             
             https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-          {(this.state.langList) ?
-          (
-          <form>
-            <label for="languageLearning">Which language would you like to learn?</label>
-            <select id ="languageLearning">
-            {console.log(this.state.langList)}
-            {console.log(Object.keys(this.state.langList))}
-              {Object.keys(this.state.langList).map((lang) => <option onClick = {this.handleLanguage} value = {lang}>{lang}</option>)}
-            </select>
-          </form>
-          ) : (<p></p>)}
+          {this.state.langList ? (
+            <form>
+              <label for="languageLearning">Which language would you like to learn?</label>
+              <select id="languageLearning">
+                {/* {console.log(this.state.langList)}
+            {console.log(Object.keys(this.state.langList))} */}
+                {Object.keys(this.state.langList).map((lang) => (
+                  <option onClick={this.handleLanguage} value={lang}>
+                    {lang}
+                  </option>
+                ))}
+              </select>
+            </form>
+          ) : (
+            <p></p>
+          )}
           <p className="questiontext">What is WeWorld?</p>
           <p className="answertext">
             WeWorld enables you to learn a language through your and others' photos. As you relate
@@ -209,7 +325,9 @@ class Home_Page extends Component {
             <Link className="linktext" to="/Upload">
               Upload page
             </Link>
-            , you upload your photos and add tags in your native language or the language in which you feel most comfortable learning. A translation will be provided for you and placed in the tag, along with your original input!
+            , you upload your photos and add tags in your native language or the language in which
+            you feel most comfortable learning. A translation will be provided for you and placed in
+            the tag, along with your original input!
           </p>
           <p className="questiontext">Are my photos private?</p>
           <p className="answertext">
@@ -227,7 +345,10 @@ class Home_Page extends Component {
                 Review page
               </Link>
             )}{" "}
-            you can scroll through all of your photos and review words- as well as your memories. Please note: because we are at an early stage of testing, we may be switching databases as we further develop our website. Thus, you may not be able to access content you upload now at a later point.
+            you can scroll through all of your photos and review words- as well as your memories.
+            Please note: because we are at an early stage of testing, we may be switching databases
+            as we further develop our website. Thus, you may not be able to access content you
+            upload now at a later point.
           </p>
           <p className="questiontext">
             I'm excited to review, but I want a challenge and to really learn. Can I test myself?
@@ -237,7 +358,9 @@ class Home_Page extends Component {
             <Link to="/Quiz" className="linktext">
               Quizzes page{" "}
             </Link>
-            shows a quiz module (right now with a sample history lesson) which we are thinking of maybe implementing, where you will have to pick the word corresponding to a tag in a photo.
+            shows a quiz module (right now with a sample history lesson) which we are thinking of
+            maybe implementing, where you will have to pick the word corresponding to a tag in a
+            photo.
           </p>
           <p className="questiontext">
             Now, you also said this is social? Can I see my friends' adorable pet* pictures and
@@ -270,12 +393,15 @@ class Home_Page extends Component {
             </Link>
             , which would provide photo prompts to get the learning and fun started!
           </p>
-          <p className="questiontext">
-            How did WeWorld come about?
-          </p>
+          <p className="questiontext">How did WeWorld come about?</p>
           {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
           <p className="answertext">
-            WeWorld is our <a href="https://weblab.mit.edu" className="linktext">MIT web.lab</a> course project. We are very grateful to the course team and our test users for their help and advice with this project!
+            WeWorld is our{" "}
+            <a href="https://weblab.mit.edu" className="linktext">
+              MIT web.lab
+            </a>{" "}
+            course project. We are very grateful to the course team and our test users for their
+            help and advice with this project!
           </p>
           <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>
