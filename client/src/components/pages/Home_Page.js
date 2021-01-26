@@ -298,13 +298,11 @@ class Home_Page extends Component {
           {this.state.langList ? (
             <form>
               <label for="languageLearning">Which language would you like to learn?</label>
-              <select id="languageLearning">
+              <select onChange={this.handleLanguage} id="languageLearning">
                 {/* {console.log(this.state.langList)}
             {console.log(Object.keys(this.state.langList))} */}
                 {Object.keys(this.state.langList).map((lang) => (
-                  <option onClick={this.handleLanguage} value={lang}>
-                    {lang}
-                  </option>
+                  <option value={lang}>{lang}</option>
                 ))}
               </select>
             </form>
