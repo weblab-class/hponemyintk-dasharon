@@ -16,10 +16,10 @@ https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-materia
 */
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Rating from "@material-ui/lab/Rating";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ReactAnnotate from "./ReactAnnotate.js";
-import HelpIcon from '@material-ui/icons/Help';
+import HelpIcon from "@material-ui/icons/Help";
 import { useLocation, navigate } from "@reach/router"; //ref https://reach.tech/router/api/useLocation
 import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 
@@ -31,10 +31,10 @@ import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
 //this gives 1 flashcard
 const StyledRating = withStyles({
   iconFilled: {
-    color: '#0099ff',
+    color: "#0099ff",
   },
   iconHover: {
-    color: '#0099ff',
+    color: "#0099ff",
   },
 })(Rating);
 
@@ -44,9 +44,10 @@ class IndividualFlashcard extends Component {
     // Initialize Default State
     this.state = {
       comments: [],
-      enableDifficultyEdit : false
+      enableDifficultyEdit: false,
     };
     this.answerArray = [];
+    this.createAnswerArrayFlag = false; //check whether you have created an answer array already
   }
   //post request to delete the relevant photo
   //many thanks to Jess for help revising to exclude target.value which is not ideal in hackathon
@@ -74,13 +75,13 @@ class IndividualFlashcard extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.photoFacts._id && prevProps.photoFacts._id !== this.props.photoFacts._id) {
-    get("/api/comment", { parent: this.props.photoFacts._id }).then((comments) => {
-      this.setState({
-        comments: comments,
+      get("/api/comment", { parent: this.props.photoFacts._id }).then((comments) => {
+        this.setState({
+          comments: comments,
+        });
       });
-    });
+    }
   }
-}
 
   //cleans up annotations many thanks to Justin in Office Hours for forEach and push and editing
   cleanAnnotInput = (initAnnotInput) => {
@@ -116,9 +117,9 @@ class IndividualFlashcard extends Component {
 
   //option to vote on difficulty
   editDifficulty = (event) => {
-    this.setState((prevState) => ({...prevState, enableDifficultyEdit : true}));
-    console.log("DIFFICULTY FLIP")
-  }
+    this.setState((prevState) => ({ ...prevState, enableDifficultyEdit: true }));
+    console.log("DIFFICULTY FLIP");
+  };
 
   //create answer array in a randomized order
   createAnswerArray = () => {
@@ -150,7 +151,10 @@ class IndividualFlashcard extends Component {
 
     // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
     if (!this.props.wasAnswerInput) {
-      this.answerArray = this.createAnswerArray();
+      if (!this.createAnswerArrayFlag) {
+        this.answerArray = this.createAnswerArray();
+        this.createAnswerArrayFlag = true;
+      }
       return (
         <>
           <p>
@@ -280,11 +284,9 @@ class IndividualFlashcard extends Component {
 
     //if you already rated this, show your rating
     let ownRating = "";
-    for (let rr = 0; rr < this.props.photoFacts.difficultyRatings.length; rr++)
-    {
-      if (this.props.photoFacts.difficultyRatings[rr].ratingUserId === this.props.viewingUserId)
-      {
-        ownRating = "You rated this" + this.props.photoFacts.difficultyRatings[rr].ratingValue
+    for (let rr = 0; rr < this.props.photoFacts.difficultyRatings.length; rr++) {
+      if (this.props.photoFacts.difficultyRatings[rr].ratingUserId === this.props.viewingUserId) {
+        ownRating = "You rated this" + this.props.photoFacts.difficultyRatings[rr].ratingValue;
       }
     }
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
@@ -332,36 +334,53 @@ class IndividualFlashcard extends Component {
 
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
-            
-            <p>Difficulty {this.props.photoFacts.difficulty} #ratings {this.props.photoFacts.difficultyRatings.length} {ownRating}</p>
-            {
-            this.state.enableDifficultyEdit ? (<StyledRating
-              precision={1.0}
-              name="difficultyRating"
-              icon={<HelpIcon fontSize="inherit" />}
-              onChange={(event, newvalue) => {
-                alert(newvalue);
-                this.setState((prevState) => ({...prevState, enableDifficultyEdit : false}));
-                this.props.updateDifficulty(newvalue, this.props.photoFacts);
-              }}
-            />) :
-            // (<p></p>
-            (<p></p>
-            // <Rating
-            //   precision={0.5}
-            //   name="difficultyRating"
-            //   value={this.props.photoFacts.difficulty}
-            //   disabled
-            // />
-            )
-          }
-          <button onClick = {this.editDifficulty}>Edit difficulty</button>
 
-          {/*see if you liked and count of likes*/}
-          <p>{this.props.photoFacts.likeCount} Likes</p>
-          {(this.props.photoFacts.usersLikingArray.map((userData) => userData.likingUserId).includes(this.props.viewingUserId)) ? 
-          (<><p>You liked</p><button onClick = {(event) => this.props.updateLikes(this.props.photoFacts, false)}>Unlike</button></>): 
-          (<><p>Not liked</p><button onClick = {(event) => this.props.updateLikes(this.props.photoFacts, true)}>Like</button></>)}
+            <p>
+              Difficulty {this.props.photoFacts.difficulty} #ratings{" "}
+              {this.props.photoFacts.difficultyRatings.length} {ownRating}
+            </p>
+            {this.state.enableDifficultyEdit ? (
+              <StyledRating
+                precision={1.0}
+                name="difficultyRating"
+                icon={<HelpIcon fontSize="inherit" />}
+                onChange={(event, newvalue) => {
+                  alert(newvalue);
+                  this.setState((prevState) => ({ ...prevState, enableDifficultyEdit: false }));
+                  this.props.updateDifficulty(newvalue, this.props.photoFacts);
+                }}
+              />
+            ) : (
+              // (<p></p>
+              <p></p>
+              // <Rating
+              //   precision={0.5}
+              //   name="difficultyRating"
+              //   value={this.props.photoFacts.difficulty}
+              //   disabled
+              // />
+            )}
+            <button onClick={this.editDifficulty}>Edit difficulty</button>
+
+            {/*see if you liked and count of likes*/}
+            <p>{this.props.photoFacts.likeCount} Likes</p>
+            {this.props.photoFacts.usersLikingArray
+              .map((userData) => userData.likingUserId)
+              .includes(this.props.viewingUserId) ? (
+              <>
+                <p>You liked</p>
+                <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}>
+                  Unlike
+                </button>
+              </>
+            ) : (
+              <>
+                <p>Not liked</p>
+                <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}>
+                  Like
+                </button>
+              </>
+            )}
             {/* <p>Quality</p>
             <Typography component="legend">Quality</Typography> *{PhotoInfo.quality}
             <Rating

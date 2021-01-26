@@ -26,8 +26,9 @@
 
 /*ref for comment box*/
 .commentbox {
-  height: 120px;
-  width: 300px;
-  border: 1px;
-  overflow: auto;
+  height: 50%;
+  width: 100%;
+  /* border: 1px; */
+  font-size: 0.8vw !important;
+  /* overflow: auto; */
 }

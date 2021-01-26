@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Link } from "@reach/router";
-import "./CommentHover.css"
+import "./CommentHover.css";
 
 /**
  * Component to render a single comment
@@ -26,13 +26,17 @@ class SingleComment extends Component {
           {this.props.creator_name}
         </Link>
         {/*user decides whether to show in native language*/}
-    {this.props.showInNativeLanguage?
-        (
-          <span className ="tooltip">{" | " + this.props.contentOriginal}
-          <span className = "tooltiptext">{this.props.contentTranslated}</span></span>
-        )
-        : (<span className ="tooltip">{" | " + this.props.contentTranslated}
-        <span className = "tooltiptext">{this.props.contentOriginal}</span></span>)}
+        {this.props.showInNativeLanguage ? (
+          <span className="tooltip">
+            {" | " + this.props.contentOriginal}
+            <span className="tooltiptext">{this.props.contentTranslated}</span>
+          </span>
+        ) : (
+          <span className="tooltip">
+            {" | " + this.props.contentTranslated}
+            <span className="tooltiptext">{this.props.contentOriginal}</span>
+          </span>
+        )}
       </div>
     );
   }

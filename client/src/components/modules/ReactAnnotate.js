@@ -141,7 +141,7 @@ export default class Simple extends Component {
             onSubmit={this.onTmpSubmit}
             activeAnnotationComparator={this.activeAnnotationComparator} // from annotation selector comment box
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
-            selectors={RectangleSelector}
+            // selectors={RectangleSelector}
             allowTouch
           />
 
@@ -183,7 +183,7 @@ export default class Simple extends Component {
             activeAnnotationComparator={this.activeAnnotationComparator} // from annotation selector comment box
             activeAnnotations={this.state.activeAnnotations} // from annotation selector comment box
             renderOverlay={this.renderOverlay} // Hide overlay
-            selectors={RectangleSelector}
+            // selectors={RectangleSelector}
             allowTouch
             style={{ color: "#0099ff", font: "Roboto", fontFamily: "Roboto" }}
           />
