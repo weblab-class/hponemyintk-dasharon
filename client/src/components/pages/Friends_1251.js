@@ -29,6 +29,7 @@ class Friends_1251 extends Component {
         mostLiked: true,
       },
     };
+    this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked"];
   }
 
   // remember -- api calls go here!, get call adapted from catbook
@@ -48,11 +49,25 @@ class Friends_1251 extends Component {
     }
   }
 
+  //change filter values
+  handleFilters = (event) => {
+    event.preventDefault();
+    // make a deep copy of the object list, and set all values to false
+    let tmpFilters = clonedeep(this.state.filters);
+    for (const [key, value] of Object.entries(tmpFilters)) {
+      tmpFilters[key] = false;
+    }
+    tmpFilters[event.target.value] = true;
+
+    this.setState({ filters: tmpFilters }, this.getUsers);
+  };
+
   //async/await course slides were very helpful
   getUsers = async () => {
     try {
       let allPhotoList = []; // set allUsers to be none before any api calls
       const photoLim = 10; // How many photo to grab per get request
+      const startInd = 0; // skip all the initial items in the list until we get to Ind
       // check which flag is set true
       for (let filter of Object.keys(this.state.filters)) {
         //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
@@ -65,6 +80,7 @@ class Friends_1251 extends Component {
             const newPhoto = await get("/api/photoFilter", {
               sortString: "submit_stamp_raw",
               sortFlag: -1,
+              startInd: startInd,
               lim: 1,
               keyname: "uid",
               keyvalue: this.state.allUserList[uu]._id,
@@ -78,6 +94,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "difficulty",
             sortFlag: -1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
@@ -90,6 +107,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "difficulty",
             sortFlag: 1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
@@ -101,6 +119,7 @@ class Friends_1251 extends Component {
           allPhotoList = await get("/api/photoFilter", {
             sortString: "likeCount",
             sortFlag: -1,
+            startInd: startInd,
             lim: photoLim,
             keyname: "",
             keyvalue: "",
@@ -225,6 +244,22 @@ class Friends_1251 extends Component {
 
     return (
       <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+        <form>
+          <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+            <label for="imgFilter">Which image filters do you want?</label>
+            <br />
+            <select id="imgFilter">
+              {console.log(Object.keys(this.state.filters))}
+              {Object.keys(this.state.filters).map((ff, ii) => (
+                <option onClick={this.handleFilters} value={ff} key={ii + ff}>
+                  {this.filterLabels[ii]}
+                </option>
+              ))}
+            </select>
+          </div>
+        </form>
+        {console.log("08:09 this.state.filters", this.state.filters)}
+
         {/*Many thanks to Justin for Piazza link advice*/}
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
