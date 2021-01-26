@@ -21,12 +21,16 @@ import ReactAnnotate from "./ReactAnnotate.js";
 //import post as in catbook
 import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import HelpIcon from '@material-ui/icons/Help';
 import "./Image_aesthetics.css";
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-regular-svg-icons";
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+
+import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
+import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
 
 // import translate from 'translate';    //ref translation tlibrary
 // require('dotenv').config();
@@ -492,9 +496,10 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               {/* <Typography component="legend">Difficulty</Typography> */}
               <p>Difficulty:</p>
               <Rating
-                precision={0.5}
+                precision={1.0}
                 name="difficultyRating"
                 value={this.state.difficulty}
+                icon={<HelpIcon fontSize="inherit" />}
                 onChange={(event, newvalue) => {
                   this.setState({ difficulty: newvalue });
                 }}

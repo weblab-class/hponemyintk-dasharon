@@ -36,6 +36,9 @@ class View_Flashcards extends Component {
       requestingUserId: "User_Requesting",
       requestingUserName: "UserName_Requesting",
       showInNativeLanguage: false,
+      userLiked: [],
+      userCommented: [], 
+      userDifficultyRated: [],
       //nameForPrint: "SomeoneName",
       filters: {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
@@ -46,6 +49,7 @@ class View_Flashcards extends Component {
         myComments: false
       },
     };
+   this.filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
   }
 
   componentDidMount() {
@@ -54,7 +58,9 @@ class View_Flashcards extends Component {
     //one or all on one page
     //onyl make req if logged in
     if (this.props.userId) {
+      this.userInfoLoad();
       this.imageLoad();
+      // this.filterLabels = this.setFilters(); //update filters
     } else {
       console.log("SHOULD LOG OUT");
     }
@@ -63,24 +69,31 @@ class View_Flashcards extends Component {
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
   componentDidUpdate(prevProps) {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
+      this.userInfoLoad();
       this.imageLoad();
+      //this.filterLabels = this.setFilters(); //update filters
     } else {
       console.log("SHOULD LOG OUT");
     }
   }
 
-  //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
-  imageLoad = () => {
+    //change filter values
+    handleFilters = (event) => {
+      event.preventDefault();
+      // make a deep copy of the object list, and set all values to false
+      let tmpFilters = clonedeep(this.state.filters);
+      for (const [key, value] of Object.entries(tmpFilters)) {
+        tmpFilters[key] = false;
+      }
+      tmpFilters[event.target.value] = true;
+  
+      this.setState({ filters: tmpFilters }, this.imageLoad);
+    };
+
+  //Get user info
+  userInfoLoad = () => {
     console.log("calling image load*****");
-    //see if logged in
-    // get("/api/whoami").then((user) => {
-    //   if (user._id) {
-    //     // they are registed in the database, and currently logged in.
-    //     this.setState({ stillLoggedIn: true });
-    //   } else {
-    //     this.setState({ stillLoggedIn: false });
-    //   }
-    // });
+
     //Find user whose photos we are seeing
     get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userInfo) => {
       //get info on one user
@@ -91,6 +104,7 @@ class View_Flashcards extends Component {
         userCommented: userInfo.commentList, 
         userDifficultyRated: userInfo.difficultyList
       });
+      
       //console.log("USER INFO IS", userInfo);
       //console.log("USER INFO IS", userInfo[0]);
     });
@@ -100,30 +114,103 @@ class View_Flashcards extends Component {
       if (user._id) {
         // if they are registed in the database then set
         this.setState({ requestingUserId: user._id, requestingUserName: user.name });
+        
       }
     });
+  };
 
     //Find photos
-    console.log("Here in View_Flashcards.js before get request!!!", this.props.onlyOne);
-    if (this.props.onlyOne) {
-      console.log("Here in View_Flashcards.js before get request!!!1111");
-      get("/api/photosimpletestOne", { userId: this.props.userId }).then((ImageInfo_one) => {
-        console.log(ImageInfo_one);
-        this.setState({
-          photo_info_array: [ImageInfo_one],
-        });
-        this.runFlip(); //flip to start with the language you are learning
-      });
-    } else {
+    imageLoad = async () => {
+      for (let filter of Object.keys(this.state.filters)) {
+        //all own photos
+        //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
+        if (filter === "allOwn" && this.state.filters[filter]) {
       console.log("Here in View_Flashcards.js before get request!!!2222");
       get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
         console.log(ImageInfo);
-        this.setState({
+        return this.setState({
           photo_info_array: ImageInfo,
         });
         // this.runFlip(); //flip to start with the language you are learning
       });
-    }
+        }
+
+        //all photos individual user has liked
+        if (filter === "myLiked" && this.state.filters[filter]) {
+          console.log("Here in View_Flashcards.js before get request!!!2222");
+          console.log("STATE", this.state)
+          get("/api/photoswithIdsWithTime", { idstoGet: this.state.userLiked, sortbyTime: true }).then((ImageInfo) => {
+            console.log(ImageInfo);
+            return this.setState({
+              photo_info_array: ImageInfo,
+            });
+            // this.runFlip(); //flip to start with the language you are learning
+          });
+            }
+
+
+        //all photos individual user has commented on
+        if (filter === "myComments" && this.state.filters[filter]) {
+          console.log("Here in View_Flashcards.js before get request!!!2222");
+          console.log("STATE", this.state)
+          get("/api/photoswithIdsWithTime", { idstoGet: this.state.userCommented, sortbyTime: true }).then((ImageInfo) => {
+            console.log(ImageInfo);
+            return this.setState({
+              photo_info_array: ImageInfo,
+            });
+            // this.runFlip(); //flip to start with the language you are learning
+          });
+            }
+
+                    //all photos individual user has rated difficulty for: hardest first
+        if (filter === "mymostDifficult" && this.state.filters[filter]) {
+          console.log("Here in View_Flashcards.js before get request!!!2222");
+          console.log("STATE", this.state)
+          //sort array by user difficulty, hardest first ref https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
+          let newDifficulty = clonedeep(this.state.userDifficultyRated);
+          newDifficulty.sort((a,b) => (a.ratingValue > b.ratingValue) ? -1: 1);
+
+          //convert to array of photoIds
+          let idsforDifficulty = newDifficulty.map((difficultyEntry) => difficultyEntry.ratingPhotoId)
+          console.log("new difficulty", newDifficulty);
+          console.log("ids for difficulty", idsforDifficulty)
+
+          get("/api/photoswithIdsWithoutTime", { idstoGet: idsforDifficulty, sortbyTime: false }).then((ImageInfo) => {
+            console.log(ImageInfo);
+            return this.setState({
+              photo_info_array: ImageInfo,
+            });
+
+            
+            // sort by least difficulty
+          });
+            }
+
+            if (filter === "myleastDifficult" && this.state.filters[filter]) {
+              console.log("Here in View_Flashcards.js before get request!!!2222");
+              console.log("STATE", this.state)
+              //sort array by user difficulty, hardest first ref https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
+              let newDifficulty = clonedeep(this.state.userDifficultyRated);
+              newDifficulty.sort((a,b) => (a.ratingValue > b.ratingValue) ? 1: -1);
+    
+              //convert to array of photoIds
+              let idsforDifficulty = newDifficulty.map((difficultyEntry) => difficultyEntry.ratingPhotoId)
+              console.log("new difficulty", newDifficulty);
+              console.log("ids for difficulty", idsforDifficulty)
+    
+              get("/api/photoswithIdsWithoutTime", { idstoGet: idsforDifficulty, sortbyTime: false }).then((ImageInfo) => {
+                console.log(ImageInfo);
+                return this.setState({
+                  photo_info_array: ImageInfo,
+                });
+    
+                
+                // this.runFlip(); //flip to start with the language you are learning
+              });
+                }   
+
+            
+      }
   };
 
   // runFlip = () => {
@@ -222,6 +309,17 @@ class View_Flashcards extends Component {
 
   };
 
+  //update filters
+  // setFilters = () => {
+  //   if (this.state.requestingUserId === this.props.userId) {
+  //     let filterLabels = ["All my photos", "My rated most difficult", "My rated least difficult", "My personal favorites", "Photos I commented on"];
+  //     console.log("SETTING FILTERS");
+  //   } else {
+  //     let filterLabels = ["All " + this.state.userName +"'s photos", this.state.userName +"'s rated most difficult", this.state.userName +"'s rated least difficult", this.state.userName +"'s personal favorites", "Photos " + this.state.userName + " commented on"];
+  //   }
+  //   return filterLabels;
+  // };
+
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
@@ -233,6 +331,8 @@ class View_Flashcards extends Component {
         ? (userNameToShow = this.state.userName + " (Me)")
         : (userNameToShow = this.state.userName);
     }
+    
+    
     //If you are the requesting user, show "Me" instead of your name
     //if (this.props.userId === this.state.requestingUserId) {this.setState({ nameForPrint :"Me"} )}else {this.setState({ nameForPrint : this.state.userName} )};
     let langSwitchText = "Show comments and captions in language learning!";
@@ -244,6 +344,18 @@ class View_Flashcards extends Component {
         {/* <p className="u-bold">Flashcards!</p> */}
         <br />
     
+        <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+            <label for="imgFilter">Which image filters do you want?</label>
+            <br />
+            <select onChange={this.handleFilters} id="imgFilter">
+              {console.log(Object.keys(this.state.filters))}
+              {Object.keys(this.state.filters).map((ff, ii) => (
+                <option value={ff} key={ii + ff}>
+                  {this.filterLabels[ii]}
+                </option>
+              ))}
+            </select>
+          </div>
         <button
                 type="button"
                 onClick={this.switchLanguage}
@@ -270,9 +382,7 @@ class View_Flashcards extends Component {
               this.state.photo_info_array
             )}
             
-            {this.props.onlyOne ? (
-              <></>
-            ) : (
+            
               <>
               <p className="nametext">{userNameToShow}</p>
               <p className="u-textCenter">
@@ -281,14 +391,14 @@ class View_Flashcards extends Component {
                 {/*, req by {this.state.requestingUserId} named {this.state.requestingUserName}*/}
               </p>
               </>
-            )}
+         
             {/* <p>{this.state.photo_info_array.caption_text_s}</p>
       <p>{this.state.photo_info_array.photo_placeholder}</p> */}
             {/*below uses syntax from Nikhil's GCP example 
             make a new Individual_Flashcard object*/}
             <div>
               {this.state.photo_info_array.map((p) => //ADD ME! eleteFromPhotoarray = {this.RunDeletion}
-                <IndividualFlashcard key = {p._id} deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === this.props.userId} onlyOne = {this.props.onlyOne} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
+                <IndividualFlashcard key = {p._id} deletionFunction = {this.deletefromPhotoArray} photoFacts={p} ownPhoto={this.state.requestingUserId === p.uid} onlyOne = {false} hasLooped={false} viewingUserId={this.state.requestingUserId} showInNativeLanguage={this.state.showInNativeLanguage} updateDifficulty={this.updateDifficulty} updateLikes={this.updateLikes}/>
               )}
             </div>
           </>
