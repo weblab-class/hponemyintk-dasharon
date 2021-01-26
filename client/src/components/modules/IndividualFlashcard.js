@@ -355,8 +355,9 @@ class IndividualFlashcard extends Component {
                 <p>Difficulty (own)</p>
               <p>{ownRating}
             </p>
-            <button onClick={this.editDifficulty}><HelpIcon style={{color:"#0099ff"}}/></button>
-            
+            {ownRating === "n/a" ?
+            (<button onClick={this.editDifficulty}><HelpIcon style={{color:"#9aeafe"}}/></button>) : (<button onClick={this.editDifficulty}><HelpIcon style={{color:"#0099ff"}}/></button>)
+  }
             
             {this.state.enableDifficultyEdit ? (
               <StyledRating
@@ -393,14 +394,16 @@ class IndividualFlashcard extends Component {
               <>
                 <p>You liked</p>
                 <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}>
-                  Unlike
+                <FontAwesomeIcon icon={faThumbsUp}
+                  style={{ color: "#0099ff"}}/> 
                 </button>
               </>
             ) : (
               <>
                 <p>Not liked</p>
                 <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}>
-                  Like
+                <FontAwesomeIcon icon={faThumbsUp}
+                  style={{ color: "#9aeafe"}}/> 
                 </button>
               </>
             )}
