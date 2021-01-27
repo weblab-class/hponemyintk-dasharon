@@ -21,7 +21,7 @@ Our Quizzes page has questions to test your knowledge, where you will have to pi
 
 ### Now, you also said this is social? Can I see my friends' adorable pet pictures and learn from them?
 
-Yup! The Social page has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
+Yup! The Social page has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented).
 
 ### How can I review my past activity?
 

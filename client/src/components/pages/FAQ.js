@@ -60,7 +60,7 @@ class FAQ extends Component {
               {" "}
               Social page{" "}
             </Link>{" "}
-            has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
+            has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented).
           </p>
           <p className="questiontext">How can I review my past activity?</p>
           <p className="answertext">
