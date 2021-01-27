@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
 import "./LandingPage.css";
+import ReactAnnotate from "./ReactAnnotate.js";
 
 class Skeleton extends Component {
   constructor(props) {
@@ -18,33 +19,31 @@ class Skeleton extends Component {
   render() {
     return (
       <>
-        {/* using circle method ref in css file  and try to put in larger circle to prevent browser resizing 
-      ref helping: https://stackoverflow.com/questions/15427125/how-to-center-the-center-circle
-      https://stackoverflow.com/questions/22406661/how-to-make-one-circle-inside-of-another-using-css
-      </div>
-      */}
-        <div className="circlebigger">
-          <div className="circle">
-            {" "}
-            <p className="titletext">WeWorld </p>{" "}
-          </div>{" "}
+            <div className="u-flex u-flex-justifyCenter">
+        <div className="postColumn paddedText" style={{ position: "relative" }}>
+        <ReactAnnotate
+                  allowEdits={true}
+                  img_using="/public/images/WeWorldIntro3.png"
+                  onTagSubmit={this.onTagSubmit}
+                  annotationslst={[  {
+                    "geometry": {
+                      "x": 21.255638653320737,
+                      "y": 29.256028473810346,
+                      "width": 45.5732270503532,
+                      "height": 60.38097431763215,
+                      "shape_kind": "RECTANGLE"
+                    },
+                    "data": {
+                      "text": "¡Bienvenido a WeWorld! Pase el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden enseñarle un idioma.",
+                      "textforBox": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can teach you a language.",
+                      "nativeLanguageTag": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can teach you a language.",
+                      "learningLanguageTag": "¡Bienvenido a WeWorld! Pase el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden enseñarle un idioma.",
+                      "id": 0.9203446993622574
+                    }
+                  }]}
+                />
         </div>
-        <p className="introtext">
-          Expand your world through languages
-          <br />
-          Have fun as you learn and learn as you have fun!
-        </p>
-        <p className="paddedText">
-          WeWorld is a social language learning website. Users upload their photos and tag them in a
-          foreign language they are trying to learn (currently Spanish is being used for the demo).
-          Users can also see other users' photos to learn from their lives!
-          <br />
-          <br />
-          *Please note currently all users can see everyone's content given this is an early testing
-          version of the website. So please do not share any image or text you do not want shared
-          publicly. Also your timestamp of use and name are recorded and associated with your
-          image.*
-        </p>
+        </div>
       </>
     );
   }

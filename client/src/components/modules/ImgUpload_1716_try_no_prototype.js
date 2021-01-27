@@ -24,7 +24,12 @@ import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import HelpIcon from "@material-ui/icons/Help";
 //import Demo from "./Demo.js";
+// import ModalInput from "./ModalInput.js";
+// import ModalExampleReactStrap from "./ModalExampleReactStrap.js";
+// import Modal from 'react-bootstrap/Modal'; //ref https://react-bootstrap.github.io/components/modal/
+// import ReactModal from 'react-modal'; //ref https://reactcommunity.org/react-modal/
 import "./Image_aesthetics.css";
+import Button from 'react-bootstrap/Button'
 
 //ref https://material-ui.com/components/dialogs/ https://material-ui.com/api/dialog/
 import Dialog from "@material-ui/core/Dialog";
@@ -371,11 +376,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //run post request
       post("/api/photo_simple_w_annotate", test_body).then(() => {
         alert(
-          "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Yay!"
-          // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
-          // + '\nDifficulty is : "'  + this.state.difficulty +'"'
-          // + '\nQuality is : "'  + this.state.quality +'"'
-        ),
+          "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Congratulations/Felicidades!");
+        //   // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
+        //   // + '\nDifficulty is : "'  + this.state.difficulty +'"'
+        //   // + '\nQuality is : "'  + this.state.quality +'"'
+        // ),
+        
           // (<Demo/>)
           this.setState({
             file: null,
@@ -417,7 +423,13 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
       // </div> */}
       <div className="u-flex u-flex-justifyCenter">
+        
         <div className="postColumn paddedText" style={{ position: "relative" }}>
+        {/* <ReactModal
+
+isOpen={
+  true}><p>test modal</p></ReactModal> */}
+  
           <p>
             Let's get the learning fun started! Please upload an image and tag it with the word(s)
             you would like to learn. You can tag by clicking and dragging on the image. You will
@@ -476,7 +488,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                       placeholder="Share your thoughts about the photo with your friends!!!"
                       ref={this.postCaption}
                     />
-                    <button onClick={this.submitCaption}>Translate now please!</button>
+                    <button  onClick={this.submitCaption}>Translate now please!</button>
                     <br />
                   </>
                 ) : (
@@ -563,6 +575,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               />
             </button>
           )}
+          {/* <Modal open={true} show={true}><p>Test Modal</p></Modal>  */}
+          {/* ref https://stackoverflow.com/questions/44979037/opening-a-modal-with-the-click-of-a-button  */}
         </div>
       </div>
       // {/* </form> */}
