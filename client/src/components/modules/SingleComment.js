@@ -29,12 +29,12 @@ class SingleComment extends Component {
         {this.props.showInNativeLanguage ? (
           <span className="tooltip">
             {": " + this.props.contentOriginal}
-            <span className="tooltiptext">{this.props.contentTranslated}</span>
+            {/* <span className="tooltiptext">{this.props.contentTranslated}</span> */}
           </span>
         ) : (
           <span className="tooltip">
             {": " + this.props.contentTranslated}
-            <span className="tooltiptext">{this.props.contentOriginal}</span>
+            {/* <span className="tooltiptext">{this.props.contentOriginal}</span> */}
           </span>
         )}
       </div>
