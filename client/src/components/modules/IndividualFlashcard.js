@@ -393,7 +393,7 @@ class IndividualFlashcard extends Component {
             >
               <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
                 <button
-                  title="Aggregate difficulty rating from all users"
+                  title="Aggregate difficulty rating from all users (rating of 0 means nobody has rated yet)"
                   className="solidButton"
                   disabled
                 >
@@ -421,7 +421,7 @@ class IndividualFlashcard extends Component {
               >
                 {ownRating === "0" ? (
                   <button
-                    title="Personal difficulty rating"
+                    title="Personal difficulty rating (rating of 0 means you have not rated yet)"
                     className="solidButton"
                     onClick={this.editDifficulty}
                   >
@@ -429,7 +429,7 @@ class IndividualFlashcard extends Component {
                   </button>
                 ) : (
                   <button
-                    title="Personal difficulty rating"
+                    title="Personal difficulty rating (rating of 0 means you have not rated yet)"
                     className="solidButton"
                     onClick={this.editDifficulty}
                   >

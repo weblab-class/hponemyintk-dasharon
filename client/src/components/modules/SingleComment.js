@@ -23,9 +23,9 @@ class SingleComment extends Component {
   render() {
     return (
       <div className="Card-commentBody">
-        <p className="profiletext">
+        <span className="profiletext">
           {this.props.creator_name}
-        </p>
+        </span>
         {/*user decides whether to show in native language*/}
         {this.props.showInNativeLanguage ? (
           <>

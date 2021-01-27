@@ -77,7 +77,7 @@ class FAQ extends Component {
             What are the different ways I can interact with a photo?
           </p>
           <p className="answertext">
-            You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo.
+            You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo. When viewing photos, please note that a difficulty of 0 means a photo's difficulty has not yet been rated (difficulty is on a scale of 1 to 5).
           </p>
           <p className="questiontext">
             How can I control whether I see tags/text in English or Spanish?

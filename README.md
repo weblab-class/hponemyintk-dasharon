@@ -29,7 +29,7 @@ On the Review page you can scroll through all of your photos and review words- a
 
 ### What are the different ways I can interact with a photo?
 
-You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo.
+You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo. When viewing photos, please note that a difficulty of 0 means a photo's difficulty has not yet been rated (difficulty is on a scale of 1 to 5).
 
 ### How can I control whether I see tags/text in English or Spanish?
 
@@ -48,12 +48,13 @@ WeWorld is our MIT web.lab course project. We are very grateful to the course te
 - web.lab catbook code: https://github.com/weblab-workshops/catbook-react, including comments portion
 - Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
 - react-image-annotation: https://www.npmjs.com/package/react-image-annotation
-- We looked into SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
+- We looked into but did not use SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and found this quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010 to be very helpful and used some of it
 - Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
 - References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
 - Google Translate: https://cloud.google.com/translate/docs/basic/quickstart
 - We took icons from Material-UI (https://material-ui.com/components/material-icons/), fontawesome (https://fontawesome.com), and favicon (https://favicon.io/emoji-favicons/globe-showing-americas)
 - We are using React: https://reactjs.org
+- Citations are often provided in the code as well
 
 #Below information is from the course team and was in the initial README.md:
 
