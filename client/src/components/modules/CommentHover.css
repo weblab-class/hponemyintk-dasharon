@@ -1,6 +1,6 @@
+@import "../../utilities.css";
 /* ref https://www.w3schools.com/css/tryit.asp?filename=trycss_tooltip get original language when mouse over*/
-
-.tooltip {
+/* .tooltip {
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
@@ -15,20 +15,33 @@
   border-radius: 6px;
   padding: 5px 0;
 
-  /* Position the tooltip */
+  Position the tooltip
   position: absolute;
   z-index: 1;
 }
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
-}
-
+} */
 /*ref for comment box*/
 .commentbox {
-  height: 50%;
+  height: 300px;
   width: 100%;
-  /* border: 1px; */
+  /* border: 10px; */
+  border-radius: 1%;
+  /* background-color: var(--grey); */
   font-size: 0.8vw !important;
-  /* overflow: auto; */
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.Card-commentBody {
+  margin: 0 0 var(--s);
+}
+
+.Card-commentSection {
+  background-color: var(--grey);
+  border-top: 1px solid var(--darkgrey);
+  padding: var(--m) var(--l);
 }

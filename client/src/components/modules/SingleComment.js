@@ -22,18 +22,18 @@ class SingleComment extends Component {
   render() {
     return (
       <div className="Card-commentBody">
-        <Link to={`/Flashcards/${this.props.creator_id}`} className="u-link">
+        <Link to={`/Flashcards/${this.props.creator_id}`} className="u-link u-bold">
           {this.props.creator_name}
         </Link>
         {/*user decides whether to show in native language*/}
         {this.props.showInNativeLanguage ? (
           <span className="tooltip">
-            {" | " + this.props.contentOriginal}
+            {": " + this.props.contentOriginal}
             <span className="tooltiptext">{this.props.contentTranslated}</span>
           </span>
         ) : (
           <span className="tooltip">
-            {" | " + this.props.contentTranslated}
+            {": " + this.props.contentTranslated}
             <span className="tooltiptext">{this.props.contentOriginal}</span>
           </span>
         )}

@@ -22,12 +22,12 @@ import ReactAnnotate from "./ReactAnnotate.js";
 //import post as in catbook
 import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import HelpIcon from '@material-ui/icons/Help';
+import HelpIcon from "@material-ui/icons/Help";
 //import Demo from "./Demo.js";
 import "./Image_aesthetics.css";
 
 //ref https://material-ui.com/components/dialogs/ https://material-ui.com/api/dialog/
-import Dialog from '@material-ui/core/Dialog'
+import Dialog from "@material-ui/core/Dialog";
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -119,7 +119,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       this.setState({
         nativeLanguage: userLanguageInfo.nativeLanguage,
         learningLanguage: userLanguageInfo.learningLanguage,
-        userName: userLanguageInfo.name
+        userName: userLanguageInfo.name,
       });
       //console.log("Loading language info");
       //console.log("User native language", this.state.nativeLanguage);
@@ -261,8 +261,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   handleLike = (event) => {
     this.setState({
       likedPhoto: true,
-      usersLiking: [{likingUserId: this.props.userId, likingUserName: this.props.userName}],
-      likeCount: 1
+      usersLiking: [{ likingUserId: this.props.userId, likingUserName: this.props.userName }],
+      likeCount: 1,
     });
   };
 
@@ -270,9 +270,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     this.setState({
       likedPhoto: false,
       usersLiking: [],
-      likeCount: 0
+      likeCount: 0,
     });
-  }
+  };
   handleSubmit = (event) => {
     event.preventDefault();
     //submit caption if haven't yet, and it will get translated and then submit
@@ -307,13 +307,12 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     let difficultyRatingArray = [];
     if (this.state.difficulty > 0) {
       let difficultyRatingObject = {
-        ratingUserId : this.props.userId,
-        ratingValue : this.state.difficulty
-      }
-      difficultyRatingArray = difficultyRatingArray.concat(difficultyRatingObject) //stores ratings and who rated
-    }
-    else {
-      difficultyRatingArray = []
+        ratingUserId: this.props.userId,
+        ratingValue: this.state.difficulty,
+      };
+      difficultyRatingArray = difficultyRatingArray.concat(difficultyRatingObject); //stores ratings and who rated
+    } else {
+      difficultyRatingArray = [];
     }
 
     //check if this is good for quiz
@@ -377,7 +376,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           // + '\nDifficulty is : "'  + this.state.difficulty +'"'
           // + '\nQuality is : "'  + this.state.quality +'"'
         ),
-        // (<Demo/>)
+          // (<Demo/>)
           this.setState({
             file: null,
             submittedCaption: false,
@@ -519,10 +518,16 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
                 onChange={(event, newvalue) => {
                   this.setState({ difficulty: newvalue });
                 }}
-                
               />
               {/*Handle likes with a button click */}
-              {this.state.likedPhoto? (<><p>You like the photo</p><button onClick={this.handleUnLike}>Unlike</button></>) : (<button onClick={this.handleLike}>Like</button>)}
+              {this.state.likedPhoto ? (
+                <>
+                  <p>You like the photo</p>
+                  <button onClick={this.handleUnLike}>Unlike</button>
+                </>
+              ) : (
+                <button onClick={this.handleLike}>Like</button>
+              )}
               {/* <Typography component="legend">Quality</Typography> */}
               <div>
                 <p></p>
@@ -534,7 +539,6 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               {/*only have save button if never uploaded */}
             </div>
           </div>
-          
           {this.state.neverUploaded ? (
             <>
               <button

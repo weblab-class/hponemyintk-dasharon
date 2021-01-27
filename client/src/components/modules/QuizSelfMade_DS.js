@@ -1074,7 +1074,18 @@ class QuizSelfMade_DS extends Component {
                 height="auto"
                 width="70%"
               />
-              <h1 className="u-textCenter">Congrats, you are done with the quiz!!! Your score is {Math.round(100*(this.state.readings[0].value/(this.state.readings[0].value + this.state.readings[1].value + this.state.readings[2].value + this.state.readings[3].value)))}%</h1>
+              <h1 className="u-textCenter">
+                Congrats, you are done with the quiz!!! Your score is{" "}
+                {Math.round(
+                  100 *
+                    (this.state.readings[0].value /
+                      (this.state.readings[0].value +
+                        this.state.readings[1].value +
+                        this.state.readings[2].value +
+                        this.state.readings[3].value))
+                )}
+                %
+              </h1>
               <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
                 <MultiColorProgressBar readings={this.state.readings} />
                 <p></p>

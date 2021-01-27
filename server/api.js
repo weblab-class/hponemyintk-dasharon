@@ -107,7 +107,7 @@ router.post("/photo_simple_w_annotate", auth.ensureLoggedIn, async (req, res) =>
       submit_stamp: req.body.timestamp,
       inputLanguages: req.body.inputLanguageInfo,
       translatedLanguage: req.body.translatedLanguage,
-      commentCount : 0, //initialize comment count to 0
+      commentCount: 0, //initialize comment count to 0
       annotation_info_array: req.body.annotate_test, //req.body.annotate_test, OH Johan 20:08
     }); //save the photo and then set the everUpdated field for the user to be true
     //https://mongoosejs.com/docs/tutorials/findoneandupdate.html, code in @836 on Piazza https://piazza.com/class/kic6jaqsarc70r?cid=836
@@ -205,7 +205,8 @@ router.get("/photosforquiz", auth.ensureLoggedIn, async (req, res) => {
   //ref for aggregate https://stackoverflow.com/questions/42394902/mongoose-how-to-use-aggregate-and-find-together
   try {
     const UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.aggregate([
-      {$match: {goodforQuiz: true}}, { $sample: { size: 10 } },
+      { $match: { goodforQuiz: true } },
+      { $sample: { size: 10 } },
     ]); //1 get photo array from mongoose
     //iterate through all user's photos, note this could incorporate a map/promise all, limit to 5 photos, ref https://www.tutorialspoint.com/find-a-specified-amount-of-records-in-mongodb
     for (let u_info = 0; u_info < UserSchema.length; u_info++) {
@@ -337,11 +338,11 @@ router.post("/comment", auth.ensureLoggedIn, async (req, res) => {
     });
 
     const savedComment = await newComment.save(); // get comment saved
-    
+
     let photoUpdated = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose //find the parent and add 1 to its comments count
-    .findOne({
-      _id : req.body.parent,
-    });
+      .findOne({
+        _id: req.body.parent,
+      });
     photoUpdated.commentCount = photoUpdated.commentCount + 1; //add 1 comment
     photoUpdated.save();
 
@@ -577,60 +578,59 @@ router.get("/comment", (req, res) => {
 /*** get requests for images from user lists***/
 /**********************************************/
 router.get("/photoswithIdsWithTime", auth.ensureLoggedIn, async (req, res) => {
-  try{
-    console.log("photoswithIds initial id list",req.query.idstoGet);
-    console.log("photoswithIds initial id list",typeof req.query.idstoGet);
-    console.log("photoswithIds initial id list",req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
+  try {
+    console.log("photoswithIds initial id list", req.query.idstoGet);
+    console.log("photoswithIds initial id list", typeof req.query.idstoGet);
+    console.log("photoswithIds initial id list", req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
     const querySplitStrings = req.query.idstoGet.split(",");
     console.log("photoswithIds split strings", querySplitStrings);
     let UserSchema = [];
 
-        console.log("SORTING BY TIME");
-      UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
-        .find({ "_id" : { $in : querySplitStrings}}).sort({ submit_stamp_raw: -1 });
-      
-        console.log(UserSchema);
-        for (let u_info = 0; u_info < UserSchema.length; u_info++) {
-          const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
-          UserSchema[u_info].photo_placeholder = imagePromise;
-        } //3 replace photo placeholder with the base64 DataURL from GCP
-        res.send(UserSchema);
+    console.log("SORTING BY TIME");
+    UserSchema = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
+      .find({ _id: { $in: querySplitStrings } })
+      .sort({ submit_stamp_raw: -1 });
+
+    console.log(UserSchema);
+    for (let u_info = 0; u_info < UserSchema.length; u_info++) {
+      const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
+      UserSchema[u_info].photo_placeholder = imagePromise;
+    } //3 replace photo placeholder with the base64 DataURL from GCP
+    res.send(UserSchema);
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
   }
- 
 });
 
 router.get("/photoswithIdsWithoutTime", auth.ensureLoggedIn, async (req, res) => {
-  try{
-    console.log("photoswithIds initial id list",req.query.idstoGet);
-    console.log("photoswithIds initial id list",typeof req.query.idstoGet);
-    console.log("photoswithIds initial id list",req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
+  try {
+    console.log("photoswithIds initial id list", req.query.idstoGet);
+    console.log("photoswithIds initial id list", typeof req.query.idstoGet);
+    console.log("photoswithIds initial id list", req.query.idstoGet.split(",")); //ref https://www.w3schools.com/jsref/jsref_split.asp
     const querySplitStrings = req.query.idstoGet.split(",");
     console.log("photoswithIds split strings", querySplitStrings);
     let UserSchema = [];
-   //if no order specified go through the strings in order ref where learned need this: https://stackoverflow.com/questions/54872701/set-sort-order-for-mongoose-document
-        UserSchema = []
-        for (let pid = 0; pid < querySplitStrings.length; pid++)
-        {
-        UserSchemaToAdd = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose
-        .find({ "_id" : { $in : querySplitStrings[pid]}})
-        UserSchema = UserSchema.concat(UserSchemaToAdd)
-          console.log("added", pid)
-        }
-      
-        console.log(UserSchema);
-        for (let u_info = 0; u_info < UserSchema.length; u_info++) {
-          const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
-          UserSchema[u_info].photo_placeholder = imagePromise;
-        } //3 replace photo placeholder with the base64 DataURL from GCP
-        res.send(UserSchema);
+    //if no order specified go through the strings in order ref where learned need this: https://stackoverflow.com/questions/54872701/set-sort-order-for-mongoose-document
+    UserSchema = [];
+    for (let pid = 0; pid < querySplitStrings.length; pid++) {
+      UserSchemaToAdd = await PhotoSimpleAnnotModels.photo_simple_w_annotate_mongoose.find({
+        _id: { $in: querySplitStrings[pid] },
+      });
+      UserSchema = UserSchema.concat(UserSchemaToAdd);
+      console.log("added", pid);
+    }
+
+    console.log(UserSchema);
+    for (let u_info = 0; u_info < UserSchema.length; u_info++) {
+      const imagePromise = await downloadImagePromise(UserSchema[u_info].photo_placeholder); //2 convert to google cloud object
+      UserSchema[u_info].photo_placeholder = imagePromise;
+    } //3 replace photo placeholder with the base64 DataURL from GCP
+    res.send(UserSchema);
   } catch (e) {
     console.log("ERR getImages this shouldn't happen");
     res.status(400).json({ message: e.message });
   }
- 
 });
 
 /***********************************************/
