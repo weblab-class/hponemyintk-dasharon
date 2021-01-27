@@ -6,6 +6,7 @@ import "./HomePage.css";
 import { get, post } from "../../utilities";
 import ReactAnnotate from "../modules/ReactAnnotate.js";
 import Goodbye from  "./Goodbye.js"
+import "../modules/Image_aesthetics.css"
 
 class Home_Page extends Component {
   constructor(props) {
@@ -127,6 +128,7 @@ class Home_Page extends Component {
       languageSelected: "",
       welcomeText: "",
       name: "",
+      loading: true
     };
   }
 
@@ -135,87 +137,88 @@ class Home_Page extends Component {
     //run get request to get first image of the user, will build up to getting images one by
     //one or all on one page
     //onyl make req if logged in
-    if (this.props.userId) {
-      this.imageLoad();
-    } else {
-      console.log("SHOULD LOG OUT");
-    }
+    // if (this.props.userId) {
+    //   this.imageLoad();
+    // } else {
+    //   console.log("SHOULD LOG OUT");
+    // }
+    this.setState({loading: false})
   }
 
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
   componentDidUpdate(prevProps) {
-    if (this.props.userId && prevProps.userId !== this.props.userId) {
-      this.imageLoad();
-    } else {
-      console.log("SHOULD LOG OUT");
-    }
+    // if (this.props.userId && prevProps.userId !== this.props.userId) {
+    //   this.imageLoad();
+    // } else {
+    //   console.log("SHOULD LOG OUT");
+    // }
   }
 
   //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
-  imageLoad = () => {
-    console.log("calling image load*****");
-    //see if logged in
-    // get("/api/whoami").then((user) => {
-    //   if (user._id) {
-    //     // they are registed in the database, and currently logged in.
-    //     this.setState({ stillLoggedIn: true });
-    //   } else {
-    //     this.setState({ stillLoggedIn: false });
-    //   }
-    // });
-    //Find user whose photos we are seeing
+  // imageLoad = () => {
+  //   console.log("calling image load*****");
+  //   //see if logged in
+  //   // get("/api/whoami").then((user) => {
+  //   //   if (user._id) {
+  //   //     // they are registed in the database, and currently logged in.
+  //   //     this.setState({ stillLoggedIn: true });
+  //   //   } else {
+  //   //     this.setState({ stillLoggedIn: false });
+  //   //   }
+  //   // });
+  //   //Find user whose photos we are seeing
 
-    get("/api/photosimpletestOnebyid", { photoId: "60075dbc90f80b3495af511d" }).then(
-      (ImageInfo_one) => {
-        console.log(ImageInfo_one);
-        this.setState({
-          photo_info_array: [ImageInfo_one],
-        });
-      }
-    );
+  //   get("/api/photosimpletestOnebyid", { photoId: "60075dbc90f80b3495af511d" }).then(
+  //     (ImageInfo_one) => {
+  //       console.log(ImageInfo_one);
+  //       this.setState({
+  //         photo_info_array: [ImageInfo_one],
+  //       });
+  //     }
+  //   );
 
-    //get welcome message and language user is currently learning
-    get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userData) => {
-      this.setState({ welcomeText: userData.welcomeMessage });
-      this.setState({ languageSelected: userData.learningLanguageLong });
-      this.setState({ name: userData.name });
-    });
-  };
+  //   //get welcome message and language user is currently learning
+  //   get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userData) => {
+  //     this.setState({ welcomeText: userData.welcomeMessage });
+  //     this.setState({ languageSelected: userData.learningLanguageLong });
+  //     this.setState({ name: userData.name });
+  //   });
+  // };
 
   //cleans up annotations
-  cleanAnnotInput = (initAnnotInput) => {
-    initAnnotInput.map((obj) => {
-      obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
-      delete obj.geometry.shape_kind;
-    });
-    return initAnnotInput;
-  };
+  // cleanAnnotInput = (initAnnotInput) => {
+  //   initAnnotInput.map((obj) => {
+  //     obj.geometry.type = obj.geometry.shape_kind; //[ref: renaming https://stackoverflow.com/questions/4647817/javascript-object-rename-key]
+  //     delete obj.geometry.shape_kind;
+  //   });
+  //   return initAnnotInput;
+  // };
 
-  //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
-  GetPhotoInfo(PhotoInfo) {
-    //debugging code
-    // console.log("Initial annotation array");
-    // console.log(PhotoInfo.annotation_info_array);
+  // //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
+  // GetPhotoInfo(PhotoInfo) {
+  //   //debugging code
+  //   // console.log("Initial annotation array");
+  //   // console.log(PhotoInfo.annotation_info_array);
 
-    //change annotation field so it is type which react-image-annotate needs
-    let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
+  //   //change annotation field so it is type which react-image-annotate needs
+  //   let annotPhotoInfo = this.cleanAnnotInput(PhotoInfo.annotation_info_array);
 
-    //debugging code
-    // console.log("Revised annotation array");
-    // console.log(annotPhotoInfo);
+  //   //debugging code
+  //   // console.log("Revised annotation array");
+  //   // console.log(annotPhotoInfo);
 
-    //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
-    return (
-      <ReactAnnotate
-        allowEdits={false}
-        border-radius="10%"
-        img_using={PhotoInfo.photo_placeholder}
-        annotationslst={annotPhotoInfo}
-        height="100"
-        width="100"
-      />
-    );
-  }
+  //   //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
+  //   return (
+  //     <ReactAnnotate
+  //       allowEdits={false}
+  //       border-radius="10%"
+  //       img_using={PhotoInfo.photo_placeholder}
+  //       annotationslst={annotPhotoInfo}
+  //       height="100"
+  //       width="100"
+  //     />
+  //   );
+  // }
 
 
   //change the
@@ -241,116 +244,117 @@ class Home_Page extends Component {
     if (!this.props.userId) return <div><Goodbye/></div>; //login protect
     //tried https://www.w3schools.com/html/html_lists.asp for list but then decided not
     return (
-      <div className="u-flex u-flex-justifyCenter">
-        <div className="postColumn paddedText">
+      <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
+        <p>Welcome {this.props.name}!</p>
+        <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+        {/* <div className="row post">
+          <div className="center_image responsive"> */}
 
+        {/*The annotated image*/}
+        <div className="post">
+        <div className="postLeft">
+            {/* <div> */}
+            <ReactAnnotate
+              allowEdits={false}
+              border-radius="10%"
+              img_using="/public/images/DemoforHomepage.jpg"
+              annotationslst={[{
+                "geometry": {
+                  "x": 2.972398878069434,
+                  "y": 40.89119583876739,
+                  "width": 55.95996282631367,
+                  "height": 56.31812746011016,
+                  "type": "RECTANGLE"
+                },
+                "data": {
+                  "text": "¡Subes fotos!",
+                  "textforBox": "You upload photos!",
+                  "nativeLanguageTag": "You upload photos!",
+                  "learningLanguageTag": "¡Subes fotos!",
+                  "id": 0.5894362203517878
+                }
+              }]}
+              height="300"
+              width="300"
+            />
+          </div>
+
+          {/* info on submission-user nam link to profileandddate*/}
+          <div className="postRight">
           {/* Use username state */}
-          <p>Welcome {this.state.name}!</p>
-          <p>{this.state.welcomeText}</p>
-          <p>Current language selection: {this.state.languageSelected}</p>
-          {console.log(this.state.welcomeText)}
-          {/*initial form attempt https://www.w3schools.com/html/html_form_elements.asp
-          https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys get keys only*/}
-          {/*Option to change language
-            https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
-            https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
-            https://www.w3schools.com/howto/howto_js_popup_form.asp 
-            https://www.w3schools.com/tags/tag_button.asp
-            
-            https://stackoverflow.com/questions/54151051/react-button-onclick-function-is-running-on-page-load-but-not-you-click-it*/}
-          {this.state.langList ? (
-            <form>
-              <label for="languageLearning">Which language would you like to learn?</label>
-              <select onChange={this.handleLanguage} id="languageLearning">
-                {/* {console.log(this.state.langList)}
-            {console.log(Object.keys(this.state.langList))} */}
-                {Object.keys(this.state.langList).map((lang) => (
-                  <option value={lang}>{lang}</option>
-                ))}
-              </select>
-            </form>
-          ) : (
-            <p></p>
-          )}
-          <p className="questiontext">What is WeWorld?</p>
-          <p className="answertext">
-            WeWorld enables you to learn a language through your and others' photos. As you relate
-            the language to your life through photo tags, you will learn and have fun!
-          </p>
-          <p className="questiontext">
-            Nice! I am excited to put my selfies to educational use. How can I get started learning
-            from my photos?
-          </p>
-          <p className="answertext">
-            On the{" "}
-            <Link className="linktext" to="/Upload">
-              Upload page
-            </Link>
-            , you upload your photos and add tags in your native language or the language in which
-            you feel most comfortable learning. A translation will be provided for you and placed in
-            the tag, along with your original input!
-          </p>
-          <p className="questiontext">Are my photos private?</p>
-          <p className="answertext">
-            Please note currently all users can see everyone's content given this is an early
-            testing version of the website. So please do not share any image or text you do not want
-            shared publicly. Also your timestamp of use and name are recorded and associated with
-            your image.
-          </p>
-          <p className="questiontext">So once my photos are uploaded, how can I review them?</p>
-          <p className="answertext">
-            {" "}
-            On the{" "}
+   <p>First, you can             <Link className="hplinktext" to="/Upload">
+              upload photos
+            </Link> to translate moments from your world into Spanish!</p>
+
+        </div>
+        </div>
+        </div>
+
+
+
+
+
+
+        <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+        {/* <div className="row post">
+          <div className="center_image responsive"> */}
+
+        {/*The annotated image*/}
+        <div className="post">
+        <div className="postLeft">
+          </div>
+          <div className="postRight">
+{/* Use username state */}
+<p>Next, you can take {" "}
+            <Link to="/QuizSelfMade_DSs" className="hplinktext">
+              quizzes 
+            </Link> {" "}to expand your universe of knowledge using a broad range of pictures!</p>
+
+</div>
+</div>
+</div>
+
+
+<div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
+        {/* <div className="row post">
+          <div className="center_image responsive"> */}
+
+        {/*The annotated image*/}
+        <div className="post">
+        <div className="postLeft">
+          </div>
+          <div className="postRight">
+{/* Use username state */}
+<p>Afterwards, the {" "}
+            <Link to="/Friends" className="hplinktext">
+              {" "}
+              Social page
+            </Link>{" "} provides opportunities to learn from the WeWorld community through reading captions and comments and posting comments! You can also find links to individual user profiles. You can then review your activity on the {" "}
             {this.props.userId && (
-              <Link to={`/Flashcards/${this.props.userId}`} className="linktext">
+              <Link to={`/Flashcards/${this.props.userId}`} className="hplinktext">
                 Review page
               </Link>
-            )}{" "}
-            you can scroll through all of your photos and review words- as well as your memories.
-          </p>
-          <p className="questiontext">
-            I'm excited to review, but I want a challenge and to really learn. Can I test myself?
-          </p>
-          <p className="answertext">
-            Our{" "}
-            <Link to="/Quiz" className="linktext">
-              Quizzes page{" "}
-            </Link>
-            has questions to test your knowledge, where you will have to pick the word corresponding to a tag in a
-            photo.
-          </p>
-          <p className="questiontext">
-            Now, you also said this is social? Can I see my friends' adorable pet* pictures and
-            learn from them?
-          </p>
-          <p className="answertext">
-            Yup! The{" "}
-            <Link to="/Friends" className="linktext">
-              {" "}
-              Social page{" "}
-            </Link>{" "}
-            has other WeWorld users' photos. There are several different viewing settings, and you can also see all of a user's photos by navigating to their review pagge.
-          </p>
-          <p className="questiontext">
-            What if I see troubling or inappropriate content uploaded by another user?
-          </p>
-          <p className="answertext">
-            WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at
-            weblab2021@gmail.com, so we can look into and address your concern.
-          </p>
-          <p className="questiontext">How did WeWorld come about?</p>
-          {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
-          <p className="answertext">
-            WeWorld is our{" "}
-            <a href="https://weblab.mit.edu" className="linktext">
-              MIT web.lab
-            </a>{" "}
-            course project. We are very grateful to the course team and our test users for their
-            help and advice with this project!
-          </p>
-          <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
-          <p></p>
-        </div>
+            )}.</p>
+      </div>
+      </div>
+</div>
+
+
+<div className="u-flex u-flex-justifyCenter  u-alignCenter" style={{ width: "100%" }}>
+        {/* <div className="row post">
+          <div className="center_image responsive"> */}
+
+        {/*The annotated image*/}
+        <div className="post u-alignCenter" style={{textAlign: "center"}}>
+
+{/* Use username state */}
+<p>We hope you learn and have fun! To learn more about WeWorld, you can read the{" "}
+                        <Link to="/FAQ" className="hplinktext">
+              frequently asked questions
+            </Link>.</p>
+      </div>
+
+      </div>
       </div>
     );
   }

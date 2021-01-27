@@ -11,3 +11,7 @@
 .linktext {
   color: var(--secondary);
 }
+
+.hplinktext {
+  color: var(--primary);
+}

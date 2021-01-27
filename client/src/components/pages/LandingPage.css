@@ -17,6 +17,15 @@
   }*/
 }
 
+.welcometext {
+  text-align: center;
+  font-weight: 400;
+  color: var(--primary);
+  font-size: 45px; /*ref https://www.w3schools.com/css/css_font_size.asp*/
+  /*ref https://www.w3schools.com/cssref/tryit.asp?filename=trycss_font-style
+  }*/
+}
+
 /*ref https://stackoverflow.com/questions/16615403/how-to-draw-a-circle-with-text-in-the-middle
 plus https://stackoverflow.com/questions/15427125/how-to-center-the-center-circle for margin
 https://philipwalton.github.io/solved-by-flexbox/demos/vertical-centering/ for align-items*/

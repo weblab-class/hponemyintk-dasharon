@@ -79,7 +79,7 @@ class FAQ extends Component {
           </p>
           <p className="answertext">
             WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at
-            weblab2021@gmail.com, so we can look into and address your concern.
+            weblab2021 at gmail.com, so we can look into and address your concern.
           </p>
           <p className="questiontext">How did WeWorld come about?</p>
           {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}

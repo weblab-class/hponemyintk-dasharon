@@ -14,6 +14,7 @@ import Friends_1251 from "./pages/Friends_1251.js";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 import QuizSelfMade_DS from "../components/modules/QuizSelfMade_DS.js";
+// import 'bootstrap/dist/css/bootstrap.min.css'; //ref https://stackoverflow.com/questions/49853659/react-bootstrap-modal-appears-under-the-rest-of-the-content-instead-of-overlay
 
 //ref for router from Piazza post https://stackoverflow.com/questions/53058110/stop-reach-router-scrolling-down-the-page-after-navigating-to-new-page, many thanks Claire!
 
@@ -46,6 +47,7 @@ class App extends Component {
     super(props);
     this.state = {
       userId: undefined,
+      username: undefined,
       allUserList: [],
     };
   }
@@ -117,7 +119,7 @@ class App extends Component {
         <Router>
           {/* don't see 2 pages at once https://stackoverflow.com/questions/45122800/react-router-switch-behavior */}
           {/* <Skeleton path="/" /> */}
-          <Home_Page path="/Home_Page" userId={this.state.userId} />
+          <Home_Page path="/Home_Page" userId={this.state.userId} name={this.state.username}/>
           <ImgUpload_1716_try_no_prototype path="/Upload" userId={this.state.userId} />
           {/*from catbook to link to different user pages*/}
           {/*from catbook to link to different user pages, also used https://stackoverflow.com/questions/57058879/how-to-create-dynamic-routes-with-react-router-dom*/}
@@ -134,7 +136,7 @@ class App extends Component {
           <View_Flashcards path="/Flashcards/:userId" requestingUserId={this.state.userId}/>
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
-          <Skeleton path="/" />
+          <Skeleton path="/" handleLogin={this.handleLogin}/>
           <QuizSelfMade_DS path="/QuizSelfMade_DS" userId={this.state.userId} />
           <FAQ path ="/FAQ" userId={this.state.userId}/>
           <NotFound default />
