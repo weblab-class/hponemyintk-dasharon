@@ -39,6 +39,7 @@ class CommentsBlock extends Component {
     } else {
       console.log("SHOULD LOG OUT");
     }
+    // this.scrollToBottom(); // to make all the overflow box scroll to the end
   }
 
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
@@ -48,7 +49,14 @@ class CommentsBlock extends Component {
     } else {
       console.log("SHOULD LOG OUT");
     }
+    // this.scrollToBottom(); // to make all the overflow box scroll to the end
   }
+
+  // to make all the overflow box scroll to the end ref: https://stackoverflow.com/questions/37620694/how-to-scroll-to-bottom-in-react
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    // window.scrollTo(0, 0);
+  };
 
   languageInfoLoad = () => {
     get("/api/singleUserFind", { checkUserId: this.props.viewingUserId }).then(
@@ -67,29 +75,39 @@ class CommentsBlock extends Component {
   render() {
     // console.log("PHOTO IS", this.props.photo);
     return (
-      <div className="Card-commentSection commentbox">
-        <div className="story-comments">
-          {this.props.comments.map((comment) => (
-            <SingleComment
-              key={`SingleComment_${comment._id}`}
-              _id={comment._id}
-              creator_name={comment.creator_name}
-              creator_id={comment.creator_id}
-              contentTranslated={comment.contentTranslated}
-              contentOriginal={comment.contentOriginal}
-              showInNativeLanguage={this.props.showInNativeLanguage}
-            />
-          ))}
+      <>
+        <div id="scroll2Bottom" className="Card-commentSection commentbox">
+          <div className="story-comments">
+            {this.props.comments.map((comment) => (
+              <SingleComment
+                key={`SingleComment_${comment._id}`}
+                _id={comment._id}
+                creator_name={comment.creator_name}
+                creator_id={comment.creator_id}
+                contentTranslated={comment.contentTranslated}
+                contentOriginal={comment.contentOriginal}
+                showInNativeLanguage={this.props.showInNativeLanguage}
+              />
+            ))}
+          </div>
+          {/* Pass is props- photo infom comment function and user language */}
+          {this.props.viewingUserId && (
+            <>
+              <NewComment
+                photoforComment={this.props.photo}
+                addNewComment={this.props.addNewComment}
+                translateLanguage={this.state.learningLanguage}
+              />
+              <div
+                style={{ float: "left", clear: "both" }}
+                ref={(el) => {
+                  this.messagesEnd = el;
+                }}
+              ></div>
+            </>
+          )}
         </div>
-        {/* Pass is props- photo infom comment function and user language */}
-        {this.props.viewingUserId && (
-          <NewComment
-            photoforComment={this.props.photo}
-            addNewComment={this.props.addNewComment}
-            translateLanguage={this.state.learningLanguage}
-          />
-        )}
-      </div>
+      </>
     );
   }
 }

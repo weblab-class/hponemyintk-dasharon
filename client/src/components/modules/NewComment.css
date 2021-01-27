@@ -1,8 +1,9 @@
 .NewPostInput-input,
 .NewPostInput-button {
-  font-family: "Open Sans";
-  font-size: 14px;
+  font-family: "Roboto";
+  font-size: 1.1vw;
   padding: var(--s) var(--m);
+  margin-bottom: 2%;
 }
 
 .NewPostInput-input {
