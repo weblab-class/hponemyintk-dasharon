@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect, Switch, Route } from "react-router-dom"; //from https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
-import { Router, navigate } from "@reach/router";
+import { Router, navigate, Location } from "@reach/router";
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
@@ -14,7 +14,27 @@ import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 import QuizSelfMade_DS from "../components/modules/QuizSelfMade_DS.js";
 
+//ref for router from Piazza post https://stackoverflow.com/questions/53058110/stop-reach-router-scrolling-down-the-page-after-navigating-to-new-page, many thanks Claire!
+
 import "../utilities.css";
+
+class OnRouteChangeWorker extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.props.action()
+    }
+  }
+
+  render() {
+    return null
+  }
+}
+
+const OnRouteChange = ({ action }) => (
+  <Location>
+    {({ location }) => <OnRouteChangeWorker location={location} action={action} />}
+  </Location>
+)
 
 /**
  * Define the "App" component as a class.
@@ -117,6 +137,7 @@ class App extends Component {
           <QuizSelfMade_DS path="/QuizSelfMade_DS" userId={this.state.userId} />
           <NotFound default />
         </Router>
+        <OnRouteChange action={() => { window.scrollTo(0, 0) }} /> 
       </>
     );
   }

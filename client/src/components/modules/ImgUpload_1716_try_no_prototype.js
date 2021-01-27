@@ -23,7 +23,7 @@ import ReactAnnotate from "./ReactAnnotate.js";
 import { post, get } from "../../utilities.js";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import HelpIcon from "@material-ui/icons/Help";
-// import Demo from "./Demo.js";
+//import Demo from "./Demo.js";
 import "./Image_aesthetics.css";
 
 //ref https://material-ui.com/components/dialogs/ https://material-ui.com/api/dialog/
