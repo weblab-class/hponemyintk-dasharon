@@ -1073,6 +1073,7 @@ class QuizSelfMade_DS extends Component {
             <ReactAnnotate
                   allowEdits={false}
                   img_using="/public/images/Thumbsup1.png"
+                  alt="Thumbs up image"
                   onTagSubmit={this.onTagSubmit}
                   annotationslst={[{
                     "geometry": {

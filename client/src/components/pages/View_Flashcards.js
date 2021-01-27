@@ -45,7 +45,7 @@ class View_Flashcards extends Component {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
         allOwn: true,
         mymostDifficult: false,
-        myleastDifficult: false,
+        //myleastDifficult: false, deleting due to mongoose issues with overall ratinggs
         myLiked: false,
         myComments: false,
       },

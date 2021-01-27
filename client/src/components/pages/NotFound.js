@@ -15,6 +15,7 @@ class NotFound extends Component {
       <ReactAnnotate
                   allowEdits={false}
                   img_using="/public/images/Grumpy1a.png"
+                  alt="Image of website team regretting that the page you are looking for cannot be found"
                   onTagSubmit={this.onTagSubmit}
                   annotationslst={[{
                     "geometry": {

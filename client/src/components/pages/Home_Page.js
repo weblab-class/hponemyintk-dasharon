@@ -258,6 +258,7 @@ class Home_Page extends Component {
               allowEdits={false}
               border-radius="10%"
               img_using="/public/images/DemoforHomepage.jpg"
+              alt="Upload demo photo"
               annotationslst={[{
                 "geometry": {
                   "x": 2.972398878069434,
@@ -302,6 +303,30 @@ class Home_Page extends Component {
         {/*The annotated image*/}
         <div className="post">
         <div className="postLeft">
+        <ReactAnnotate
+              allowEdits={false}
+              border-radius="10%"
+              img_using="/public/images/QuizforHomepage.jpg"
+              alt="Quiz demo photo"
+              annotationslst={[{
+                "geometry": {
+                  "x": 22.763117438595003,
+                  "y": 49.6663615217506,
+                  "width": 49.818015686840226,
+                  "height": 46.40582175772727,
+                  "type": "RECTANGLE"
+                },
+                "data": {
+                  "text": "¡Responde cuestionarios!",
+                  "textforBox": "You take quizzes!",
+                  "nativeLanguageTag": "You take quizzes!",
+                  "learningLanguageTag": "¡Responde cuestionarios!",
+                  "id": 0.17849538622696215
+                }
+              }]}
+              height="300"
+              width="300"
+            />
           </div>
           <div className="postRight">
 {/* Use username state */}
@@ -322,6 +347,30 @@ class Home_Page extends Component {
         {/*The annotated image*/}
         <div className="post">
         <div className="postLeft">
+        <ReactAnnotate
+              allowEdits={false}
+              border-radius="10%"
+              img_using="/public/images/FlashCardforHomepage.jpg"
+              alt="Flashcard demo photo"
+              annotationslst={[{
+                "geometry": {
+                  "x": 25.037912675437024,
+                  "y": 53.002727791914,
+                  "width": 50.04549521052442,
+                  "height": 42.76614946300357,
+                  "type": "RECTANGLE"
+                },
+                "data": {
+                  "text": "¡Miras y comentas tus fotos y las de los demás!",
+                  "textforBox": "You look through and comment on your and others' photos!",
+                  "nativeLanguageTag": "You look through and comment on your and others' photos!",
+                  "learningLanguageTag": "¡Miras y comentas tus fotos y las de los demás!",
+                  "id": 0.9764706490827654
+                }
+              }]}
+              height="300"
+              width="300"
+            />
           </div>
           <div className="postRight">
 {/* Use username state */}

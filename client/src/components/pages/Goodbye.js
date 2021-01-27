@@ -24,6 +24,7 @@ class Goodbye extends Component {
         <ReactAnnotate
                   allowEdits={false}
                   img_using="/public/images/Goodbye3.png"
+                  alt="Image of developers waving goodbye"
                   onTagSubmit={this.onTagSubmit}
                   annotationslst={[{
                     "geometry": {

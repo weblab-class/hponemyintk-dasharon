@@ -33,6 +33,7 @@ class Skeleton extends Component {
         <ReactAnnotate
                   allowEdits={false}
                   img_using="/public/images/WeWorldIntro3.png"
+                  alt="A welcome image"
                   onTagSubmit={this.onTagSubmit}
                   annotationslst={[  {
                     "geometry": {
@@ -54,6 +55,45 @@ class Skeleton extends Component {
                                 <p>  WeWorld is a social language learning website. Users upload their photos and tag them in a
           foreign language they are trying to learn (currently Spanish is being used for this demo).
           Users can also see other users' photos to learn from their lives!</p>
+          <ReactAnnotate
+                  allowEdits={false}
+                  img_using="/public/images/WebsiteforFirstPage.jpg"
+                  alt="An invitation to log in"
+                  onTagSubmit={this.onTagSubmit}
+                  annotationslst={[{
+                    "geometry": {
+                      "x": 11.616620778069107,
+                      "y": 5.915959961772547,
+                      "width": 30.482256173683062,
+                      "height": 87.02532065791459,
+                      "type": "RECTANGLE"
+                    },
+                    "data": {
+                      "text": "¿Entonces, Qué esperas?",
+                      "textforBox": "So what are you waiting for?",
+                      "nativeLanguageTag": "So what are you waiting for?",
+                      "learningLanguageTag": "¿Entonces, Qué esperas?",
+                      "id": 0.9813935506893599
+                    }
+                  },
+                  {
+                    "geometry": {
+                      "x": 51.65301694648865,
+                      "y": 7.726790402897239,
+                      "width": 45.7233842605246,
+                      "height": 85.97046828630351,
+                      "type": "RECTANGLE"
+                    },
+                    "data": {
+                      "text": "¡Inicie sesión para comenzar el aprendizaje y la diversión!",
+                      "textforBox": "Please log in to get the learning and fun started!",
+                      "nativeLanguageTag": "Please log in to get the learning and fun started!",
+                      "learningLanguageTag": "¡Inicie sesión para comenzar el aprendizaje y la diversión!",
+                      "id": 0.5074685876815184
+                    }
+                  }
+                ]}
+                />
 
           <div className="NavBar-linkContainerLogoutforInitial">
             <GoogleLogin
