@@ -29,7 +29,7 @@ import HelpIcon from "@material-ui/icons/Help";
 // import Modal from 'react-bootstrap/Modal'; //ref https://react-bootstrap.github.io/components/modal/
 // import ReactModal from 'react-modal'; //ref https://reactcommunity.org/react-modal/
 import "./Image_aesthetics.css";
-import Button from 'react-bootstrap/Button'
+// import Button from 'react-bootstrap/Button'
 
 //ref https://material-ui.com/components/dialogs/ https://material-ui.com/api/dialog/
 import Dialog from "@material-ui/core/Dialog";
