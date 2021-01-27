@@ -431,20 +431,12 @@ isOpen={
   true}><p>test modal</p></ReactModal> */}
   
           <p>
-            Let's get the learning fun started! Please upload an image and tag it with the word(s)
-            you would like to learn. You can tag by clicking and dragging on the image. You will
-            need to submit the tag(s) before submitting the image for them to be recorded. You can
-            add a caption to share your thoughts on the image, and you should rate the difficulty
-            (how hard the tags are) and quality (how helpful the tags are to other learners). <br />
+            Let's get the learning fun started! Please upload an image and submit tags describing the word(s)
+            you would like to learn in the images, and then add a caption describing your thoughts on the image. You can tag by clicking and dragging on the image. You can rate the difficulty of the image and like it. Please note any image uploaded is ppublicly available to any user. <br />
           </p>
-          <p className="u-bold">
-            Disclaimer: Please note currently all users can see everyone's content given this is an
-            early testing version of the website. So please do not share any image or text you do
-            not want shared publicly. Also your timestamp of use and name are recorded and
-            associated with your image.
+
             <br />
             <br />
-          </p>
           Upload file:
           {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
