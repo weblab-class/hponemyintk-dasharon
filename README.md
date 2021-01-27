@@ -58,6 +58,10 @@ WeWorld is our MIT web.lab course project. We are very grateful to the course te
 
 #Below information is from the course team and was in the initial README.md:
 
+********************************************************************************************************
+--------------------------------------------------------------------------------------------------------
+# Old README template from skeleton project provided by the course team
+
 # Project Skeleton
 
 ## What we provide
