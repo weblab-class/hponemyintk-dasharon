@@ -433,7 +433,7 @@ isOpen={
             the word(s) you would like to learn in the images, and then add a caption describing
             your thoughts on the image. You can tag by clicking and dragging on the image. You can
             rate the difficulty of the image and like it. Please note any image uploaded is
-            ppublicly available to any user. <br />
+            publicly available to any user. <br />
           </p>
           <br />
           <br />
