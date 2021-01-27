@@ -237,7 +237,7 @@ class QuizSelfMade_DS extends Component {
         this.state.readings[2].value +
         this.state.readings[3].value
     );
-    console.log("In quiz Retake, this.state.readings", this.state.readings);
+    // console.log("In quiz Retake, this.state.readings", this.state.readings);
     this.setState({ isDone: false, showResult: false, wasAnswerInput: false });
   };
 
@@ -287,7 +287,7 @@ class QuizSelfMade_DS extends Component {
     if (this.props.userId) {
       this.imageLoad();
     } else {
-      console.log("SHOULD LOG OUT");
+      // console.log("SHOULD LOG OUT");
     }
   }
 
@@ -311,7 +311,7 @@ class QuizSelfMade_DS extends Component {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
       this.imageLoad();
     } else {
-      console.log("SHOULD LOG OUT");
+      // console.log("SHOULD LOG OUT");
     }
   }
 
@@ -322,21 +322,21 @@ class QuizSelfMade_DS extends Component {
     // this.setState({
     //   photo_info_array : this.state.dataSet.filter((p) => (p._id !== photoforDeletion))
     // })
-    console.log("starting movetonextphoto");
+    // console.log("starting movetonextphoto");
     if (this.state.onPhoto < this.state.dataSet.length - 1) {
       this.setState({ onPhoto: this.state.onPhoto + 1 });
     }
     if (this.state.onPhoto === this.state.dataSet.length - 2) {
       this.setState({ isDone: true });
     }
-    console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
+    // console.log("CHANGING ON PHOTO TO", this.state.onPhoto);
   };
 
   //pass as prop to individual flashcard components
   //take in photoid and rating and update difficulty rating
   //update the dataset with the new rating
   updateDifficulty = (difficultyRating, phototoEdit) => {
-    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    // console.log("difficulty", difficultyRating, "for", phototoEdit._id);
     post("/api/difficultyRating", {
       difficultyRating: difficultyRating,
       photoId: phototoEdit._id,
@@ -354,7 +354,7 @@ class QuizSelfMade_DS extends Component {
               pp
             ].photoData.photo_placeholder); //fix photo placeholder so don't repeat mongoose call
           newDataset[pp].photoData.difficultyRatings = photoUpdated.difficultyRatings; //fix annotations so only one per photo
-          console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp);
+          // console.log("UPDATED", newDataset[pp].photoData._id, "ENTRY", pp);
         }
       }
       this.setState({ dataSet: newDataset });
@@ -365,8 +365,8 @@ class QuizSelfMade_DS extends Component {
   //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
   updateLikes = (phototoEdit, liking) => {
     const annotArrayOld = clonedeep(phototoEdit.annotation_info_array); //store old annotation array
-    console.log("NEED TO LIKE?", liking);
-    console.log("NEED TO UNLIKE?", !liking);
+    // console.log("NEED TO LIKE?", liking);
+    // console.log("NEED TO UNLIKE?", !liking);
     post("/api/likingRating", { photoId: phototoEdit._id, addLike: liking }).then(
       (photoUpdated) => {
         let newDataset = clonedeep(this.state.dataSet);
@@ -382,20 +382,20 @@ class QuizSelfMade_DS extends Component {
                 pp
               ].photoData.photo_placeholder), //fix photo
               //placeholder so don't repeat mongoose call/more gcp calls
-              (newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray),
+              (newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray);
               //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
-              console.log(
-                "UPDATED",
-                newDataset[pp].photoData._id,
-                "ENTRY",
-                pp,
-                "GEOM",
-                newDataset[pp].photoData.annotation_info_array[0].geometry,
-                "LEARNING LANGUAGE tag",
-                newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag,
-                "CORRECT",
-                newDataset[pp].correctAnswer
-              );
+              // console.log(
+              //   "UPDATED",
+              //   newDataset[pp].photoData._id,
+              //   "ENTRY",
+              //   pp,
+              //   "GEOM",
+              //   newDataset[pp].photoData.annotation_info_array[0].geometry,
+              //   "LEARNING LANGUAGE tag",
+              //   newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag,
+              //   "CORRECT",
+              //   newDataset[pp].correctAnswer
+              // );
           }
         }
         this.setState({ dataSet: newDataset });
@@ -960,7 +960,7 @@ class QuizSelfMade_DS extends Component {
           langInterestLong: langInterestLong,
         }; //initial test wrong answers https://www.spanishpod101.com/spanish-word-lists/?page=2 maybe randomly pull 3 for each?
 
-        console.log(questionObject);
+        // console.log(questionObject);
 
         //run concatentation once in each inner for loop
         questionArray = questionArray.concat(questionObject);
@@ -973,7 +973,7 @@ class QuizSelfMade_DS extends Component {
           break;
         }
       }
-      console.log("questionArray", questionArray);
+      // console.log("questionArray", questionArray);
       if (goodTagCount > photoLimforQuiz - 1) {
         break;
       }
@@ -986,7 +986,7 @@ class QuizSelfMade_DS extends Component {
       this.state.readings[2].value,
       questionArray.length
     );
-    console.log("this.state.readings", this.state.readings);
+    // console.log("this.state.readings", this.state.readings);
 
     //shuffle array to make different photos appear ref https://flaviocopes.com/how-to-shuffle-array-javascript/
     //https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb
@@ -996,7 +996,7 @@ class QuizSelfMade_DS extends Component {
       questionArray[iii] = questionArray[jjj];
       questionArray[jjj] = temp;
     }
-    console.log("question array", questionArray);
+    // console.log("question array", questionArray);
     this.setState({
       dataSet: questionArray,
       loaded: true,
@@ -1005,7 +1005,7 @@ class QuizSelfMade_DS extends Component {
 
   //split into a new function as in Nikhil's gcp code, and also if only want one image (for Friends pages) only give one image
   imageLoad = async () => {
-    console.log("calling image load*****");
+    // console.log("calling image load*****");
     //Find user whose photos we are seeing
 
     //get photo array and add in some wrong answers
@@ -1035,7 +1035,7 @@ class QuizSelfMade_DS extends Component {
       }
 
       if (filter === "leastDifficult" && this.state.filters[filter]) {
-        console.log(filter === "leastDifficult", filter);
+        // console.log(filter === "leastDifficult", filter);
         ImageInfo = await get("/api/photoFilter", {
           sortString: "difficulty",
           sortFlag: 1,
@@ -1148,7 +1148,7 @@ class QuizSelfMade_DS extends Component {
                   <label for="imgFilter">Which image filters do you want?</label>
                   <br />
                   <select onChange={this.handleFilters} id="imgFilter">
-                    {console.log(Object.keys(this.state.filters))}
+                    {/* {console.log(Object.keys(this.state.filters))} */}
                     {Object.keys(this.state.filters).map((ff, ii) => (
                       <option value={ff} key={ii + ff}>
                         {this.filterLabels[ii]}

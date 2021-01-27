@@ -37,7 +37,7 @@ class CommentsBlock extends Component {
     if (this.props.viewingUserId) {
       this.languageInfoLoad();
     } else {
-      console.log("SHOULD LOG OUT");
+      //console.log("SHOULD LOG OUT");
     }
     // this.scrollToBottom(); // to make all the overflow box scroll to the end
   }
@@ -65,9 +65,9 @@ class CommentsBlock extends Component {
           nativeLanguage: userLanguageInfo.nativeLanguage,
           learningLanguage: userLanguageInfo.learningLanguage,
         });
-        console.log("Loading language info");
-        console.log("User native language", this.state.nativeLanguage);
-        console.log("User learns", this.state.learningLanguage);
+        //console.log("Loading language info");
+        //console.log("User native language", this.state.nativeLanguage);
+        // console.log("User learns", this.state.learningLanguage);
       }
     );
   };

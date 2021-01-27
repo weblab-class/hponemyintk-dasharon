@@ -73,7 +73,7 @@ class View_Flashcards extends Component {
       this.filterLabels = this.setFilters(); //update filters
       this.setFilters();
     } else {
-      console.log("SHOULD LOG OUT");
+      // console.log("SHOULD LOG OUT");
     }
   }
 
@@ -85,7 +85,7 @@ class View_Flashcards extends Component {
       this.filterLabels = this.setFilters(); //update filters
       this.setFilters();
     } else {
-      console.log("SHOULD LOG OUT");
+      // console.log("SHOULD LOG OUT");
     }
   }
 
@@ -104,12 +104,12 @@ class View_Flashcards extends Component {
 
   //Get user info
   userInfoLoad = () => {
-    console.log("calling image load*****");
+    // console.log("calling image load*****");
 
     //Find user whose photos we are seeing
     get("/api/singleUserFind", { checkUserId: this.props.userId }).then((userInfo) => {
       //get info on one user
-      console.log(userInfo.name);
+      // console.log(userInfo.name);
       this.setState(
         {
           userName: userInfo.name, //assume 1 name
@@ -140,7 +140,7 @@ class View_Flashcards extends Component {
       //all own photos
       //ref: https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
       if (filter === "allOwn" && this.state.filters[filter]) {
-        console.log("Here in View_Flashcards.js before get request!!!2222");
+        // console.log("Here in View_Flashcards.js before get request!!!2222");
         get("/api/photosimpletest", { userId: this.props.userId }).then((ImageInfo) => {
           console.log(ImageInfo);
           return this.setState({
@@ -153,13 +153,13 @@ class View_Flashcards extends Component {
 
       //all photos individual user has liked
       if (filter === "myLiked" && this.state.filters[filter]) {
-        console.log("Here in View_Flashcards.js before get request!!!2222");
-        console.log("STATE", this.state);
+        // console.log("Here in View_Flashcards.js before get request!!!2222");
+        // console.log("STATE", this.state);
         get("/api/photoswithIdsWithTime", {
           idstoGet: this.state.userLiked,
           sortbyTime: true,
         }).then((ImageInfo) => {
-          console.log(ImageInfo);
+          // console.log(ImageInfo);
           return this.setState({
             photo_info_array: ImageInfo,
             loading: false,
@@ -170,13 +170,13 @@ class View_Flashcards extends Component {
 
       //all photos individual user has commented on
       if (filter === "myComments" && this.state.filters[filter]) {
-        console.log("Here in View_Flashcards.js before get request!!!2222");
-        console.log("STATE", this.state);
+        // console.log("Here in View_Flashcards.js before get request!!!2222");
+        // console.log("STATE", this.state);
         get("/api/photoswithIdsWithTime", {
           idstoGet: this.state.userCommented,
           sortbyTime: true,
         }).then((ImageInfo) => {
-          console.log(ImageInfo);
+          // console.log(ImageInfo);
           return this.setState({
             photo_info_array: ImageInfo,
             loading: false,
@@ -187,8 +187,8 @@ class View_Flashcards extends Component {
 
       //all photos individual user has rated difficulty for: hardest first
       if (filter === "mymostDifficult" && this.state.filters[filter]) {
-        console.log("Here in View_Flashcards.js before get request!!!2222");
-        console.log("STATE", this.state);
+        // console.log("Here in View_Flashcards.js before get request!!!2222");
+        // console.log("STATE", this.state);
         //sort array by user difficulty, hardest first ref https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
         let newDifficulty = clonedeep(this.state.userDifficultyRated);
         newDifficulty.sort((a, b) => (a.ratingValue > b.ratingValue ? -1 : 1));
@@ -197,14 +197,14 @@ class View_Flashcards extends Component {
         let idsforDifficulty = newDifficulty.map(
           (difficultyEntry) => difficultyEntry.ratingPhotoId
         );
-        console.log("new difficulty", newDifficulty);
-        console.log("ids for difficulty", idsforDifficulty);
+        // console.log("new difficulty", newDifficulty);
+        // console.log("ids for difficulty", idsforDifficulty);
 
         get("/api/photoswithIdsWithoutTime", {
           idstoGet: idsforDifficulty,
           sortbyTime: false,
         }).then((ImageInfo) => {
-          console.log(ImageInfo);
+          // console.log(ImageInfo);
           return this.setState({
             photo_info_array: ImageInfo,
             loading: false,
@@ -215,8 +215,8 @@ class View_Flashcards extends Component {
       }
 
       if (filter === "myleastDifficult" && this.state.filters[filter]) {
-        console.log("Here in View_Flashcards.js before get request!!!2222");
-        console.log("STATE", this.state);
+        // console.log("Here in View_Flashcards.js before get request!!!2222");
+        // console.log("STATE", this.state);
         //sort array by user difficulty, hardest first ref https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
         let newDifficulty = clonedeep(this.state.userDifficultyRated);
         newDifficulty.sort((a, b) => (a.ratingValue > b.ratingValue ? 1 : -1));
@@ -225,14 +225,14 @@ class View_Flashcards extends Component {
         let idsforDifficulty = newDifficulty.map(
           (difficultyEntry) => difficultyEntry.ratingPhotoId
         );
-        console.log("new difficulty", newDifficulty);
-        console.log("ids for difficulty", idsforDifficulty);
+        // console.log("new difficulty", newDifficulty);
+        // console.log("ids for difficulty", idsforDifficulty);
 
         get("/api/photoswithIdsWithoutTime", {
           idstoGet: idsforDifficulty,
           sortbyTime: false,
         }).then((ImageInfo) => {
-          console.log(ImageInfo);
+          // console.log(ImageInfo);
           return this.setState({
             photo_info_array: ImageInfo,
             loading: false,
@@ -298,7 +298,7 @@ class View_Flashcards extends Component {
   //pass as prop to individual flashcard components
   //take in photoid and rating and update difficulty rating
   updateDifficulty = (difficultyRating, phototoEdit) => {
-    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    // console.log("difficulty", difficultyRating, "for", phototoEdit._id);
     post("/api/difficultyRating", {
       difficultyRating: difficultyRating,
       photoId: phototoEdit._id,
@@ -309,7 +309,7 @@ class View_Flashcards extends Component {
           //when find the array entry fixed, set it to be the revised entry
           newPhotoArray[pp] = photoUpdated;
           newPhotoArray[pp].photo_placeholder = this.state.photo_info_array[pp].photo_placeholder; //fix photo placeholder so don't repeat mongoose call
-          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
+          // console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
         }
       }
       this.setState({ photo_info_array: newPhotoArray });
@@ -319,8 +319,8 @@ class View_Flashcards extends Component {
   //pass as prop to individual flashcard components
   //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
   updateLikes = (phototoEdit, liking) => {
-    console.log("NEED TO LIKE?", liking);
-    console.log("NEED TO UNLIKE?", !liking);
+    // console.log("NEED TO LIKE?", liking);
+    // console.log("NEED TO UNLIKE?", !liking);
     post("/api/likingRating", { photoId: phototoEdit._id, addLike: liking }).then(
       (photoUpdated) => {
         let newPhotoArray = clonedeep(this.state.photo_info_array); //copy of array
@@ -329,7 +329,7 @@ class View_Flashcards extends Component {
             //when find the array entry fixed, set it to be the revised entry
             newPhotoArray[pp] = photoUpdated;
             newPhotoArray[pp].photo_placeholder = this.state.photo_info_array[pp].photo_placeholder; //fix photo placeholder so don't repeat mongoose call
-            console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
+            // console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
           }
         }
         this.setState({ photo_info_array: newPhotoArray });
@@ -348,7 +348,7 @@ class View_Flashcards extends Component {
         "My personal favorites",
         "Photos I commented on",
       ];
-      console.log("SETTING FILTERS");
+      // console.log("SETTING FILTERS");
     } else {
       filterLabels = [
         "All " + this.state.userName + "'s photos",
@@ -364,7 +364,7 @@ class View_Flashcards extends Component {
   render() {
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
     //if (!this.state.stillLoggedIn) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect with api call because of how prop was given in link
-    console.log("ViewFlashCards:::", this.props.userId);
+    // console.log("ViewFlashCards:::", this.props.userId);
     //let ownCards = null; //will use to see if these are your own cards
     let userNameToShow = ""; //username to display
     {
@@ -399,7 +399,7 @@ class View_Flashcards extends Component {
           <label for="imgFilter">Which image filters do you want?</label>
           <br />
           <select onChange={this.handleFilters} id="imgFilter">
-            {console.log(Object.keys(this.state.filters))}
+            {/* {console.log(Object.keys(this.state.filters))} */}
             {Object.keys(this.state.filters).map((ff, ii) => (
               <option value={ff} key={ii + ff}>
                 {this.state.filterLabels[ii]}
@@ -418,7 +418,7 @@ class View_Flashcards extends Component {
         {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
         {/*</button>*/}
 
-        {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)}
+        {/* {console.log("ViewFlashCards:::Printing photo_info_array", this.state.photo_info_array)} */}
 
         {/*Establishing whether a user is seeing own flashcards, if so make Me- this is earlier code*/}
         {/* {(this.state.requestingUserId === this.props.userId) ? (<p>****{this.props.userId} req and view</p>) : (<p>****{this.state.requestingUserId} req and {this.props.userId} view</p>)} */}
@@ -426,12 +426,12 @@ class View_Flashcards extends Component {
         {/* {ownCards ? (userNameToShow = this.state.userName + " (Me)") : (userNameToShow = this.state.userName)} */}
         {/* If there is a photo then give info on it. Otherwise have a message saying there is 
       nothing to return. Length ref: https://www.geeksforgeeks.org/how-to-determine-length-or-size-of-an-array-in-java/*/}
-        {this.state.photo_info_array ? (
+        {(this.state.photo_info_array.length > 0) ? (
           <>
-            {console.log(
+            {/* {console.log(
               "ViewFlashCards:::Printing photo_placeholder",
               this.state.photo_info_array
-            )}
+            )} */}
 
             <>
               <p className="nametext">{userNameToShow}</p>
@@ -465,7 +465,7 @@ class View_Flashcards extends Component {
             </div>
           </>
         ) : (
-          <p>Nothing to return. Please upload!</p>
+          <p>Nothing to return for this user for this filtering setting!</p>
         )}
       </div>
     );

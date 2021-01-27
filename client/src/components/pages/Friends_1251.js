@@ -106,7 +106,7 @@ class Friends_1251 extends Component {
         }
 
         if (filter === "leastDifficult" && this.state.filters[filter]) {
-          console.log(filter === "leastDifficult", filter);
+          // console.log(filter === "leastDifficult", filter);
           allPhotoList = await get("/api/photoFilter", {
             sortString: "difficulty",
             sortFlag: 1,
@@ -224,7 +224,7 @@ class Friends_1251 extends Component {
   //pass as prop to individual flashcard components
   //take in photoid and rating and update difficulty rating
   updateDifficulty = (difficultyRating, phototoEdit) => {
-    console.log("difficulty", difficultyRating, "for", phototoEdit._id);
+    // console.log("difficulty", difficultyRating, "for", phototoEdit._id);
     post("/api/difficultyRating", {
       difficultyRating: difficultyRating,
       photoId: phototoEdit._id,
@@ -235,7 +235,7 @@ class Friends_1251 extends Component {
           //when find the array entry fixed, set it to be the revised entry
           newPhotoArray[pp] = photoUpdated;
           newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder; //fix photo placeholder so don't repeat mongoose call
-          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
+          // console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp);
         }
       }
       this.setState({ allPhotos: newPhotoArray });
@@ -246,8 +246,8 @@ class Friends_1251 extends Component {
   //take in photoid and rating and whether the user wants to like or unlike, and updates the likes
   updateLikes = (phototoEdit, liking) => 
   {
-    console.log("NEED TO LIKE?", liking);
-    console.log("NEED TO UNLIKE?", !liking);
+    // console.log("NEED TO LIKE?", liking);
+    // console.log("NEED TO UNLIKE?", !liking);
     post("/api/likingRating", {photoId: phototoEdit._id, addLike: liking}).then((photoUpdated) => {
       let newPhotoArray = clonedeep(this.state.allPhotos); //copy of array
       for (let pp = 0; pp < newPhotoArray.length; pp++)
@@ -256,7 +256,7 @@ class Friends_1251 extends Component {
         {
           newPhotoArray[pp] = photoUpdated
           newPhotoArray[pp].photo_placeholder = this.state.allPhotos[pp].photo_placeholder //fix photo placeholder so don't repeat mongoose call
-          console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
+          // console.log("UPDATED", newPhotoArray[pp]._id, "ENTRY", pp)
         }
       };
       this.setState({allPhotos : newPhotoArray});
@@ -267,7 +267,7 @@ class Friends_1251 extends Component {
   render() {
     //Chatbook login protection
     if (!this.props.userId) return <div>Goodbye! Thank you for using Weworld.</div>; //login protect
-    console.log(this.state.allUserList);
+    // console.log(this.state.allUserList);
 
     //get all users who uploaded, JavaScript lecture slide 32, revised to check photoCount
     // let allUploadedUserList = this.state.allUserList.filter(userCheck => userCheck.photoCount > 0);
@@ -287,7 +287,7 @@ class Friends_1251 extends Component {
             <label for="imgFilter">Which image filters do you want?</label>
             <br />
             <select onChange={this.handleFilters} id="imgFilter">
-              {console.log(Object.keys(this.state.filters))}
+              {/* {console.log(Object.keys(this.state.filters))} */}
               {Object.keys(this.state.filters).map((ff, ii) => (
                 <option value={ff} key={ii + ff}>
                   {this.filterLabels[ii]}
@@ -296,9 +296,9 @@ class Friends_1251 extends Component {
             </select>
           </div>
         </form>
-        {console.log("08:09 this.state.filters", this.state.filters)}
+        
 
-        {/*Many thanks to Justin for Piazza link advice*/}
+        {/* removed {console.log("08:09 this.state.filters", this.state.filters)} Many thanks to Justin for Piazza link advice*/}
         {/*https://stackoverflow.com/questions/30115324/pass-props-in-link-react-router link for passing props */}
         {/* map syntax from chatbook br is html line break* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/br*/}
         <h1 className="u-textCenter">
