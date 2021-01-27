@@ -383,8 +383,10 @@ class IndividualFlashcard extends Component {
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
               </>
             )}
+            {/* ************************* */}
+            {/* *** icons begins here *** */}
+            {/* ************************* */}
             {/*info on ratings*/}
-            {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
             <p>Difficulty (all users)</p>
             <HelpIcon style={{ color: "#0099ff" }} />{" "}
             {/*ref https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript*/}
@@ -414,19 +416,12 @@ class IndividualFlashcard extends Component {
                 }}
               />
             ) : (
-              // (<p></p>
-              <p></p>
-              // <Rating
-              //   precision={0.5}
-              //   name="difficultyRating"
-              //   value={this.props.photoFacts.difficulty}
-              //   disabled
-              // />
+              <></>
             )}
             {/*see if you liked and count of likes*/}
             <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
               <p style={{ padding: "10%", fontSize: "1.1vw" }}>{this.props.photoFacts.likeCount}</p>{" "}
-              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />{" "}
+              {/* <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />{" "} */}
             </div>
             {this.props.photoFacts.usersLikingArray
               .map((userData) => userData.likingUserId)
@@ -519,8 +514,12 @@ class IndividualFlashcard extends Component {
                   {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
                   {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
                 </button>
-                {/* //Case 2- not in quiz and then show comments block
-              /*this is from catbook*/}
+                {/* //Case 2- not in quiz and then show comments block */}
+
+                {/* ************************* */}
+                {/* ************************* */}
+                {/* ************************* */}
+                {/* this is from catbook*/}
                 <CommentsBlock
                   photo={this.props.photoFacts}
                   comments={this.state.comments}
