@@ -8,6 +8,7 @@ import { get, getRandom, getKeyByValue, post, shuffle } from "../../utilities";
 import { FlareSharp } from "@material-ui/icons";
 import Loading from "./Loading.js";
 const clonedeep = require("lodash.clonedeep");
+import ReactAnnotate from "./ReactAnnotate.js";
 
 class QuizSelfMade_DS extends Component {
   constructor(props) {
@@ -52,14 +53,14 @@ class QuizSelfMade_DS extends Component {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
         getTenRandom: true,
         mostDifficult: false,
-        leastDifficult: false,
+        // leastDifficult: false,
         mostLiked: false,
       },
     };
     this.filterLabels = [
       "Get Ten Random Flashcards",
       "Most Difficult",
-      "Least Difficult",
+      // "Least Difficult",
       "Most Liked",
     ];
     this.langList = {

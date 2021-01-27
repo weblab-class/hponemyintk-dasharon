@@ -53,7 +53,7 @@ class View_Flashcards extends Component {
       filterLabels: [
         "All user's photos",
         "User rated most difficult",
-        "User rated least difficult",
+        // "User rated least difficult",
         "User personal favorites",
         "Photos user commented on",
       ],
@@ -353,7 +353,7 @@ class View_Flashcards extends Component {
       filterLabels = [
         "All " + this.state.userName + "'s photos",
         this.state.userName + "'s rated most difficult",
-        this.state.userName + "'s rated least difficult",
+        // this.state.userName + "'s rated least difficult",
         this.state.userName + "'s personal favorites",
         "Photos " + this.state.userName + " commented on",
       ];

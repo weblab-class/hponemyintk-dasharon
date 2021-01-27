@@ -26,13 +26,13 @@ class Friends_1251 extends Component {
         // *** Caution!!! be extra careful to set only one of these to true. Otherwise, will only get the first true in the list *** //
         getOneFromAll: true,
         mostDifficult: false,
-        leastDifficult: false,
+        // leastDifficult: false,
         mostLiked: false,
         mostCommented: false
       },
       loading: true
     };
-    this.filterLabels = ["Get 1 from each user", "Most Difficult", "Least Difficult", "Most Liked", "Most commented"];
+    this.filterLabels = ["Get 1 from each user", "Most Difficult",  "Most Liked", "Most commented"]; //removed due to mongoose issue "Least Difficult",
   }
 
   // remember -- api calls go here!, get call adapted from catbook
