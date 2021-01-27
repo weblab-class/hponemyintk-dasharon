@@ -267,14 +267,14 @@ class IndividualFlashcard extends Component {
       return (
         <span className="tooltip">
           {this.props.photoFacts.captionTextOriginal}
-          <span className="tooltiptext">{this.props.photoFacts.captionTextTranslated}</span>
+          {/* <span className="tooltiptext">{this.props.photoFacts.captionTextTranslated}</span> */}
         </span>
       );
     } else {
       return (
         <span className="tooltip">
           {this.props.photoFacts.captionTextTranslated}
-          <span className="tooltiptext">{this.props.photoFacts.captionTextOriginal}</span>
+          {/* <span className="tooltiptext">{this.props.photoFacts.captionTextOriginal}</span> */}
         </span>
       );
     }

@@ -27,15 +27,21 @@ class SingleComment extends Component {
         </Link>
         {/*user decides whether to show in native language*/}
         {this.props.showInNativeLanguage ? (
-          <span className="tooltip">
-            {": " + this.props.contentOriginal}
-            <span className="tooltiptext">{this.props.contentTranslated}</span>
-          </span>
+          <>
+            <span style={{ color: "#0099ff" }}>: </span>
+            <span className="tooltip">
+              {this.props.contentOriginal}
+              {/* <span className="tooltiptext">{this.props.contentTranslated}</span> */}
+            </span>
+          </>
         ) : (
-          <span className="tooltip">
-            {": " + this.props.contentTranslated}
-            <span className="tooltiptext">{this.props.contentOriginal}</span>
-          </span>
+          <>
+            <span style={{ color: "#0099ff" }}>: </span>
+            <span className="tooltip">
+              {this.props.contentTranslated}
+              {/* <span className="tooltiptext">{this.props.contentOriginal}</span> */}
+            </span>
+          </>
         )}
       </div>
     );

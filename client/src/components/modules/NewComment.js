@@ -54,7 +54,7 @@ class NewPostInput extends Component {
           value="Submit"
           onClick={this.handleSubmit}
         >
-          Submit
+          Post!
         </button>
       </div>
     );
