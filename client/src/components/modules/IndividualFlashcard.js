@@ -28,7 +28,7 @@ import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
-import { faFlagCheckered, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faFlagCheckered, faThumbsUp, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
 const StyledRating = withStyles({
@@ -120,7 +120,10 @@ class IndividualFlashcard extends Component {
 
   //option to vote on difficulty
   editDifficulty = (event) => {
-    this.setState((prevState) => ({ ...prevState, enableDifficultyEdit: true }));
+    this.setState((prevState) => ({
+      ...prevState,
+      enableDifficultyEdit: !this.state.enableDifficultyEdit,
+    }));
     console.log("DIFFICULTY FLIP");
   };
 
@@ -265,14 +268,14 @@ class IndividualFlashcard extends Component {
   showCaption = () => {
     if (this.state.showInNativeLanguage) {
       return (
-        <span className="tooltip">
+        <span className="tooltip" style={{ marginBottom: "1vw" }}>
           {this.props.photoFacts.captionTextOriginal}
           {/* <span className="tooltiptext">{this.props.photoFacts.captionTextTranslated}</span> */}
         </span>
       );
     } else {
       return (
-        <span className="tooltip">
+        <span className="tooltip" style={{ marginBottom: "1vw" }}>
           {this.props.photoFacts.captionTextTranslated}
           {/* <span className="tooltiptext">{this.props.photoFacts.captionTextOriginal}</span> */}
         </span>
@@ -320,7 +323,7 @@ class IndividualFlashcard extends Component {
     }
 
     //if you already rated this, show your rating
-    let ownRating = "n/a";
+    let ownRating = "0";
     for (let rr = 0; rr < this.props.photoFacts.difficultyRatings.length; rr++) {
       if (this.props.photoFacts.difficultyRatings[rr].ratingUserId === this.props.viewingUserId) {
         ownRating = this.props.photoFacts.difficultyRatings[rr].ratingValue;
@@ -328,7 +331,7 @@ class IndividualFlashcard extends Component {
     }
 
     //Set average user rating and whether to show "rating" or "ratings"
-    let othersRating = "n/a";
+    let othersRating = "0";
     let othersRatingCountText = "Ratings";
     if (this.props.photoFacts.difficultyRatings.length > 0) {
       othersRating = Math.round(this.props.photoFacts.difficulty * 10) / 10;
@@ -386,69 +389,125 @@ class IndividualFlashcard extends Component {
             {/* ************************* */}
             {/* *** icons begins here *** */}
             {/* ************************* */}
-            {/*info on ratings*/}
-            <p>Difficulty (all users)</p>
-            <HelpIcon style={{ color: "#0099ff" }} />{" "}
             {/*ref https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript*/}
-            <p>
-              {othersRating} ({this.props.photoFacts.difficultyRatings.length}{" "}
-              {othersRatingCountText})
-            </p>
-            <p>Difficulty (own)</p>
-            <p>{ownRating}</p>
-            {ownRating === "n/a" ? (
-              <button onClick={this.editDifficulty}>
-                <HelpIcon style={{ color: "#9aeafe" }} />
-              </button>
-            ) : (
-              <button onClick={this.editDifficulty}>
-                <HelpIcon style={{ color: "#0099ff" }} />
-              </button>
-            )}
-            {this.state.enableDifficultyEdit ? (
-              <StyledRating
-                precision={1.0}
-                name="difficultyRating"
-                icon={<HelpIcon fontSize="inherit" />}
-                onChange={(event, newvalue) => {
-                  this.setState((prevState) => ({ ...prevState, enableDifficultyEdit: false }));
-                  this.props.updateDifficulty(newvalue, this.props.photoFacts);
-                }}
-              />
-            ) : (
-              <></>
-            )}
-            {/*see if you liked and count of likes*/}
-            <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
-              <p style={{ padding: "10%", fontSize: "1.1vw" }}>{this.props.photoFacts.likeCount}</p>{" "}
-              {/* <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />{" "} */}
+
+            {/* *** For aggregate ratings *** */}
+            <div
+              className="u-flex u-flex-alignCenter"
+              style={{ justifyContent: "space-evenly", width: "100%" }}
+            >
+              <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
+                <button title="Aggregate rating from all users" className="solidButton" disabled>
+                  <HelpIcon style={{ color: "#E4BB24", fontSize: "1.8vw" }} />
+                </button>
+
+                <div>
+                  <span style={{ fontSize: "1.5vw" }}>{othersRating}</span>
+                  <span style={{ fontSize: ".8vw" }}>/5 </span>
+                  <span className="aggregateRating" style={{ fontSize: ".8vw" }}>
+                    ({this.props.photoFacts.difficultyRatings.length}
+                  </span>
+
+                  {this.props.photoFacts.difficultyRatings.length > 1 ? (
+                    <span style={{ fontSize: ".5vw" }}>votes)</span>
+                  ) : (
+                    <span style={{ fontSize: ".5vw" }}>vote)</span>
+                  )}
+                </div>
+              </div>
+              {/* *** For own ratings *** */}
+              <div
+                className="u-flex u-flex-alignCenter u-flex-justifyCenter"
+                style={{ marginRight: "1.7vw" }}
+              >
+                {ownRating === "0" ? (
+                  <button
+                    title="Personal rating"
+                    className="solidButton"
+                    onClick={this.editDifficulty}
+                  >
+                    <HelpIcon style={{ color: "#0099ff", fontSize: "1.8vw", opacity: ".4" }} />
+                  </button>
+                ) : (
+                  <button
+                    title="Personal rating"
+                    className="solidButton"
+                    onClick={this.editDifficulty}
+                  >
+                    <HelpIcon style={{ color: "#0099ff", fontSize: "1.8vw" }} />
+                  </button>
+                )}
+                <span>{ownRating}</span>
+
+                {this.state.enableDifficultyEdit ? (
+                  <StyledRating
+                    precision={1.0}
+                    name="difficultyRating"
+                    icon={<HelpIcon fontSize="inherit" />}
+                    onChange={(event, newvalue) => {
+                      this.setState((prevState) => ({ ...prevState, enableDifficultyEdit: false }));
+                      this.props.updateDifficulty(newvalue, this.props.photoFacts);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+              {/* *** For Like icon *** */}
+              {/*see if you liked and count of likes*/}
+              <div
+                className="u-flex u-flex-alignCenter u-flex-justifyCenter"
+                style={{ marginRight: "1.7vw" }}
+              >
+                {this.props.photoFacts.usersLikingArray
+                  .map((userData) => userData.likingUserId)
+                  .includes(this.props.viewingUserId) ? (
+                  <>
+                    <button
+                      title="Unlike this post"
+                      className="solidButton"
+                      onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        style={{ color: "#0099ff", fontSize: "1.6vw" }}
+                      />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      title="Like this post"
+                      className="solidButton"
+                      onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
+                      />
+                    </button>
+                  </>
+                )}
+                <span style={{ fontSize: "1.5vw" }}>{this.props.photoFacts.likeCount}</span>
+              </div>
+              {/* *** For Lang Translation icon *** */}
+              <div>
+                {!this.props.forQuiz && (
+                  <button
+                    type="button"
+                    className="solidButton"
+                    onClick={this.switchLanguage}
+                    title="Translate posts/comments between English and Spanish"
+                  >
+                    <TranslateIcon style={{ color: "#0099ff", fontSize: "1.8vw" }} />
+                  </button>
+                )}
+              </div>
             </div>
-            {this.props.photoFacts.usersLikingArray
-              .map((userData) => userData.likingUserId)
-              .includes(this.props.viewingUserId) ? (
-              <>
-                <p>You liked</p>
-                <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}>
-                  <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />
-                </button>
-              </>
-            ) : (
-              <>
-                <p>Not liked</p>
-                <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}>
-                  <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#9aeafe" }} />
-                </button>
-              </>
-            )}
-            {/* <p>Quality</p>
-            <Typography component="legend">Quality</Typography> *{PhotoInfo.quality}
-            <Rating
-              precision={0.5}
-              name="qualityRating"
-              value={this.props.photoFacts.quality}
-              icon={<FavoriteIcon fontSize="inherit" />}
-              disabled
-            /> */}
+            {/* ******************* */}
+            {/* ******************* */}
+            {/* ******************* */}
+
             {/* If these ae your own cards, add an option to delete them using code from ImgUpload- credit NewPostInput.js in Catbook and ref 
             https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa* 
             https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag 
@@ -502,23 +561,7 @@ class IndividualFlashcard extends Component {
               ) //Case1B- in quiz and did not yet input answer- show empty tag
             ) : (
               <>
-                <button
-                  type="button"
-                  onClick={this.switchLanguage}
-                  // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-                >
-                  {" "}
-                  <TranslateIcon style={{ color: "#0099ff" }} />
-                  {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
-                  {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
-                  {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
-                  {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
-                </button>
                 {/* //Case 2- not in quiz and then show comments block */}
-
-                {/* ************************* */}
-                {/* ************************* */}
-                {/* ************************* */}
                 {/* this is from catbook*/}
                 <CommentsBlock
                   photo={this.props.photoFacts}

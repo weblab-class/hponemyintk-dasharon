@@ -43,6 +43,6 @@
 
 .Card-commentSection {
   background-color: "#FFFFFF";
-  border: 0.1em solid var(--darkgrey);
+  border: 0.01em solid var(--grey);
   padding: var(--m) var(--l);
 }
