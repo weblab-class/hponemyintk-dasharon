@@ -62,7 +62,6 @@ class FAQ extends Component {
             </Link>{" "}
             has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
           </p>
-
           <p className="questiontext">How can I review my past activity?</p>
           <p className="answertext">
             {" "}
@@ -73,6 +72,18 @@ class FAQ extends Component {
               </Link>
             )}{" "}
             you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of.
+          </p>
+          <p className="questiontext">
+            What are the different ways I can interact with a photo?
+          </p>
+          <p className="answertext">
+            You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo.
+          </p>
+          <p className="questiontext">
+            How can I control whether I see tags/text in English or Spanish?
+          </p>
+          <p className="answertext">
+          When viewing (in Social or Review), you can select the translation icon to flip between viewing in English and in Spanish. The tag text below the image will be in one language, and the tag text on the image will be in the other language.
           </p>
           <p className="questiontext">
             What if I see troubling or inappropriate content uploaded by another user?

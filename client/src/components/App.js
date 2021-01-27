@@ -91,7 +91,7 @@ class App extends Component {
     const userToken = res.tokenObj.id_token;
     post("/api/login", { token: userToken })
       .then((user) => {
-        this.setState({ userId: user._id });
+        this.setState({ userId: user._id, username: user.name });
         post("/api/initsocket", { socketid: socket.id });
       })
       .then(() => navigate("/Home_Page"));

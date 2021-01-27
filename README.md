@@ -1,33 +1,47 @@
-This document has the questions and answers on our home page and also has citations for key code/package sources, as well as the initial text from the web.lab README file. We thank the web.lab instructors and Dr. Anindya Roy for all of their help and advice!
+This document has the questions and answers on our FAQ page and also has citations for key code/package sources, as well as the initial text from the web.lab README file. We thank the web.lab instructors and test users for all of their help and advice!
 
 ### What is WeWorld?
 
-WeWorld enables you to learn a language through your and others' photos. As you relate the language to your life through photo tags, you will learn and have fun!<br/>
+WeWorld enables you to learn a language through your and others' photos. (Currently only Spanish is supported.) As you relate
+the language to your life through photo tags, you will learn and have fun!
 
-Nice! I am excited to put my selfies to educational use. How can I get started learning from my photos?<br/>
-On the Upload page, you upload your photos and add tags (currently you have to supply the translation, and we are hoping to implement translation!).<br/>
+### Nice! I am excited to put my selfies to educational use. How can I get started learning from my photos?
 
-### Are my photos private?
+On the Upload page, you upload your photos and add tags in your native language or the language in which
+you feel most comfortable learning. A translation will be provided for you and placed in
+the tag, along with your original input! You can also rate the photo's difficulty, like the photo, and add a caption (which will be translated as well).
 
-Please note currently all users can see everyone's content given this is an early testing version of the website. So please do not share any image or text you do not want shared publicly. Also your timestamp of use and name are recorded and associated with your image.
+### Are my photos private?</p>
 
-### So once my photos are uploaded, how can I review them?
+Please note all users can see everyone's content. So please do not share any image or text you do not want shared publicly. Also your timestamp of use and name are recorded and associated with your image.
 
-On the Review page you can scroll through all of your photos and review words- as well as your memories.
+### I want a challenge and to really learn. Can I test myself?
 
-### I'm excited to review, but I want a challenge and to really learn. Can I test myself?
+Our Quizzes page has questions to test your knowledge, where you will have to pick the word corresponding to a tag in a photo.
 
-You will soon be able to! Our Quizzes page shows the quiz module (right now with a sample history lesson) which we hope to implement, where you will have to pick the word corresponding to a tag in a photo.
+### Now, you also said this is social? Can I see my friends' adorable pet pictures and learn from them?
 
-### Now, you also said this is social? Can I see my friends' adorable pet\* pictures and learn from them?
+Yup! The Social page has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
 
-Yup! The Social page shows a photo for each WeWorld user and has a link for you to see all of their photos.
+### How can I review my past activity?
+
+On the Review page you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of.
+
+### What are the different ways I can interact with a photo?
+
+You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo.
+
+### How can I control whether I see tags/text in English or Spanish?
+
+When viewing (in Social or Review), you can select the translation icon to flip between viewing in English and in Spanish. The tag text below the image will be in one language, and the tag text on the image will be in the other language.
 
 ### What if I see troubling or inappropriate content uploaded by another user?
 
-WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at weblab2021@gmail.com, so we can look into and address your concern.
+WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at weblab2021 at gmail.com, so we can look into and address your concern.
 
-\*WeWorld likes animals of all kinds, including both cats and dogs!
+### How did WeWorld come about?</p>
+
+WeWorld is our MIT web.lab course project. We are very grateful to the course team and our test users for their help and advice with this project!
 
 ### Keys modules/code sources which we used from other sources are:
 
@@ -38,6 +52,7 @@ WeWorld wants to ensure it is a welcoming and inclusive website. Please email us
 - Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
 - References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
 - Google Translate: https://cloud.google.com/translate/docs/basic/quickstart
+- We took icons from Material-UI (https://material-ui.com/components/material-icons/), fontawesome (https://fontawesome.com), and favicon (https://favicon.io/emoji-favicons/globe-showing-americas)
 
 #Below information is from the course team and was in the initial README.md:
 
