@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
 import "./LandingPage.css";
+import ReactAnnotate from "./ReactAnnotate.js";
 
 class Skeleton extends Component {
   constructor(props) {
