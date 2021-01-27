@@ -32,7 +32,7 @@ class Friends_1251 extends Component {
       },
       loading: true
     };
-    this.filterLabels = ["Get 1 from each user", "Most Difficult",  "Most Liked", "Most commented"]; //removed due to mongoose issue "Least Difficult",
+    this.filterLabels = ["Get 1 from Each User", "Most Difficult",  "Most Liked", "Most Commented"]; //removed due to mongoose issue "Least Difficult",
   }
 
   // remember -- api calls go here!, get call adapted from catbook

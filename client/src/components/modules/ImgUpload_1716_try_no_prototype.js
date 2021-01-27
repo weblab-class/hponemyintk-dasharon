@@ -560,7 +560,7 @@ isOpen={
             <>
               <button
                 type="button"
-                title="Attached a picture first to enable this upload button!"
+                title="Attach a picture first to enable this upload button!"
                 className="disabledButton saveIcon"
                 disabled
               >
