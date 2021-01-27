@@ -15,8 +15,8 @@ https://material-ui.com/api/rating/
 https://medium.com/@weberzt/creating-a-rating-feature-using-react-js-and-material-ui-f6e18652f602
 */
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import HelpIcon from '@material-ui/icons/Help';
-import TranslateIcon from '@material-ui/icons/Translate';
+import HelpIcon from "@material-ui/icons/Help";
+import TranslateIcon from "@material-ui/icons/Translate";
 import Rating from "@material-ui/lab/Rating";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -163,6 +163,11 @@ class IndividualFlashcard extends Component {
         this.answerArray = this.createAnswerArray();
         this.createAnswerArrayFlag = false;
       }
+      console.log(
+        "In if but not in nested if this.props.wasAnswerInput,this.createAnswerArrayFlag",
+        this.props.wasAnswerInput,
+        this.createAnswerArrayFlag
+      );
       return (
         <>
           <p>
@@ -283,23 +288,23 @@ class IndividualFlashcard extends Component {
     });
   };
 
-    //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
-    switchLanguage = (event) => {
-      this.setState({showInNativeLanguage : !this.state.showInNativeLanguage});
-      // ss
-      //Flip the tags and printout languages in each annotation for each photo
-      // for (let pp = 0; pp < this.state.photo_info_array.length; pp++) 
-      // {
-      //   for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
-      //   {
-      //     const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
-      //     const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
-      //     this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
-      //     this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
-      //     console.log("in inner loop");
-      //   }
-      // }
-    };
+  //on click flip to show in either native language or language learning ref https://stackoverflow.com/questions/12772494/how-to-get-opposite-boolean-value-of-variable-in-javascript/12772502
+  switchLanguage = (event) => {
+    this.setState({ showInNativeLanguage: !this.state.showInNativeLanguage });
+    // ss
+    //Flip the tags and printout languages in each annotation for each photo
+    // for (let pp = 0; pp < this.state.photo_info_array.length; pp++)
+    // {
+    //   for (let aa = 0; aa < this.state.photo_info_array[pp].annotation_info_array.length; aa++)
+    //   {
+    //     const initialTag = this.state.photo_info_array[pp].annotation_info_array[aa].data.text;
+    //     const initialText = this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox;
+    //     this.state.photo_info_array[pp].annotation_info_array[aa].data.text = initialText;
+    //     this.state.photo_info_array[pp].annotation_info_array[aa].data.textforBox = initialTag;
+    //     console.log("in inner loop");
+    //   }
+    // }
+  };
 
   //give info on a first photo, now as text, would want to translate to picture/rating/annotation/etc.
   //this.props.photoFacts, this.props.ownPhoto
@@ -325,17 +330,17 @@ class IndividualFlashcard extends Component {
     //Set average user rating and whether to show "rating" or "ratings"
     let othersRating = "n/a";
     let othersRatingCountText = "Ratings";
-    if (this.props.photoFacts.difficultyRatings.length > 0)
-    {
+    if (this.props.photoFacts.difficultyRatings.length > 0) {
       othersRating = Math.round(this.props.photoFacts.difficulty * 10) / 10;
     }
-    if (this.props.photoFacts.difficultyRatings.length === 1)
-    {
+    if (this.props.photoFacts.difficultyRatings.length === 1) {
       othersRatingCountText = "Rating";
     }
 
     let langSwitchText = "Show comments and captions in language learning!";
-    if (this.state.showInNativeLanguage === false) {langSwitchText = "Show comments and captions in English!"}
+    if (this.state.showInNativeLanguage === false) {
+      langSwitchText = "Show comments and captions in English!";
+    }
     //multiple classes https://stackoverflow.com/questions/11918491/using-two-css-classes-on-one-element https://dev.to/drews256/ridiculously-easy-row-and-column-layouts-with-flexbox-1k01 helped with row and column, other refs in css file
     return (
       <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
@@ -378,22 +383,26 @@ class IndividualFlashcard extends Component {
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
               </>
             )}
-
             {/*info on ratings*/}
             {/* <Typography component="legend">Difficulty</Typography> {PhotoInfo.difficulty} */}
-
+            <p>Difficulty (all users)</p>
+            <HelpIcon style={{ color: "#0099ff" }} />{" "}
+            {/*ref https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript*/}
             <p>
-              Difficulty (all users)</p> 
-              <HelpIcon style={{color:"#0099ff"}}/> {/*ref https://stackoverflow.com/questions/7342957/how-do-you-round-to-1-decimal-place-in-javascript*/}
-              <p>{othersRating} (
-              {this.props.photoFacts.difficultyRatings.length} {" "} {othersRatingCountText})</p> 
-                <p>Difficulty (own)</p>
-              <p>{ownRating}
+              {othersRating} ({this.props.photoFacts.difficultyRatings.length}{" "}
+              {othersRatingCountText})
             </p>
-            {ownRating === "n/a" ?
-            (<button onClick={this.editDifficulty}><HelpIcon style={{color:"#9aeafe"}}/></button>) : (<button onClick={this.editDifficulty}><HelpIcon style={{color:"#0099ff"}}/></button>)
-  }
-            
+            <p>Difficulty (own)</p>
+            <p>{ownRating}</p>
+            {ownRating === "n/a" ? (
+              <button onClick={this.editDifficulty}>
+                <HelpIcon style={{ color: "#9aeafe" }} />
+              </button>
+            ) : (
+              <button onClick={this.editDifficulty}>
+                <HelpIcon style={{ color: "#0099ff" }} />
+              </button>
+            )}
             {this.state.enableDifficultyEdit ? (
               <StyledRating
                 precision={1.0}
@@ -414,30 +423,25 @@ class IndividualFlashcard extends Component {
               //   disabled
               // />
             )}
-            
-
             {/*see if you liked and count of likes*/}
-            <div className = "u-flex u-flex-justifyCenter u-flex-alignCenter">
-            <p style = {{padding: "10%", fontSize: "1.1vw"}}>{this.props.photoFacts.likeCount} 
-            
-            </p> <FontAwesomeIcon icon={faThumbsUp}
-                  style={{ color: "#0099ff"}}/> </div>
+            <div className="u-flex u-flex-justifyCenter u-flex-alignCenter">
+              <p style={{ padding: "10%", fontSize: "1.1vw" }}>{this.props.photoFacts.likeCount}</p>{" "}
+              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />{" "}
+            </div>
             {this.props.photoFacts.usersLikingArray
               .map((userData) => userData.likingUserId)
               .includes(this.props.viewingUserId) ? (
               <>
                 <p>You liked</p>
                 <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}>
-                <FontAwesomeIcon icon={faThumbsUp}
-                  style={{ color: "#0099ff"}}/> 
+                  <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#0099ff" }} />
                 </button>
               </>
             ) : (
               <>
                 <p>Not liked</p>
                 <button onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}>
-                <FontAwesomeIcon icon={faThumbsUp}
-                  style={{ color: "#9aeafe"}}/> 
+                  <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#9aeafe" }} />
                 </button>
               </>
             )}
@@ -472,7 +476,6 @@ class IndividualFlashcard extends Component {
             ) : (
               <p></p>
             )}
-
             {/*if this is a quiz and an answer was selected, add a next button
             if this is a quiz and an answer is not selected, no next button
             if this is not a quiz then have comments block*/}
@@ -502,26 +505,29 @@ class IndividualFlashcard extends Component {
                   />
                 </button>
               ) //Case1B- in quiz and did not yet input answer- show empty tag
-            ) : (<>
-              <button
-              type="button"
-              onClick={this.switchLanguage}
-              // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
-            > <TranslateIcon style={{color:"#0099ff"}}/>
-              {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
-              {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
-              {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
-              {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
-            </button>
-              {/* //Case 2- not in quiz and then show comments block
-              /*this is from catbook*/ }
-              <CommentsBlock
-                photo={this.props.photoFacts}
-                comments={this.state.comments}
-                addNewComment={this.addNewComment}
-                viewingUserId={this.props.viewingUserId}
-                showInNativeLanguage={this.state.showInNativeLanguage}
-              />
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={this.switchLanguage}
+                  // style={{ border: "none", backgroundColor: "transparent" }}     //no longer need this as now styling with Image_aesthetics.css
+                >
+                  {" "}
+                  <TranslateIcon style={{ color: "#0099ff" }} />
+                  {/* <FontAwesomeIcon icon={faTrashAlt} style={{ color: "#0099ff" }} /> */}
+                  {/* <FontAwesomeIcon icon={faTimesCircle} size="3x" style={{ color: "#0099ff" }} /> */}
+                  {/* <FontAwesomeIcon icon={faTimes} size="3x" style={{ color: "#0099ff" }} /> */}
+                  {/* <FontAwesomeIcon icon={["fas", "sign-out-alt"]} fixedWidth /> */}
+                </button>
+                {/* //Case 2- not in quiz and then show comments block
+              /*this is from catbook*/}
+                <CommentsBlock
+                  photo={this.props.photoFacts}
+                  comments={this.state.comments}
+                  addNewComment={this.addNewComment}
+                  viewingUserId={this.props.viewingUserId}
+                  showInNativeLanguage={this.state.showInNativeLanguage}
+                />
               </>
             )}
           </div>
