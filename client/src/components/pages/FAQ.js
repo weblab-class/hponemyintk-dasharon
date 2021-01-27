@@ -50,7 +50,7 @@ class FAQ extends Component {
             photo.
           </p>
           <p className="questiontext">
-            Now, you also said this is social? Can I see my friends' adorable pet* pictures and
+            Now, you also said this is social? Can I see my friends' adorable pet<sup>*</sup> pictures and
             learn from them?
           </p>
           
@@ -60,7 +60,7 @@ class FAQ extends Component {
               {" "}
               Social page{" "}
             </Link>{" "}
-            has other WeWorld users' photos. There are several different viewing settings (including most liked, easiest/hardest, and most commented), and you can also see all of a user's photos by navigating to their page.
+            has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
           </p>
 
           <p className="questiontext">How can I review my past activity?</p>
@@ -72,7 +72,7 @@ class FAQ extends Component {
                 Review page
               </Link>
             )}{" "}
-            you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of
+            you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of.
           </p>
           <p className="questiontext">
             What if I see troubling or inappropriate content uploaded by another user?
@@ -91,7 +91,7 @@ class FAQ extends Component {
             course project. We are very grateful to the course team and our test users for their
             help and advice with this project!
           </p>
-          <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
+          <p><sup>*</sup>WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>
         </div>
       </div>
