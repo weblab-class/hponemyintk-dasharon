@@ -50,7 +50,6 @@ class IndividualFlashcard extends Component {
       showInNativeLanguage: false,
     };
     this.answerArray = [];
-    this.createAnswerArrayFlag = true; //check whether you have created an answer array already
   }
   //post request to delete the relevant photo
   //many thanks to Jess for help revising to exclude target.value which is not ideal in hackathon
@@ -157,19 +156,19 @@ class IndividualFlashcard extends Component {
 
     // const tmpCopy = clonedeep(answerArrayrec); //ref https://flaviocopes.com/how-to-clone-javascript-object/
     if (!this.props.wasAnswerInput) {
-      if (this.createAnswerArrayFlag) {
+      if (this.props.regenAnsFlag) {
         console.log(
-          "this.props.wasAnswerInput,this.createAnswerArrayFlag",
+          "this.props.wasAnswerInput,this.props.regenAnsFlag",
           this.props.wasAnswerInput,
-          this.createAnswerArrayFlag
+          this.props.regenAnsFlag
         );
         this.answerArray = this.createAnswerArray();
-        this.createAnswerArrayFlag = false;
+        this.props.setRegenFlag(false);
       }
       console.log(
-        "In if but not in nested if this.props.wasAnswerInput,this.createAnswerArrayFlag",
+        "In if but not in nested if this.props.wasAnswerInput,this.props.regenAnsFlag",
         this.props.wasAnswerInput,
-        this.createAnswerArrayFlag
+        this.props.regenAnsFlag
       );
       return (
         <>
@@ -192,11 +191,10 @@ class IndividualFlashcard extends Component {
       );
     } else {
       console.log(
-        "123this.props.wasAnswerInput,this.createAnswerArrayFlag",
+        "123this.props.wasAnswerInput,this.props.regenAnsFlag",
         this.props.wasAnswerInput,
-        this.createAnswerArrayFlag
+        this.props.regenAnsFlag
       );
-      this.createAnswerArrayFlag = true;
       return (
         <>
           <p>
@@ -370,20 +368,16 @@ class IndividualFlashcard extends Component {
             {/* <div> */}
             {/*caption if not in quiz mode, otherwise show quiz questions
             only enable links in social to prevent bug from switching profiles */}
-            {!this.props.forQuiz ? ( 
+            {!this.props.forQuiz ? (
               <>
-                <p className="profiletext">
-                  {this.props.photoFacts.uname}
-                </p>
+                <p className="profiletext">{this.props.photoFacts.uname}</p>
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
                 {this.showCaption()}
               </>
             ) : (
               <>
                 <>{this.showQuizInfo()}</>
-                <p className="profiletext">
-                  {this.props.photoFacts.uname}
-                </p>
+                <p className="profiletext">{this.props.photoFacts.uname}</p>
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
               </>
             )}
@@ -398,7 +392,11 @@ class IndividualFlashcard extends Component {
               style={{ justifyContent: "space-between", width: "100%" }}
             >
               <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
-                <button title="Aggregate difficulty rating from all users" className="solidButton" disabled>
+                <button
+                  title="Aggregate difficulty rating from all users"
+                  className="solidButton"
+                  disabled
+                >
                   <HelpIcon style={{ color: "#E4BB24", fontSize: "1.8vw" }} />
                 </button>
 

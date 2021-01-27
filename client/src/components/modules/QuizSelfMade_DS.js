@@ -21,6 +21,7 @@ class QuizSelfMade_DS extends Component {
       showResult: false,
       // for counting correct/inccorect stat in quiz and progress bar
       wasAnswerInput: false,
+      regenAnsFlag: true, //check whether you have created an answer array already
       curAnsInfo: [],
       clickedAns: "",
       readings: [
@@ -176,6 +177,10 @@ class QuizSelfMade_DS extends Component {
     };
   } // end constructor
 
+  setRegenFlag = (bool) => {
+    this.setState({ regenAnsFlag: bool });
+  };
+
   //change filter values
   handleFilters = (event) => {
     event.preventDefault();
@@ -195,6 +200,7 @@ class QuizSelfMade_DS extends Component {
         loaded: false,
         showResult: false,
         wasAnswerInput: false,
+        regenAnsFlag: true,
         curAnsInfo: [],
       },
       this.imageLoad
@@ -213,7 +219,7 @@ class QuizSelfMade_DS extends Component {
         this.state.readings[3].value - 1
       );
     this.movetoNextPhoto();
-    this.setState({ wasAnswerInput: false });
+    this.setState({ wasAnswerInput: false, regenAnsFlag: true });
   };
 
   handleFinish = () => {
@@ -238,7 +244,7 @@ class QuizSelfMade_DS extends Component {
         this.state.readings[3].value
     );
     // console.log("In quiz Retake, this.state.readings", this.state.readings);
-    this.setState({ isDone: false, showResult: false, wasAnswerInput: false });
+    this.setState({ isDone: false, showResult: false, wasAnswerInput: false, regenAnsFlag: true });
   };
 
   handleNewQuiz = () => {
@@ -250,6 +256,7 @@ class QuizSelfMade_DS extends Component {
       loaded: false,
       showResult: false,
       wasAnswerInput: false,
+      regenAnsFlag: true,
       curAnsInfo: [],
     });
     this.updateProgress(0, 0, 0, 1);
@@ -259,6 +266,7 @@ class QuizSelfMade_DS extends Component {
   handleClick = (ansString, corAns) => {
     this.setState({
       wasAnswerInput: true,
+      regenAnsFlag: false,
       curAnsInfo: [ansString.text === corAns, ansString.text],
       clickedAns: ansString.text,
     }); //Color answers by whether or not they are correct
@@ -383,19 +391,19 @@ class QuizSelfMade_DS extends Component {
               ].photoData.photo_placeholder), //fix photo
               //placeholder so don't repeat mongoose call/more gcp calls
               (newDataset[pp].photoData.usersLikingArray = photoUpdated.usersLikingArray);
-              //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
-              // console.log(
-              //   "UPDATED",
-              //   newDataset[pp].photoData._id,
-              //   "ENTRY",
-              //   pp,
-              //   "GEOM",
-              //   newDataset[pp].photoData.annotation_info_array[0].geometry,
-              //   "LEARNING LANGUAGE tag",
-              //   newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag,
-              //   "CORRECT",
-              //   newDataset[pp].correctAnswer
-              // );
+            //newDataset[pp].photoData.annotation_info_array = this.state.dataSet[pp].photoData.annotation_info_array //fix annotations so only one per photo
+            // console.log(
+            //   "UPDATED",
+            //   newDataset[pp].photoData._id,
+            //   "ENTRY",
+            //   pp,
+            //   "GEOM",
+            //   newDataset[pp].photoData.annotation_info_array[0].geometry,
+            //   "LEARNING LANGUAGE tag",
+            //   newDataset[pp].photoData.annotation_info_array[0].data.learningLanguageTag,
+            //   "CORRECT",
+            //   newDataset[pp].correctAnswer
+            // );
           }
         }
         this.setState({ dataSet: newDataset });
@@ -1070,45 +1078,47 @@ class QuizSelfMade_DS extends Component {
         {this.state.showResult ? (
           <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
             <div className="postColumn u-flex-justifyCenter u-flex-alignCenter">
-            <ReactAnnotate
-                  allowEdits={false}
-                  img_using="/public/images/Thumbsup1.png"
-                  alt="Thumbs up image"
-                  onTagSubmit={this.onTagSubmit}
-                  annotationslst={[{
-                    "geometry": {
-                      "x": 3.690957394330438,
-                      "y": 9.415243588659273,
-                      "width": 41.06337645682867,
-                      "height": 82.9297045934702,
-                      "type": "RECTANGLE"
-                    },
-                    "data": {
-                      "text": "¡Felicitaciones por terminar el cuestionario!",
-                      "textforBox": "Congratulations on finishing the quiz!",
-                      "nativeLanguageTag": "Congratulations on finishing the quiz!",
-                      "learningLanguageTag": "¡Felicitaciones por terminar el cuestionario!",
-                      "id": 0.8823110495256273
-                    }
-                  },
-                  
+              <ReactAnnotate
+                allowEdits={false}
+                img_using="/public/images/Thumbsup1.png"
+                alt="Thumbs up image"
+                onTagSubmit={this.onTagSubmit}
+                annotationslst={[
                   {
-                    "geometry": {
-                      "x": 54.72347726842387,
-                      "y": 11.789721369274208,
-                      "width": 43.67434258992183,
-                      "height": 79.38570870958011,
-                      "type": "RECTANGLE"
+                    geometry: {
+                      x: 3.690957394330438,
+                      y: 9.415243588659273,
+                      width: 41.06337645682867,
+                      height: 82.9297045934702,
+                      type: "RECTANGLE",
                     },
-                    "data": {
-                      "text": "¡Lo hiciste!",
-                      "textforBox": "You did it!",
-                      "nativeLanguageTag": "You did it!",
-                      "learningLanguageTag": "¡Lo hiciste!",
-                      "id": 0.3233378553013361
-                    }
-                  }]}
-                />
+                    data: {
+                      text: "¡Felicitaciones por terminar el cuestionario!",
+                      textforBox: "Congratulations on finishing the quiz!",
+                      nativeLanguageTag: "Congratulations on finishing the quiz!",
+                      learningLanguageTag: "¡Felicitaciones por terminar el cuestionario!",
+                      id: 0.8823110495256273,
+                    },
+                  },
+
+                  {
+                    geometry: {
+                      x: 54.72347726842387,
+                      y: 11.789721369274208,
+                      width: 43.67434258992183,
+                      height: 79.38570870958011,
+                      type: "RECTANGLE",
+                    },
+                    data: {
+                      text: "¡Lo hiciste!",
+                      textforBox: "You did it!",
+                      nativeLanguageTag: "You did it!",
+                      learningLanguageTag: "¡Lo hiciste!",
+                      id: 0.3233378553013361,
+                    },
+                  },
+                ]}
+              />
               <h1 className="u-textCenter">
                 Congrats, you are done with the quiz!!! Your score is{" "}
                 {Math.round(
@@ -1181,6 +1191,8 @@ class QuizSelfMade_DS extends Component {
                 updateDifficulty={this.updateDifficulty}
                 viewingUserId={this.props.userId}
                 updateLikes={this.updateLikes}
+                setRegenFlag={this.setRegenFlag}
+                regenAnsFlag={this.state.regenAnsFlag}
               />
             )
           ) : (
