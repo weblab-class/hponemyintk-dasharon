@@ -34,8 +34,8 @@ class View_Flashcards extends Component {
     this.state = {
       photo_info_array: [], //this is a photo info array
       userName: "Someone",
-      requestingUserId: "User_Requesting",
-      requestingUserName: "UserName_Requesting",
+      // requestingUserId: "User_Requesting",
+      // requestingUserName: "UserName_Requesting",
       // showInNativeLanguage: false,
       userLiked: [],
       userCommented: [],
@@ -124,14 +124,14 @@ class View_Flashcards extends Component {
       //console.log("USER INFO IS", userInfo[0]);
     });
 
-    //Find requesting user
-    get("/api/whoami").then((user) => {
-      if (user._id) {
-        // if they are registed in the database then set
-        this.setState({ requestingUserId: user._id, requestingUserName: user.name });
-        //this.setFilters();
-      }
-    });
+    // //Find requesting user
+    // get("/api/whoami").then((user) => {
+    //   if (user._id) {
+    //     // if they are registed in the database then set
+    //     this.setState({ requestingUserId: user._id, requestingUserName: user.name });
+    //     //this.setFilters();
+    //   }
+    // });
   };
 
   //Find photos
@@ -340,7 +340,7 @@ class View_Flashcards extends Component {
   //update filters
   setFilters = () => {
     let filterLabels = [];
-    if (this.state.requestingUserId === this.props.userId) {
+    if (this.props.requestingUserId === this.props.userId) {
       filterLabels = [
         "All my photos",
         "My rated most difficult",
@@ -368,7 +368,7 @@ class View_Flashcards extends Component {
     //let ownCards = null; //will use to see if these are your own cards
     let userNameToShow = ""; //username to display
     {
-      this.state.requestingUserId === this.props.userId
+      this.props.requestingUserId === this.props.userId
         ? (userNameToShow = this.state.userName + " (Me)")
         : (userNameToShow = this.state.userName);
     }
@@ -454,10 +454,10 @@ class View_Flashcards extends Component {
                   key={p._id}
                   deletionFunction={this.deletefromPhotoArray}
                   photoFacts={p}
-                  ownPhoto={this.state.requestingUserId === p.uid}
+                  ownPhoto={this.props.requestingUserId === p.uid}
                   onlyOne={false}
                   hasLooped={false}
-                  viewingUserId={this.state.requestingUserId}
+                  viewingUserId={this.props.requestingUserId}
                   updateDifficulty={this.updateDifficulty}
                   updateLikes={this.updateLikes}
                 />
