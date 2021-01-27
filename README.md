@@ -48,11 +48,12 @@ WeWorld is our MIT web.lab course project. We are very grateful to the course te
 - web.lab catbook code: https://github.com/weblab-workshops/catbook-react, including comments portion
 - Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
 - react-image-annotation: https://www.npmjs.com/package/react-image-annotation
-- SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
+- We looked into SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010
 - Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
 - References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
 - Google Translate: https://cloud.google.com/translate/docs/basic/quickstart
 - We took icons from Material-UI (https://material-ui.com/components/material-icons/), fontawesome (https://fontawesome.com), and favicon (https://favicon.io/emoji-favicons/globe-showing-americas)
+- We are using React: https://reactjs.org
 
 #Below information is from the course team and was in the initial README.md:
 

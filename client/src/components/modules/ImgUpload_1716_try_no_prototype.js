@@ -246,7 +246,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         translatedCaption: translatedString.output[0],
         submittedCaption: true,
         originalCaption: originalLanguageCaption,
-      }),
+      });
         // console.log(translatedString.output[0]);
     });
   };

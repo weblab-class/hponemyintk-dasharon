@@ -336,6 +336,7 @@ class Friends_1251 extends Component {
             // showInNativeLanguage={this.state.showInNativeLanguage}
             updateDifficulty={this.updateDifficulty}
             updateLikes={this.updateLikes}
+            fromFriends={true}
           />
         ))}
       </div>

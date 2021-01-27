@@ -5,6 +5,7 @@ import SingleComment from "./SingleComment.js";
 import { NewComment } from "./NewComment.js";
 import "./CommentHover.css";
 import { get } from "../../utilities";
+
 /**
  * @typedef ContentObject
  * @property {string} _id of story/comment
@@ -87,6 +88,7 @@ class CommentsBlock extends Component {
                 contentTranslated={comment.contentTranslated}
                 contentOriginal={comment.contentOriginal}
                 showInNativeLanguage={this.props.showInNativeLanguage}
+                fromFriends={this.props.fromFriends}
               />
             ))}
           </div>

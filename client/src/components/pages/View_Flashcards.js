@@ -80,6 +80,7 @@ class View_Flashcards extends Component {
   //redo get request if previously failed, many thanks to Nikhil for explaining in 1/15 office hours
   componentDidUpdate(prevProps) {
     if (this.props.userId && prevProps.userId !== this.props.userId) {
+      console.log("UPDATE")
       this.userInfoLoad();
       this.imageLoad();
       this.filterLabels = this.setFilters(); //update filters
@@ -344,7 +345,7 @@ class View_Flashcards extends Component {
       filterLabels = [
         "All my photos",
         "My rated most difficult",
-        "My rated least difficult",
+        //"My rated least difficult",
         "My personal favorites",
         "Photos I commented on",
       ];
@@ -460,6 +461,7 @@ class View_Flashcards extends Component {
                   viewingUserId={this.props.requestingUserId}
                   updateDifficulty={this.updateDifficulty}
                   updateLikes={this.updateLikes}
+                  fromFriends={false}
                 />
               ))}
             </div>

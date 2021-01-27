@@ -368,21 +368,22 @@ class IndividualFlashcard extends Component {
           {/* info on submission-user nam link to profileandddate*/}
           <div className="postRight">
             {/* <div> */}
-            {/*caption if not in quiz mode, otherwise show quiz questions */}
-            {!this.props.forQuiz ? (
+            {/*caption if not in quiz mode, otherwise show quiz questions
+            only enable links in social to prevent bug from switching profiles */}
+            {!this.props.forQuiz ? ( 
               <>
-                <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
+                <p className="profiletext">
                   {this.props.photoFacts.uname}
-                </Link>
+                </p>
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
                 {this.showCaption()}
               </>
             ) : (
               <>
                 <>{this.showQuizInfo()}</>
-                <Link to={"/Flashcards/" + this.props.photoFacts.uid} className="profiletext">
+                <p className="profiletext">
                   {this.props.photoFacts.uname}
-                </Link>
+                </p>
                 <p className="dateText">{this.props.photoFacts.submit_stamp}</p>
               </>
             )}
@@ -397,7 +398,7 @@ class IndividualFlashcard extends Component {
               style={{ justifyContent: "space-between", width: "100%" }}
             >
               <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
-                <button title="Aggregate rating from all users" className="solidButton" disabled>
+                <button title="Aggregate difficulty rating from all users" className="solidButton" disabled>
                   <HelpIcon style={{ color: "#E4BB24", fontSize: "1.8vw" }} />
                 </button>
 
@@ -422,7 +423,7 @@ class IndividualFlashcard extends Component {
               >
                 {ownRating === "0" ? (
                   <button
-                    title="Personal rating"
+                    title="Personal difficulty rating"
                     className="solidButton"
                     onClick={this.editDifficulty}
                   >
@@ -430,7 +431,7 @@ class IndividualFlashcard extends Component {
                   </button>
                 ) : (
                   <button
-                    title="Personal rating"
+                    title="Personal difficulty rating"
                     className="solidButton"
                     onClick={this.editDifficulty}
                   >
@@ -605,6 +606,7 @@ class IndividualFlashcard extends Component {
                   addNewComment={this.addNewComment}
                   viewingUserId={this.props.viewingUserId}
                   showInNativeLanguage={this.state.showInNativeLanguage}
+                  fromFriends={this.props.fromFriends}
                 />
               </>
             )}

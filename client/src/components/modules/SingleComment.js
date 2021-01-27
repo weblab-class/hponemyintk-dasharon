@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
 import "./CommentHover.css";
+import "./Image_aesthetics.css";
 
 /**
  * Component to render a single comment
@@ -22,9 +23,9 @@ class SingleComment extends Component {
   render() {
     return (
       <div className="Card-commentBody">
-        <Link to={`/Flashcards/${this.props.creator_id}`} className="u-link u-bold">
+        <p className="profiletext">
           {this.props.creator_name}
-        </Link>
+        </p>
         {/*user decides whether to show in native language*/}
         {this.props.showInNativeLanguage ? (
           <>
