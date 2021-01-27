@@ -28,7 +28,7 @@ import CommentsBlock from "./CommentsBlock.js"; //comments from catbook
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
-import { faFlagCheckered, faThumbsUp, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import { faFlagCheckered, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 //this gives 1 flashcard
 const StyledRating = withStyles({
@@ -457,7 +457,10 @@ class IndividualFlashcard extends Component {
               {/* *** For Like icon *** */}
               {/*see if you liked and count of likes*/}
               {this.props.forQuiz ? (
-                <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
+                <div
+                  className="u-flex u-flex-alignCenter u-flex-justifyCenter"
+                  style={{ marginRight: "0vw" }}
+                >
                   {this.props.photoFacts.usersLikingArray
                     .map((userData) => userData.likingUserId)
                     .includes(this.props.viewingUserId) ? (
@@ -482,7 +485,7 @@ class IndividualFlashcard extends Component {
                       >
                         <FontAwesomeIcon
                           icon={faThumbsUp}
-                          style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
+                          style={{ color: "#0099ff", fontSize: "1.6vw", opacity: ".4" }}
                         />
                       </button>
                     </>
@@ -518,7 +521,7 @@ class IndividualFlashcard extends Component {
                       >
                         <FontAwesomeIcon
                           icon={faThumbsUp}
-                          style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
+                          style={{ color: "#0099ff", fontSize: "1.6vw", opacity: ".4" }}
                         />
                       </button>
                     </>
