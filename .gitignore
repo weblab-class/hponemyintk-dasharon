@@ -8,3 +8,4 @@ Test_Upload.js
 google_cloud_credentials.json
 Old_Files/
 FigureCaps
+client/src/components/modules/IndividualFlashcard.js
