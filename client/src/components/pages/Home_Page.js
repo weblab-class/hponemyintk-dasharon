@@ -5,6 +5,7 @@ import "./Skeleton.css";
 import "./HomePage.css";
 import { get, post } from "../../utilities";
 import ReactAnnotate from "../modules/ReactAnnotate.js";
+import Goodbye from  "./Goodbye.js"
 
 class Home_Page extends Component {
   constructor(props) {
@@ -237,7 +238,7 @@ class Home_Page extends Component {
   //};
 
   render() {
-    if (!this.props.userId) return <div>Goodbye! Thank you so much for using Weworld.</div>; //login protect
+    if (!this.props.userId) return <div><Goodbye/></div>; //login protect
     //tried https://www.w3schools.com/html/html_lists.asp for list but then decided not
     return (
       <div className="u-flex u-flex-justifyCenter">

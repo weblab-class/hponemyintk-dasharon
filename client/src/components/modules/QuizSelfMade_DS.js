@@ -1069,11 +1069,44 @@ class QuizSelfMade_DS extends Component {
         {this.state.showResult ? (
           <div className="u-flex u-flex-justifyCenter" style={{ width: "100%" }}>
             <div className="postColumn u-flex-justifyCenter u-flex-alignCenter">
-              <img
-                src="https://agilites.com/images/news/news-congrads-kkluyshnik-02-04-19.jpg"
-                height="auto"
-                width="70%"
-              />
+            <ReactAnnotate
+                  allowEdits={false}
+                  img_using="/public/images/Thumbsup1.png"
+                  onTagSubmit={this.onTagSubmit}
+                  annotationslst={[{
+                    "geometry": {
+                      "x": 3.690957394330438,
+                      "y": 9.415243588659273,
+                      "width": 41.06337645682867,
+                      "height": 82.9297045934702,
+                      "type": "RECTANGLE"
+                    },
+                    "data": {
+                      "text": "¡Felicitaciones por terminar el cuestionario!",
+                      "textforBox": "Congratulations on finishing the quiz!",
+                      "nativeLanguageTag": "Congratulations on finishing the quiz!",
+                      "learningLanguageTag": "¡Felicitaciones por terminar el cuestionario!",
+                      "id": 0.8823110495256273
+                    }
+                  },
+                  
+                  {
+                    "geometry": {
+                      "x": 54.72347726842387,
+                      "y": 11.789721369274208,
+                      "width": 43.67434258992183,
+                      "height": 79.38570870958011,
+                      "type": "RECTANGLE"
+                    },
+                    "data": {
+                      "text": "¡Lo hiciste!",
+                      "textforBox": "You did it!",
+                      "nativeLanguageTag": "You did it!",
+                      "learningLanguageTag": "¡Lo hiciste!",
+                      "id": 0.3233378553013361
+                    }
+                  }]}
+                />
               <h1 className="u-textCenter">
                 Congrats, you are done with the quiz!!! Your score is{" "}
                 {Math.round(

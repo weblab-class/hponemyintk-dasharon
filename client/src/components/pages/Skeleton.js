@@ -22,7 +22,7 @@ class Skeleton extends Component {
             <div className="u-flex u-flex-justifyCenter">
         <div className="postColumn paddedText" style={{ position: "relative" }}>
         <ReactAnnotate
-                  allowEdits={true}
+                  allowEdits={false}
                   img_using="/public/images/WeWorldIntro3.png"
                   onTagSubmit={this.onTagSubmit}
                   annotationslst={[  {
