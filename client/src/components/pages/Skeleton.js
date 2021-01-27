@@ -32,23 +32,23 @@ class Skeleton extends Component {
         <div className="postColumn paddedText" style={{ position: "relative" }}>
         <ReactAnnotate
                   allowEdits={false}
-                  img_using="/public/images/WeWorldIntro3.png"
+                  img_using="/public/images/WeWorldIntro_rev.png"
                   alt="A welcome image"
                   onTagSubmit={this.onTagSubmit}
-                  annotationslst={[  {
+                  annotationslst={[ {
                     "geometry": {
-                      "x": 21.255638653320737,
-                      "y": 29.256028473810346,
-                      "width": 45.5732270503532,
-                      "height": 60.38097431763215,
+                      "x": 25.720351246489624,
+                      "y": 29.325771925611953,
+                      "width": 37.76160093157752,
+                      "height": 60.8771563236512,
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "¡Bienvenido a WeWorld! Pase el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden enseñarle un idioma.",
-                      "textforBox": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can teach you a language.",
-                      "nativeLanguageTag": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can teach you a language.",
-                      "learningLanguageTag": "¡Bienvenido a WeWorld! Pase el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden enseñarle un idioma.",
-                      "id": 0.9203446993622574
+                      "text": "¡Bienvenido a WeWorld! Pasa el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden ayudarte a enseñarte un idioma.",
+                      "textforBox": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can help teach you a language.",
+                      "nativeLanguageTag": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can help teach you a language.",
+                      "learningLanguageTag": "¡Bienvenido a WeWorld! Pasa el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden ayudarte a enseñarte un idioma.",
+                      "id": 0.021150724844722135
                     }
                   }]}
                 />
