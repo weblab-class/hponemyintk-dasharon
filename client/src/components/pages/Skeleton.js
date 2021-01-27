@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import "../../utilities.css";
 import "../modules/Image_aesthetics.css";
 import "./LandingPage.css";
-import ReactAnnotate from "./ReactAnnotate.js";
+import ReactAnnotate from "../modules/ReactAnnotate.js";
 
 class Skeleton extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class Skeleton extends Component {
                       "y": 29.256028473810346,
                       "width": 45.5732270503532,
                       "height": 60.38097431763215,
-                      "shape_kind": "RECTANGLE"
+                      "type": "RECTANGLE"
                     },
                     "data": {
                       "text": "¡Bienvenido a WeWorld! Pase el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden enseñarle un idioma.",
