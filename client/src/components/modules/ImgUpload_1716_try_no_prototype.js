@@ -36,11 +36,8 @@ import Dialog from "@material-ui/core/Dialog";
 
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-regular-svg-icons";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-
-import { faTrashAlt, faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
-import { faFlagCheckered } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faEdit } from "@fortawesome/free-regular-svg-icons";
+import { faPencilAlt, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 // import translate from 'translate';    //ref translation tlibrary
 // require('dotenv').config();
@@ -146,34 +143,34 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //3 get the translated string back from the API and update the data text field so the translation is stored
       {
         // console.log("OUTPUT", translatedString.output),
-          //consulted https://cloud.google.com/translate/docs/basic/quickstart
-          // console.log("OUTPUT", translatedString.output[0]),
-          // console.log(
-          //   "OUTPUT WAS IN",
-          //   translatedString.output[1].data.translations[0].detectedSourceLanguage
-          // ),
-          (data.text = translatedString.output[0]), //set translated word to be in tag
+        //consulted https://cloud.google.com/translate/docs/basic/quickstart
+        // console.log("OUTPUT", translatedString.output[0]),
+        // console.log(
+        //   "OUTPUT WAS IN",
+        //   translatedString.output[1].data.translations[0].detectedSourceLanguage
+        // ),
+        (data.text = translatedString.output[0]), //set translated word to be in tag
           (data.textforBox = initString), //set original word to be in box
           //3.5 print out the translation for the user
           (data.nativeLanguageTag = initString), //also store native and learning language tags explicitly for flipping
           (data.learningLanguageTag = translatedString.output[0]);
 
         // console.log("TRANSLATED", data.text),
-          //4 set state of annotations
-          this.setState({
-            annotations: this.state.annotations.concat({
-              geometry,
-              data: {
-                ...data,
-                id: Math.random(),
-              },
-            }),
+        //4 set state of annotations
+        this.setState({
+          annotations: this.state.annotations.concat({
+            geometry,
+            data: {
+              ...data,
+              id: Math.random(),
+            },
+          }),
 
-            //add language of input tag to list of native languages detected ref push thod https://www.w3schools.com/jsref/jsref_push.asp
-            nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(
-              translatedString.output[1].data.translations[0].detectedSourceLanguage
-            ),
-          });
+          //add language of input tag to list of native languages detected ref push thod https://www.w3schools.com/jsref/jsref_push.asp
+          nativeLanguagesDetected: this.state.nativeLanguagesDetected.concat(
+            translatedString.output[1].data.translations[0].detectedSourceLanguage
+          ),
+        });
         // console.log("NEW OBJECT", data);
       }
     );
@@ -246,8 +243,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         translatedCaption: translatedString.output[0],
         submittedCaption: true,
         originalCaption: originalLanguageCaption,
-      }),
-        // console.log(translatedString.output[0]);
+      });
+      // console.log(translatedString.output[0]);
     });
   };
 
@@ -295,9 +292,9 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           submittedCaption: true,
           originalCaption: originalLanguageCaption,
         }),
-        //   console.log(translatedString.output[0]);
-        // console.log("STATE BEFORE SUSBMIT", this.state);
-        this.runSubmit();
+          //   console.log(translatedString.output[0]);
+          // console.log("STATE BEFORE SUSBMIT", this.state);
+          this.runSubmit();
       });
     } else {
       this.runSubmit();
@@ -376,26 +373,29 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       //run post request
       post("/api/photo_simple_w_annotate", test_body).then(() => {
         alert(
-          "Selected file: " + this.fileInput.current.files[0].name + " has been uploaded! Congratulations/Felicidades!");
+          "Selected file: " +
+            this.fileInput.current.files[0].name +
+            " has been uploaded! Congratulations/Felicidades!"
+        );
         //   // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
         //   // + '\nDifficulty is : "'  + this.state.difficulty +'"'
         //   // + '\nQuality is : "'  + this.state.quality +'"'
         // ),
-        
-          // (<Demo/>)
-          this.setState({
-            file: null,
-            submittedCaption: false,
-            originalCaption: "",
-            translatedCaption: "",
-            difficulty: 0, //reset difficulty to 0
-            likedPhoto: false, //if photo was liked
-            usersLiking: [], //list with creator who liked photo
-            likeCount: 0, //reset likes to 0
-          }),
+
+        // (<Demo/>)
+        this.setState({
+          file: null,
+          submittedCaption: false,
+          originalCaption: "",
+          translatedCaption: "",
+          difficulty: 0, //reset difficulty to 0
+          likedPhoto: false, //if photo was liked
+          usersLiking: [], //list with creator who liked photo
+          likeCount: 0, //reset likes to 0
+        }),
           (this.postCaption.current.value = ""),
           (this.fileInput.current.value = "");
-          // console.log("This is console log in imgupload****");
+        // console.log("This is console log in imgupload****");
       });
     });
 
@@ -423,20 +423,20 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
       // <ReactAnnotate img_using = {this.state.file} onTagSubmit={this.onTagSubmit} annotationslst={this.state.annotations} />
       // </div> */}
       <div className="u-flex u-flex-justifyCenter">
-        
         <div className="postColumn paddedText" style={{ position: "relative" }}>
-        {/* <ReactModal
+          {/* <ReactModal
 
 isOpen={
   true}><p>test modal</p></ReactModal> */}
-  
           <p>
-            Let's get the learning fun started! Please upload an image and submit tags describing the word(s)
-            you would like to learn in the images, and then add a caption describing your thoughts on the image. You can tag by clicking and dragging on the image. You can rate the difficulty of the image and like it. Please note any image uploaded is ppublicly available to any user. <br />
+            Let's get the learning fun started! Please upload an image and submit tags describing
+            the word(s) you would like to learn in the images, and then add a caption describing
+            your thoughts on the image. You can tag by clicking and dragging on the image. You can
+            rate the difficulty of the image and like it. Please note any image uploaded is
+            ppublicly available to any user. <br />
           </p>
-
-            <br />
-            <br />
+          <br />
+          <br />
           Upload file:
           {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
@@ -464,7 +464,6 @@ isOpen={
               )}
             </div>
             <div className="imgUpRight">
-              <br />
               {/* Get caption and post info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea*/}
               Caption:
               {/* <input type="text" ref={this.postCaption} /> */}
@@ -480,7 +479,7 @@ isOpen={
                       placeholder="Share your thoughts about the photo with your friends!!!"
                       ref={this.postCaption}
                     />
-                    <button  onClick={this.submitCaption}>Translate now please!</button>
+                    <button onClick={this.submitCaption}>Translate now please!</button>
                     <br />
                   </>
                 ) : (
@@ -503,34 +502,48 @@ isOpen={
                     "' translated to '" +
                     this.state.translatedCaption +
                     "'"}
-                  <button type="button" className="button">
+                  <button title="Edit caption" className="button" onClick={this.editCaption}>
                     <FontAwesomeIcon
-                      icon={faPencilAlt}
-                      style={{ color: "#0099ff" }}
-                      onClick={this.editCaption}
+                      icon={faEdit}
+                      style={{ color: "#0099ff", fontSize: "1.6vw" }}
                     />
                   </button>
                 </div>
               )}
               {/* <Typography component="legend">Difficulty</Typography> */}
-              <p>Difficulty:</p>
-              <StyledRating
-                precision={1.0}
-                name="difficultyRating"
-                value={this.state.difficulty}
-                icon={<HelpIcon fontSize="inherit" />}
-                onChange={(event, newvalue) => {
-                  this.setState({ difficulty: newvalue });
-                }}
-              />
+              <div className="u-flex u-flexColumn u-flex-justifyCenter u-flex-alignCenter">
+                Difficulty:
+                <StyledRating
+                  precision={1.0}
+                  name="difficultyRating"
+                  value={this.state.difficulty}
+                  icon={<HelpIcon fontSize="inherit" />}
+                  onChange={(event, newvalue) => {
+                    this.setState({ difficulty: newvalue });
+                  }}
+                />
+              </div>
               {/*Handle likes with a button click */}
               {this.state.likedPhoto ? (
                 <>
-                  <p>You like the photo</p>
-                  <button onClick={this.handleUnLike}>Unlike</button>
+                  <button
+                    title="Unlike this post"
+                    className="solidButton"
+                    onClick={this.handleUnLike}
+                  >
+                    <FontAwesomeIcon
+                      icon={faThumbsUp}
+                      style={{ color: "#0099ff", fontSize: "1.8vw" }}
+                    />
+                  </button>
                 </>
               ) : (
-                <button onClick={this.handleLike}>Like</button>
+                <button title="Like this post" className="solidButton" onClick={this.handleLike}>
+                  <FontAwesomeIcon
+                    icon={faThumbsUp}
+                    style={{ color: "#0099ff", fontSize: "1.8vw", opacity: ".7" }}
+                  />
+                </button>
               )}
               {/* <Typography component="legend">Quality</Typography> */}
               <div>
