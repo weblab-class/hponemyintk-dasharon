@@ -331,7 +331,7 @@ class Home_Page extends Component {
           <div className="postRight">
 {/* Use username state */}
 <p>Next, you can take {" "}
-            <Link to="/QuizSelfMade_DSs" className="hplinktext">
+            <Link to="/QuizSelfMade_DS" className="hplinktext">
               quizzes 
             </Link> {" "}to expand your universe of knowledge using a broad range of pictures!</p>
 
