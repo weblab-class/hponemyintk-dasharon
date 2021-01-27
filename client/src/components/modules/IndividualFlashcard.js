@@ -394,7 +394,7 @@ class IndividualFlashcard extends Component {
             {/* *** For aggregate ratings *** */}
             <div
               className="u-flex u-flex-alignCenter"
-              style={{ justifyContent: "space-evenly", width: "100%" }}
+              style={{ justifyContent: "space-between", width: "100%" }}
             >
               <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
                 <button title="Aggregate rating from all users" className="solidButton" disabled>
@@ -437,7 +437,7 @@ class IndividualFlashcard extends Component {
                     <HelpIcon style={{ color: "#0099ff", fontSize: "1.8vw" }} />
                   </button>
                 )}
-                <span>{ownRating}</span>
+                <span style={{ fontSize: "1.5vw" }}>{ownRating}</span>
 
                 {this.state.enableDifficultyEdit ? (
                   <StyledRating
@@ -455,41 +455,77 @@ class IndividualFlashcard extends Component {
               </div>
               {/* *** For Like icon *** */}
               {/*see if you liked and count of likes*/}
-              <div
-                className="u-flex u-flex-alignCenter u-flex-justifyCenter"
-                style={{ marginRight: "1.7vw" }}
-              >
-                {this.props.photoFacts.usersLikingArray
-                  .map((userData) => userData.likingUserId)
-                  .includes(this.props.viewingUserId) ? (
-                  <>
-                    <button
-                      title="Unlike this post"
-                      className="solidButton"
-                      onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faThumbsUp}
-                        style={{ color: "#0099ff", fontSize: "1.6vw" }}
-                      />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      title="Like this post"
-                      className="solidButton"
-                      onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faThumbsUp}
-                        style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
-                      />
-                    </button>
-                  </>
-                )}
-                <span style={{ fontSize: "1.5vw" }}>{this.props.photoFacts.likeCount}</span>
-              </div>
+              {this.props.forQuiz ? (
+                <div className="u-flex u-flex-alignCenter u-flex-justifyCenter">
+                  {this.props.photoFacts.usersLikingArray
+                    .map((userData) => userData.likingUserId)
+                    .includes(this.props.viewingUserId) ? (
+                    <>
+                      <button
+                        title="Unlike this post"
+                        className="solidButton"
+                        onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          style={{ color: "#0099ff", fontSize: "1.6vw" }}
+                        />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        title="Like this post"
+                        className="solidButton"
+                        onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
+                        />
+                      </button>
+                    </>
+                  )}
+                  <span style={{ fontSize: "1.5vw" }}>{this.props.photoFacts.likeCount}</span>
+                </div>
+              ) : (
+                <div
+                  className="u-flex u-flex-alignCenter u-flex-justifyCenter"
+                  style={{ marginRight: "1.7vw" }}
+                >
+                  {this.props.photoFacts.usersLikingArray
+                    .map((userData) => userData.likingUserId)
+                    .includes(this.props.viewingUserId) ? (
+                    <>
+                      <button
+                        title="Unlike this post"
+                        className="solidButton"
+                        onClick={(event) => this.props.updateLikes(this.props.photoFacts, false)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          style={{ color: "#0099ff", fontSize: "1.6vw" }}
+                        />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        title="Like this post"
+                        className="solidButton"
+                        onClick={(event) => this.props.updateLikes(this.props.photoFacts, true)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faThumbsUp}
+                          style={{ color: "#0099ff", fontSize: "1.5vw", opacity: ".4" }}
+                        />
+                      </button>
+                    </>
+                  )}
+                  <span style={{ fontSize: "1.5vw" }}>{this.props.photoFacts.likeCount}</span>
+                </div>
+              )}
+
               {/* *** For Lang Translation icon *** */}
               <div>
                 {!this.props.forQuiz && (
