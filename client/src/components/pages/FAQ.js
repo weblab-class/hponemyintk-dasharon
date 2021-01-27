@@ -50,7 +50,7 @@ class FAQ extends Component {
             photo.
           </p>
           <p className="questiontext">
-            Now, you also said this is social? Can I see my friends' adorable pet* pictures and
+            Now, you also said this is social? Can I see my friends' adorable pet<sup>*</sup> pictures and
             learn from them?
           </p>
           
@@ -60,9 +60,8 @@ class FAQ extends Component {
               {" "}
               Social page{" "}
             </Link>{" "}
-            has other WeWorld users' photos. There are several different viewing settings (including most liked, easiest/hardest, and most commented), and you can also see all of a user's photos by navigating to their page.
+            has other WeWorld users' photos. There are several different viewing settings (including most liked, most difficult, and most commented), and you can also see all of a user's photos by navigating to their page.
           </p>
-
           <p className="questiontext">How can I review my past activity?</p>
           <p className="answertext">
             {" "}
@@ -72,14 +71,26 @@ class FAQ extends Component {
                 Review page
               </Link>
             )}{" "}
-            you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of
+            you can scroll through all of your photos and review words- as well as your memories. You can also review photos you liked, commented on, or rated the difficulty of.
+          </p>
+          <p className="questiontext">
+            What are the different ways I can interact with a photo?
+          </p>
+          <p className="answertext">
+            You can like photos and rate their difficulty when uploading, taking the quiz, or viewing (in Social or Review). Also, when viewing (in Social or Review), you can comment on a photo.
+          </p>
+          <p className="questiontext">
+            How can I control whether I see tags/text in English or Spanish?
+          </p>
+          <p className="answertext">
+          When viewing (in Social or Review), you can select the translation icon to flip between viewing in English and in Spanish. The tag text below the image will be in one language, and the tag text on the image will be in the other language.
           </p>
           <p className="questiontext">
             What if I see troubling or inappropriate content uploaded by another user?
           </p>
           <p className="answertext">
             WeWorld wants to ensure it is a welcoming and inclusive website. Please email us at
-            weblab2021@gmail.com, so we can look into and address your concern.
+            weblab2021 at gmail.com, so we can look into and address your concern.
           </p>
           <p className="questiontext">How did WeWorld come about?</p>
           {/*ref for other URLs https://www.w3schools.com/html/html_links.asp*/}
@@ -91,7 +102,7 @@ class FAQ extends Component {
             course project. We are very grateful to the course team and our test users for their
             help and advice with this project!
           </p>
-          <p>*WeWorld likes animals of all kinds, including both cats and dogs!</p>
+          <p><sup>*</sup>WeWorld likes animals of all kinds, including both cats and dogs!</p>
           <p></p>
         </div>
       </div>

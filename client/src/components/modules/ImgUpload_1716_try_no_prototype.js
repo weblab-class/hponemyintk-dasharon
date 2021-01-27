@@ -135,7 +135,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
   //when a tag is submitted translate the input string
   onTagSubmit = (annotation) => {
     let { geometry, data } = annotation; //1 get initial annotation and the text of it
-    console.log("TRANSLATION STRING", data.text);
+    // console.log("TRANSLATION STRING", data.text);
     const initString = data.text;
     //2 translate the input string, have as a promise- many thanks Nikhil for help! {translationString : data.text, translationLanguage : "es"}
     post("/api/translation", {
@@ -145,20 +145,20 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
     }).then((translatedString) =>
       //3 get the translated string back from the API and update the data text field so the translation is stored
       {
-        console.log("OUTPUT", translatedString.output),
+        // console.log("OUTPUT", translatedString.output),
           //consulted https://cloud.google.com/translate/docs/basic/quickstart
-          console.log("OUTPUT", translatedString.output[0]),
-          console.log(
-            "OUTPUT WAS IN",
-            translatedString.output[1].data.translations[0].detectedSourceLanguage
-          ),
+          // console.log("OUTPUT", translatedString.output[0]),
+          // console.log(
+          //   "OUTPUT WAS IN",
+          //   translatedString.output[1].data.translations[0].detectedSourceLanguage
+          // ),
           (data.text = translatedString.output[0]), //set translated word to be in tag
           (data.textforBox = initString), //set original word to be in box
           //3.5 print out the translation for the user
           (data.nativeLanguageTag = initString), //also store native and learning language tags explicitly for flipping
           (data.learningLanguageTag = translatedString.output[0]);
 
-        console.log("TRANSLATED", data.text),
+        // console.log("TRANSLATED", data.text),
           //4 set state of annotations
           this.setState({
             annotations: this.state.annotations.concat({
@@ -174,7 +174,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
               translatedString.output[1].data.translations[0].detectedSourceLanguage
             ),
           });
-        console.log("NEW OBJECT", data);
+        // console.log("NEW OBJECT", data);
       }
     );
     // console.log("Printing annotations here:::", this.state.annotations)     // debug123*** why is this not printing the last tag?
@@ -247,7 +247,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         submittedCaption: true,
         originalCaption: originalLanguageCaption,
       }),
-        console.log(translatedString.output[0]);
+        // console.log(translatedString.output[0]);
     });
   };
 
@@ -295,8 +295,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
           submittedCaption: true,
           originalCaption: originalLanguageCaption,
         }),
-          console.log(translatedString.output[0]);
-        console.log("STATE BEFORE SUSBMIT", this.state);
+        //   console.log(translatedString.output[0]);
+        // console.log("STATE BEFORE SUSBMIT", this.state);
         this.runSubmit();
       });
     } else {
@@ -306,7 +306,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
 
   /*from React website above*/
   runSubmit = () => {
-    console.log("STATE IN SUBMIT", this.state);
+    // console.log("STATE IN SUBMIT", this.state);
 
     //get count of difficulty ratings- did the user rate or not?
     let difficultyRatingArray = [];
@@ -363,7 +363,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         annotate_test: this.cleanAnnotInput(this.state.annotations), //this.state.annotations, //add annotations w/o prototype
         //annotate_test: [{geometry : {x: 1, y : 2}}, {geometry : {x: 3, y : 4}}], //this.state.annotations[0].data.text,
       };
-      console.log("After test_body*");
+      // console.log("After test_body*");
 
       //If there are tags (length of annotations list > 0), record the tag input language(s) and the language you are translating to
       //ref https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object
@@ -394,8 +394,8 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
             likeCount: 0, //reset likes to 0
           }),
           (this.postCaption.current.value = ""),
-          (this.fileInput.current.value = ""),
-          console.log("This is console log in imgupload****");
+          (this.fileInput.current.value = "");
+          // console.log("This is console log in imgupload****");
       });
     });
 
@@ -431,20 +431,12 @@ isOpen={
   true}><p>test modal</p></ReactModal> */}
   
           <p>
-            Let's get the learning fun started! Please upload an image and tag it with the word(s)
-            you would like to learn. You can tag by clicking and dragging on the image. You will
-            need to submit the tag(s) before submitting the image for them to be recorded. You can
-            add a caption to share your thoughts on the image, and you should rate the difficulty
-            (how hard the tags are) and quality (how helpful the tags are to other learners). <br />
+            Let's get the learning fun started! Please upload an image and submit tags describing the word(s)
+            you would like to learn in the images, and then add a caption describing your thoughts on the image. You can tag by clicking and dragging on the image. You can rate the difficulty of the image and like it. Please note any image uploaded is ppublicly available to any user. <br />
           </p>
-          <p className="u-bold">
-            Disclaimer: Please note currently all users can see everyone's content given this is an
-            early testing version of the website. So please do not share any image or text you do
-            not want shared publicly. Also your timestamp of use and name are recorded and
-            associated with your image.
+
             <br />
             <br />
-          </p>
           Upload file:
           {/*only jpg or png allowed https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
             Other files should be grayed out*/}
