@@ -216,36 +216,6 @@ class Home_Page extends Component {
     );
   }
 
-  //post request to update user language
-  handleLanguage = (event) => {
-    event.preventDefault();
-    event.persist(); //added because got error if didn't
-    //let photoId = photoToDelete._id;
-    console.log("CHANGE CLICKED with", event.target.value);
-    alert("Language changed to " + event.target.value);
-    // console.log("event.target", event.target);
-    // console.log("event.target.value", event.target.value);
-    let langString = event.target.value;
-    console.log("this.state.langList[event.target.value]", this.state.langList[event.target.value]);
-    // console.log("this.state.langList[langString]",this.state.langList[langString]);
-
-    //Get a welcome message, update user language, and change the state to reflect new welcome
-    post("/api/translation", {
-      translationInput: "Hello! You are learning" + event.target.value,
-      userTranslationLanguage: this.state.langList[event.target.value],
-    }).then((translatedString) => {
-      let languageUpdateBody = {
-        newLanguage: this.state.langList[event.target.value],
-        newLanguageLong: event.target.value,
-        welcomeMessageText: translatedString.output[0],
-      }; //set request- new language, its long version, and the welcome message in this language
-      post("/api/changeLanguage", languageUpdateBody); //run the request to change the language
-      this.setState({
-        welcomeText: translatedString.output[0],
-        languageSelected: event.target.value,
-      }); //set state w/new welcome message and new learning language
-    }); //change welcome text
-  };
 
   //change the
   //this.setState({ languageSelected:  event.target.value});
@@ -272,15 +242,7 @@ class Home_Page extends Component {
     return (
       <div className="u-flex u-flex-justifyCenter">
         <div className="postColumn paddedText">
-          {this.state.photo_info_array ? (
-            <div className="u-flex u-flex-justifyCenter">
-              <div className="homeImg">
-                {this.state.photo_info_array.map((p) => this.GetPhotoInfo(p))}
-              </div>
-            </div>
-          ) : (
-            <p></p>
-          )}
+
           {/* Use username state */}
           <p>Welcome {this.state.name}!</p>
           <p>{this.state.welcomeText}</p>

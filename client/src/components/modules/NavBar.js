@@ -47,6 +47,9 @@ class NavBar extends Component {
                 Review
               </Link>
             )}
+                        <Link to="/FAQ" className="NavBar-link">
+              FAQs
+            </Link>
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Logout"

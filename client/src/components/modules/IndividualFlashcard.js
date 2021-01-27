@@ -130,19 +130,19 @@ class IndividualFlashcard extends Component {
     let answerArray = [
       {
         text: this.props.wrongAnswers[0],
-        color: "red",
+        color: "#D9534F",
       },
       {
         text: this.props.wrongAnswers[1],
-        color: "red",
+        color: "#D9534F",
       },
       {
         text: this.props.wrongAnswers[2],
-        color: "red",
+        color: "#D9534F",
       },
       {
         text: this.props.correctAnswer,
-        color: "green",
+        color: "#5CB85C",
       },
     ];
     const shuffledArray = shuffle(answerArray); //shuffle array and return

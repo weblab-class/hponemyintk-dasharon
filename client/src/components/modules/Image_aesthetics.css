@@ -219,8 +219,8 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
   margin-bottom: 0.9vh;
 }
 .quizButton:hover {
-  background: linear-gradient(to bottom, #dbffd4 0%, #8dffa6 100%);
-  background-color: #dbffd4;
+  background: linear-gradient(to bottom, #c1f0f8 0%, #c1f0f8 100%);
+  /* background-color: #b2effa; */
 }
 .quizButton:active {
   position: relative;
@@ -229,11 +229,13 @@ https://www.freecodecamp.org/news/how-to-center-an-image-in-css/ */
 
 /* Quiz button styling from ref: https://www.bestcssbuttongenerator.com/#/23 */
 .quizButtonClicked {
-  background: linear-gradient(to bottom, #ffe0e0 5%, #ffa9a9 100%);
+  /* background: linear-gradient(to bottom, #ffe0e0 5%, #ffa9a9 100%); */
+  background: linear-gradient(to bottom, #fdcfce 5%, #fdcfce 100%);
 }
 
 .quizButtonClickedCor {
-  background: linear-gradient(to bottom, #dbffd4 0%, #8dffa6 100%);
+  /* background: linear-gradient(to bottom, #dbffd4 0%, #8dffa6 100%); */
+  background: linear-gradient(to bottom, #ceffce 0%, #ceffce 100%);
 }
 
 .quizButtonNotClicked {

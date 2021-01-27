@@ -31,7 +31,7 @@ WeWorld wants to ensure it is a welcoming and inclusive website. Please email us
 
 ### Keys modules/code sources which we used from other sources are:
 
-- web.lab catbook code: https://github.com/weblab-workshops/catbook-react
+- web.lab catbook code: https://github.com/weblab-workshops/catbook-react, including comments portion
 - Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
 - react-image-annotation: https://www.npmjs.com/package/react-image-annotation
 - SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010

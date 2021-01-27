@@ -313,6 +313,7 @@ router.post("/changeLanguage", (req, res) => {
       //save
       userUpdating.save();
     console.log("USER UPDATED AFTER 2", userUpdating);
+    res.send({"result":"changed"});
   });
 
   // User.findOne({_id : req.query.checkUserId}).then((infoOnUser) =>

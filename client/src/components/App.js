@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import NavBar from "./modules/NavBar.js";
 import Quiz from "./modules/Quiz.js";
+import FAQ from "./pages/FAQ.js";
 import ImgUpload_1716_try_no_prototype from "./modules/ImgUpload_1716_try_no_prototype.js";
 import Home_Page from "./pages/Home_Page.js";
 import Scavenger_Hunts from "./pages/Scavenger_Hunts.js";
@@ -130,11 +131,12 @@ class App extends Component {
             <View_Flashcards path={"/Flashcards/" + u._id} username = {u.name} key = {i}/>)} */}
           {/*Thanks to Justin for Piazza post on this! */}
 
-          <View_Flashcards path="/Flashcards/:userId" />
+          <View_Flashcards path="/Flashcards/:userId" requestingUserId={this.state.userId}/>
 
           <Friends_1251 path="/Friends" userId={this.state.userId} />
           <Skeleton path="/" />
           <QuizSelfMade_DS path="/QuizSelfMade_DS" userId={this.state.userId} />
+          <FAQ path ="/FAQ" userId={this.state.userId}/>
           <NotFound default />
         </Router>
         <OnRouteChange action={() => { window.scrollTo(0, 0) }} /> 
