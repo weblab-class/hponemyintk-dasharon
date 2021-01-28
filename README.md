@@ -49,6 +49,7 @@ WeWorld is our MIT web.lab course project. We are very grateful to the course te
 - Nikhil's gcp code: https://github.com/weblab-workshops/gcp-example
 - react-image-annotation: https://www.npmjs.com/package/react-image-annotation
 - We looked into but did not use SurveyJS: https://surveyjs.io/Examples/Library?id=survey-quiz&platform=Reactjs&theme=modern and found this quiz code https://codepen.io/dvdmoon/pen/xNmKLj?editors=0010 to be very helpful and used some of it
+- The quiz progress bar: https://scriptverse.academy/tutorials/reactjs-multicolor-progressbar.html
 - Ratings: https://material-ui.com/api/rating/, https://material-ui.com/components/rating/,
 - References on inputting text/images: https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa*/, https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag
 - Google Translate: https://cloud.google.com/translate/docs/basic/quickstart
@@ -58,8 +59,10 @@ WeWorld is our MIT web.lab course project. We are very grateful to the course te
 
 #Below information is from the course team and was in the initial README.md:
 
-********************************************************************************************************
---------------------------------------------------------------------------------------------------------
+---
+
+---
+
 # Old README template from skeleton project provided by the course team
 
 # Project Skeleton
