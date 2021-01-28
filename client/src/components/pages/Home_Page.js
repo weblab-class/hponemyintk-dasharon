@@ -378,7 +378,7 @@ class Home_Page extends Component {
             <Link to="/Friends" className="hplinktext">
               {" "}
               Social page
-            </Link>{" "} provides opportunities to learn from the WeWorld community through reading captions and comments and posting comments! You can also find links to individual user profiles. You can then review all of your activity on the {" "}
+            </Link>{" "} provides opportunities to learn from the WeWorld community through reading captions and comments and posting comments! You can then review all of your activity on the {" "}
             {this.props.userId && (
               <Link to={`/Flashcards/${this.props.userId}`} className="hplinktext">
                 Review page
