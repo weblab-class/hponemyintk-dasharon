@@ -61,7 +61,7 @@ class IndividualFlashcard extends Component {
     // console.log(event.target.value);
     let photoDeleteBody = { deletionId: this.props.photoFacts._id }; //set the request to be for this photo ID
     post("/api/deletePhoto", photoDeleteBody); //run the delete request
-    alert("Adios photo! Your photo has been deleted");
+    alert("再见照片! Your photo has been deleted");
     this.props.deletionFunction(this.props.photoFacts._id);
     //after deletion, send back to where you were (e.g., if you are on your flashcards page return there, and if you are on the friends page go back there)
   };

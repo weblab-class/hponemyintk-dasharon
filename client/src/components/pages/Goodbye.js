@@ -35,10 +35,10 @@ class Goodbye extends Component {
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "¡Adiós y muchas gracias por usar WeWorld!",
+                      "text": "再见了，非常感谢您使用WeWorld！",
                       "textforBox": "Goodbye, and thank you so much for using WeWorld!",
                       "nativeLanguageTag": "Goodbye, and thank you so much for using WeWorld!",
-                      "learningLanguageTag": "¡Adiós y muchas gracias por usar WeWorld!",
+                      "learningLanguageTag": "再见了，非常感谢您使用WeWorld！",
                       "id": 0.27776467076679323
                     }
                   }, {
@@ -50,10 +50,10 @@ class Goodbye extends Component {
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "Esperamos que haya aprendido mucho y se haya divertido al hacerlo. Esperamos volver a verte pronto!",
+                      "text": "我们希望您能学到很多东西，并从中获得乐趣。 我们希望很快再见到你！",
                       "textforBox": "We hope that you learned a lot and had fun as you did so. We hope to see you again soon!",
                       "nativeLanguageTag": "We hope that you learned a lot and had fun as you did so. We hope to see you again soon!",
-                      "learningLanguageTag": "Esperamos que haya aprendido mucho y se haya divertido al hacerlo. Esperamos volver a verte pronto!",
+                      "learningLanguageTag": "我们希望您能学到很多东西，并从中获得乐趣。 我们希望很快再见到你！",
                       "id": 0.8609281392866777
                     }
                   }]}

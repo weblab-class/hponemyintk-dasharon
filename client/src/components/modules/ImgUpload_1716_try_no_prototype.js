@@ -375,7 +375,7 @@ class ImgUpload_1716_try_no_prototype extends React.Component {
         alert(
           "Selected file: " +
             this.fileInput.current.files[0].name +
-            " has been uploaded! Congratulations/Felicidades!"
+            " has been uploaded! Congratulations/恭喜!"
         );
         //   // + '\nA thought was submitted: "'  + this.postCaption.current.value +'"'
         //   // + '\nDifficulty is : "'  + this.state.difficulty +'"'

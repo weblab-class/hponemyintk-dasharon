@@ -9,7 +9,7 @@ class Loading extends Component {
     return (
       <>
         <div className="u-flexColumn u-flex-alignCenter" style={{ width: "100%" }}>
-          <p className="nametext">Un momento por favor</p>
+          <p className="nametext">稍等一会儿</p>
           <div class="lds-roller">
             <div></div>
             <div></div>

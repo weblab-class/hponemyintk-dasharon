@@ -268,10 +268,10 @@ class Home_Page extends Component {
                   "type": "RECTANGLE"
                 },
                 "data": {
-                  "text": "¡Subes fotos!",
+                  "text": "您上传照片！",
                   "textforBox": "You upload photos!",
                   "nativeLanguageTag": "You upload photos!",
-                  "learningLanguageTag": "¡Subes fotos!",
+                  "learningLanguageTag": "您上传照片！",
                   "id": 0.5894362203517878
                 }
               }]}
@@ -317,10 +317,10 @@ class Home_Page extends Component {
                   "type": "RECTANGLE"
                 },
                 "data": {
-                  "text": "¡Responde cuestionarios!",
+                  "text": "你参加测验！",
                   "textforBox": "You take quizzes!",
                   "nativeLanguageTag": "You take quizzes!",
-                  "learningLanguageTag": "¡Responde cuestionarios!",
+                  "learningLanguageTag": "你参加测验！",
                   "id": 0.17849538622696215
                 }
               }]}
@@ -361,10 +361,10 @@ class Home_Page extends Component {
                   "type": "RECTANGLE"
                 },
                 "data": {
-                  "text": "¡Miras y comentas tus fotos y las de los demás!",
+                  "text": "您浏览并评论您和其他人的照片！",
                   "textforBox": "You look through and comment on your and others' photos!",
                   "nativeLanguageTag": "You look through and comment on your and others' photos!",
-                  "learningLanguageTag": "¡Miras y comentas tus fotos y las de los demás!",
+                  "learningLanguageTag": "您浏览并评论您和其他人的照片！",
                   "id": 0.9764706490827654
                 }
               }]}
@@ -400,7 +400,7 @@ class Home_Page extends Component {
 <p>We hope you learn and have fun! To learn more about WeWorld, you can read the{" "}
                         <Link to="/FAQ" className="hplinktext">
               frequently asked questions
-            </Link>.</p>
+            </Link>. Please note this version of the website is a different version with Chinese replacing Spanish, which was used for the web.lab competition: this is not the version submitted for the web.lab competition.</p>
       </div>
 
       </div>

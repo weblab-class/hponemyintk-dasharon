@@ -30,8 +30,8 @@ function getOrCreateUser(user) {
       photoCount: 0, //ever uploaded a photo?
       nativeLanguage: "en",
       nativeLanguageLong: "English",
-      learningLanguage: "es",
-      learningLanguageLong: "Spanish",
+      learningLanguage: "zh-CN",
+      learningLanguageLong: "Chinese",
       welcomeMessage: "Welcome! You are now learning Spanish (by default). If you would like to learn another language, please select a language of interest via the dropdown menu.",
       defaultChanged: false,
       commentList: [],

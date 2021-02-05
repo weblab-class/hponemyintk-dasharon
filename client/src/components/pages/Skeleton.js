@@ -44,10 +44,10 @@ class Skeleton extends Component {
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "¡Bienvenido a WeWorld! Pasa el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden ayudarte a enseñarte un idioma.",
+                      "text": "欢迎来到WeWorld！ 将鼠标悬停在标签上，可以查看带有标签的照片如何帮助您学习语言。",
                       "textforBox": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can help teach you a language.",
                       "nativeLanguageTag": "Welcome to WeWorld! Mouse over the tag to see how tagged photos can help teach you a language.",
-                      "learningLanguageTag": "¡Bienvenido a WeWorld! Pasa el mouse sobre la etiqueta para ver cómo las fotos etiquetadas pueden ayudarte a enseñarte un idioma.",
+                      "learningLanguageTag": "欢迎来到WeWorld！ 将鼠标悬停在标签上，可以查看带有标签的照片如何帮助您学习语言。",
                       "id": 0.021150724844722135
                     }
                   }]}
@@ -69,10 +69,10 @@ class Skeleton extends Component {
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "¿Entonces, Qué esperas?",
+                      "text": "你还在等什么？",
                       "textforBox": "So what are you waiting for?",
                       "nativeLanguageTag": "So what are you waiting for?",
-                      "learningLanguageTag": "¿Entonces, Qué esperas?",
+                      "learningLanguageTag": "你还在等什么？",
                       "id": 0.9813935506893599
                     }
                   },
@@ -85,10 +85,10 @@ class Skeleton extends Component {
                       "type": "RECTANGLE"
                     },
                     "data": {
-                      "text": "¡Inicie sesión para comenzar el aprendizaje y la diversión!",
+                      "text": "请登录以开始学习和娱乐！",
                       "textforBox": "Please log in to get the learning and fun started!",
                       "nativeLanguageTag": "Please log in to get the learning and fun started!",
-                      "learningLanguageTag": "¡Inicie sesión para comenzar el aprendizaje y la diversión!",
+                      "learningLanguageTag": "请登录以开始学习和娱乐！",
                       "id": 0.5074685876815184
                     }
                   }

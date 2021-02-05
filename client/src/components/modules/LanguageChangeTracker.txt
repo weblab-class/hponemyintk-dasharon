@@ -1,0 +1,15 @@
+Everything to edit to create WeWorld in another language!
+(Note- a further goal is to enable the user to select the language, but currently we are deploying a different website for each language)
+Language ref: https://sites.google.com/site/opti365/translate_codes 
+
+1. server.js: line 40, database name on
+2. auth.js: line 33, language code and language name on
+3. IndividualFlashcard.js: line 64, goodbye message
+4. Loading.js: line 12, one moment please messsage
+5. ImgUpload_1716_try_no_prototype.js: line 378, congratulations messsage
+6. NotFound.js: lines 29, 32, 44, 47 not found message
+7. Home_Page.js: lines 271, 274, 320, 323, 364, 367, 403 explanatory messages describing user flow
+8. Skeleton.js: liness 47, 50, 72, 75, 88, 91, introductory WeWorld messages
+9. Goodbye.js: lines 38, 41, 53, 56, goodbye messages
+10. QuizSelfMade_DS.js: (a) Look up "Congratulations on finishing the quiz!" and "You did it!" lines, will change depending on length of answer banks (b) answer banks in onewordwrongAnswers and twowordwrongAnswers. Important: look up comment "This should be used only if needed for the language..." and comment out if working with a language using spaces often
+11. FAQ.js: lines 19, 83, and 86, with information on the language and 20 and 103 explaining this is not the submitted version. Also may want to add or modify note if add in preliminary features
