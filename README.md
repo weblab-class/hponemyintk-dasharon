@@ -1,3 +1,6 @@
+This code was written for the MIT web.lab course/competition and then updated slightly. There is a good deal of commented-out code included in this repository, to keep things we learned available. Also, we strove to balance writing elegant code with progressing in the context of the web.lab timeframe, so there are points where the code could be refactored or streamlined, which is something we hope to do if we pursue this project further.
+
+----------
 This document has the questions and answers on our FAQ page and also has citations for key code/package sources, as well as the initial text from the web.lab README file. We thank the web.lab instructors and test users for all of their help and advice!
 
 ### What is WeWorld?
