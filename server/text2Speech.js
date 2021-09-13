@@ -2,7 +2,6 @@
 const textToSpeech = require("@google-cloud/text-to-speech");
 const util = require("util");
 const fs = require("fs");
-// const projectId = "AIzaSyCpvFQbOo872Fg0VbTYIjYFEBwKQlnd95w";
 // const keyFilename = "../google_cloud_credentials.json";
 
 // TODO: replace this projectId with your own GCP project id!
